@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plug-ins: the WebAssembly plug-in API (ABI v1) - vectorcraft-mirror-613 文档归档</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      :root {
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.68;
+        color: #1e293b;
+      }
+      .markdown-body {
+        color: #1e293b;
+      }
+      .markdown-body h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid #e2e8f0;
+        color: #0f172a;
+        line-height: 1.25;
+      }
+      .markdown-body h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+      }
+      .markdown-body h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.3rem;
+        margin-bottom: 0.6rem;
+        color: #334155;
+      }
+      .markdown-body p {
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+        line-height: 1.7;
+      }
+      .markdown-body a {
+        color: #2563eb;
+        text-decoration: none;
+        border-bottom: 1px dashed #93c5fd;
+        transition: all 0.2s ease;
+      }
+      .markdown-body a:hover {
+        color: #1d4ed8;
+        border-bottom: 1px solid #1d4ed8;
+        background-color: #eff6ff;
+        border-radius: 2px;
+      }
+      .markdown-body ul, .markdown-body ol {
+        padding-left: 1.5rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.6rem;
+      }
+      .markdown-body ul {
+        list-style-type: disc;
+      }
+      .markdown-body ol {
+        list-style-type: decimal;
+      }
+      .markdown-body li {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+      .markdown-body pre {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        padding: 1rem 1.2rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .markdown-body code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875em;
+        padding: 0.15rem 0.35rem;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        border-radius: 0.35rem;
+        border: 1px solid #e2e8f0;
+      }
+      .markdown-body pre code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+        color: inherit;
+      }
+      .markdown-body blockquote {
+        margin: 1rem 0;
+        padding: 0.75rem 1.25rem;
+        background-color: #f8fafc;
+        border-left: 4px solid #3b82f6;
+        border-radius: 0 0.5rem 0.5rem 0;
+        color: #475569;
+      }
+      .markdown-body table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+        display: block;
+        overflow-x: auto;
+      }
+      .markdown-body th, .markdown-body td {
+        border: 1px solid #cbd5e1;
+        padding: 0.6rem 1rem;
+        text-align: left;
+      }
+      .markdown-body th {
+        background-color: #f1f5f9;
+        font-weight: 600;
+      }
+      .markdown-body tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+      .markdown-body hr {
+        height: 1px;
+        border: none;
+        background-color: #e2e8f0;
+        margin: 2rem 0;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="../index.html" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform ">LM</span>
+        <span class="font-bold text-slate-900 tracking-tight text-lg group-hover:text-blue-600 transition-colors ">vectorcraft-mirror-613</span>
+      </a>
+      <span class="hidden md:inline-block text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono ">Pages Docs</span>
+    </div>
+    <div class="flex items-center gap-1 sm:gap-2 text-sm">
+      <a href="../index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-slate-600 hover:text-blue-600 hover:bg-slate-50 font-medium ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>首页 (README)</span>
+      </a>
+      <a href="./index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-blue-600 bg-blue-50 font-semibold ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span>文档归档 (Docs)</span>
+        <span class="inline-block w-2 h-2 rounded-full bg-blue-600"></span>
+      </a>
+      <div class="h-4 w-px bg-slate-200 mx-1"></div>
+      <a href="https://github.com/shijiuwei/vectorcraft-mirror-613" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span class="hidden sm:inline">GitHub</span>
+      </a>
+      <a href="https://github.com/shijiuwei/vectorcraft-mirror-613/wiki" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="hidden sm:inline">Wiki</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <!-- 面包屑与顶部导航 -->
+  <header class="bg-white border-b border-slate-200 py-6 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-2 font-medium">
+        <a href="../index.html" class="hover:text-blue-600 transition-colors ">首页</a>
+        <span>/</span>
+        <a href="./index.html" class="hover:text-blue-600 transition-colors ">文档归档菜单</a>
+        <span>/</span>
+        <span class="text-slate-800 font-semibold">技术文档</span>
+      </nav>
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Plug-ins: the WebAssembly plug-in API (ABI v1)</h1>
+        <a href="./index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors ">
+          <span>&larr; 返回文档归档菜单</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体正文区域 -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
+    <article class="bg-white p-6 sm:p-12 rounded-2xl shadow-sm border border-slate-200">
+      <div class="markdown-body">
+        <h1>Plug-ins: the WebAssembly plug-in API (ABI v1)</h1>
+<p>VectorCraft does not host native plug-ins built for other illustration apps: that needs unsafe FFI into
+arbitrary machine code and cannot work in the browser build. Instead, plug-ins are <strong>WebAssembly modules</strong>
+run in a sandbox. One <code>.wasm</code> file works on macOS, Windows, Linux and the web. The design follows PhotoCraft's
+plug-in API (same sandbox, same manifest and parameter schema), extended for vector documents.</p>
+<p>There are three kinds of plug-in:</p>
+<ul>
+<li><strong>Object filters</strong> read the selected paths and compound paths (geometry, fills, strokes, gradients, opacity)
+and return the objects to keep, change or add. A run is one undo step. Use them for recolouring, path
+clean-up, halftones, generative patterns and the like.</li>
+<li><strong>Live effects</strong> rewrite one object's geometry each time it is drawn, from its appearance stack, like the
+built-in Distort &amp; Transform effects. The art stays editable: move or reshape it and the effect follows.</li>
+<li><strong>Exporters</strong> write the whole document in a file format of their own, for pen plotters, cutting machines,
+laser cutters and the like. File › Export › Export As lists them after the built-in formats, and the host writes the
+bytes they return: a plug-in still never touches a file.</li>
+</ul>
+<p>This page is the contract for plug-in authors and the reference for the host (<code>crates/plugins</code>, the
+<code>plugin.*</code> commands in <code>crates/engine/src/cmd/plugin.rs</code>).</p>
+<h2>Using plug-ins</h2>
+<table><thead><tr><th>Command</th><th>Params</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>plugin.list</code></td><td><code>{}</code></td><td><code>{"plugins": [{id, name, version, kind, author, description, params, paramsSchema, effect?, format?, extensions?, budget?, size, source}], "folder": report}</code> (<code>budget: "heavy"</code> for a <a href="#heavy-filters">heavy filter</a>)</td></tr>
+<tr><td><code>plugin.info</code></td><td><code>{"id"}</code></td><td>One plug-in: the <code>plugin.list</code> entry plus <code>manifest</code>, <code>defaults</code> and <code>lastError</code> (a live effect's last failure).</td></tr>
+<tr><td><code>plugin.run</code></td><td><code>{"id", "params"?: {…}, "ids"?: [...]}</code> (plug-in params may also be top-level keys)</td><td>Runs an object filter on the selection (or <code>ids</code>). One undo step; the result is selected.</td></tr>
+<tr><td><code>plugin.install</code></td><td><code>{"path": "/x/y.wasm"}</code> (desktop) or <code>{"dataBase64": "…", "name"?}</code>, <code>"replace": bool = true</code>, <code>"allowHeavy": bool = false</code></td><td>Validates and installs a module; returns its <code>plugin.list</code> entry. The desktop app and <code>vectorcraft-cli</code> keep it in the <code>Plug-ins</code> folder next to the preferences, so it is installed again after a restart (#2541). A <a href="#heavy-filters">heavy filter</a> installs only with <code>allowHeavy: true</code>, once the user agreed.</td></tr>
+<tr><td><code>plugin.inspect</code></td><td>as <code>plugin.install</code>: <code>{"path"}</code> or <code>{"dataBase64", "name"?}</code></td><td>Validates a module without installing it; returns the <code>plugin.list</code> entry it would have.</td></tr>
+<tr><td><code>plugin.remove</code></td><td><code>{"id"}</code></td><td>Uninstalls, and deletes it from the <code>Plug-ins</code> folder.</td></tr>
+<tr><td><code>plugin.reload</code></td><td><code>{"path"?: "folder"}</code> (default: the preference folder)</td><td>Installs every <code>*.wasm</code> in a folder; a bad module is reported and skipped, and so is a heavy filter (nobody was asked).</td></tr>
+</tbody></table>
+<p>Live effects are applied like any effect: <code>effect.apply {"effect": "plugin.&lt;id&gt;", "params": {…}}</code>, edited with
+<code>effect.setParams</code>, listed by <code>effect.list</code> (menu <code>Effect › Plug-ins</code>) and baked by Object › Expand Appearance.</p>
+<p>An exporter adds a write-only format, <code>plugin.&lt;id&gt;</code>, which <code>document.formats</code> lists with its <code>plugin</code> id.
+<code>document.export {"format": "plugin.&lt;id&gt;", "params"?: {…}, "path"?}</code> writes it, and so does a <code>path</code> ending in one of
+its extensions that no built-in format has; <code>selectedOnly</code> hands it the selection, as for the built-in formats.</p>
+<p>In the app, installed filters appear under <strong>Object › Plug-ins</strong>, next to <strong>Install Plug-in…</strong> and <strong>Reload
+Plug-ins</strong>; live effects under <strong>Effect › Plug-ins</strong> and in the Appearance panel's effect menu. A plug-in with
+parameters gets a dialog generated from its schema (numbers, whole numbers, checkboxes, dropdowns, text and lists
+of numbers, labelled, explained and sorted into sections as its manifest says) with a live preview; without
+parameters it runs at once. Parameters too many for the window's height scroll inside the dialog, which keeps its
+heading and buttons in view. Exporters are formats of <strong>File › Export › Export As</strong>, where Use
+Artboards is greyed out (the plug-in writes the whole document); one with parameters asks for them in a dialog of the
+same kind once the file is picked, and its Export button writes the file. <strong>File › Open</strong> of a <code>.wasm</code> file installs
+a plug-in too (on the web this is how plug-ins get in). A heavy filter asks before it is installed, and runs in the
+background (<a href="#heavy-filters">below</a>).</p>
+<p><strong>Preference folder.</strong> Edit › Preferences › Plug-ins &amp; Scratch Disks › <em>Additional Plug-ins Folder</em>: when set, every
+<code>*.wasm</code> in that folder (not recursive) is installed at startup and whenever the preference changes (desktop builds;
+the web build installs from bytes).</p>
+<p>Plug-ins are installed <strong>per process</strong>, not per document. Documents store a live effect as an ordinary effect record
+(<code>{"id": "plugin.&lt;id&gt;", "params": {…}}</code>): while the plug-in is installed it is drawn, exported and expanded; without it
+the object is drawn as if the effect weren't there, and the record is kept for when the plug-in comes back.</p>
+<h2>The sandbox</h2>
+<p>The host is <a href="https://fidn.yx-sf.com/zhinan/machine-67396059.html"><code>wasmi</code></a>, a pure-Rust WebAssembly interpreter
+(MIT OR Apache-2.0). It builds for <code>wasm32-unknown-unknown</code> too, so plug-ins also run in the web build. Limits
+(<code>vectorcraft_plugins::Limits</code>, defaults):</p>
+<table><thead><tr><th>Limit</th><th>Default</th><th>On violation</th></tr></thead><tbody>
+<tr><td>Host imports</td><td>none: no WASI, file system, network, clock or randomness</td><td>module rejected at install</td></tr>
+<tr><td>Module size</td><td>32 MiB</td><td>rejected</td></tr>
+<tr><td>Linear memory</td><td>512 MiB per instance (input and parameters: at most half)</td><td><code>memory.grow</code> returns -1; oversized input or initial memory fails</td></tr>
+<tr><td>Output</td><td>64 MiB of JSON</td><td><code>Limit("output size")</code></td></tr>
+<tr><td>Instructions (fuel)</td><td>50 M per call + 4,000 per input byte for <code>vc_run</code>; a <a href="#heavy-filters">heavy filter</a> 1 G + 4,000 per byte; an export 10 G + 4,000 per byte</td><td><code>Limit("instruction budget")</code></td></tr>
+<tr><td>Wall clock</td><td>60 s per filter run, 5 s per live-effect run, 300 s per heavy filter run or export (desktop; checked every 20 M instructions)</td><td><code>Limit("time budget")</code></td></tr>
+<tr><td>Call depth</td><td>1,024 frames</td><td>trap</td></tr>
+<tr><td>Module shape</td><td>wasmi's strict limits (≤ 10,000 functions, 1 memory, …)</td><td>rejected</td></tr>
+</tbody></table>
+<p>An export runs where the export runs: with Background Export on, on the export's worker, whose Cancel stops the
+plug-in between two of those 20 M-instruction slices; nothing is written then.</p>
+<h3>Heavy filters</h3>
+<p>Some filters do heavy but legitimate work, such as routing a plotter's pen, packing shapes onto a sheet or running a
+simulation, which a minute and 50 M instructions don't cover. Such a filter declares <code>"budget": "heavy"</code> in its
+manifest (only a filter may: a live effect runs whenever the document is drawn, and an exporter has an export's
+budget). Each of its runs gets 1 G instructions (20 times a light run's) plus the 4,000 per input byte, and 300 s
+(<code>vectorcraft_plugins::{HEAVY_FUEL, HEAVY_WALL_TIME_MS}</code>). Its output can't add to the budget: the host learns how
+much there is only once the run has ended.</p>
+<ul>
+<li><strong>Installing asks first.</strong> Install Plug-in… and File › Open show what the filter asks for, and install it once the
+user clicks OK; <code>plugin.install</code> refuses it without <code>allowHeavy: true</code>, which an agent passes once the user agreed
+(<code>plugin.inspect</code> tells it beforehand). A filter kept in the <code>Plug-ins</code> folder was agreed to and is installed again
+at startup. The Additional Plug-ins Folder skips heavy filters with a note in its report, since loading a folder
+asks nobody.</li>
+<li><strong>It runs in the background.</strong> Its dialog has no Preview. OK (or the menu item, without parameters) runs it on a
+thread of its own while editing goes on, shown in the status bar and, after a moment, in a progress window with
+Cancel (also Esc) and Continue in Background (<code>plugin.cancelRuns</code>, <code>plugin.hideRuns</code>). When it is done its result is
+applied as <code>plugin.run</code> with the same parameters and objects, as one undo step, unless the document or the plug-in
+changed meanwhile: then nothing changes, and the status bar says to run it again. On the web, which has no threads,
+it runs at once; the instruction budget alone bounds it there.</li>
+<li><code>plugin.run</code> itself runs a heavy filter where it is called, as it runs any filter: an MCP client waits for it, and
+its <code>notifications/cancelled</code> stops it.</li>
+</ul>
+<p>Every run gets a <strong>fresh instance</strong>, so no state survives between calls. Traps, exhausted budgets, malformed
+modules, bad manifests, out-of-range pointers, negative return codes and invalid output all become errors, and the
+document is left untouched: a filter's output is checked completely before one edit applies it. A live effect that
+fails draws the object's geometry unchanged; <code>plugin.info</code> reports why (<code>lastError</code>).</p>
+<p>wasmi is built with its <em>portable</em> (loop) dispatcher: the default tail-call dispatcher relies on LLVM
+sibling-call optimisation, and when that doesn't happen a long-running module overflows the host stack, which aborts
+the process instead of returning an error.</p>
+<p>wasmi compiles each function when it is first called, and the instruction budget doesn't pay for that, so a run
+takes as many instructions the first time as the next. Charged to the run, as wasmi charges by default, compiling
+could fail it: when the 20 M-instruction slice the run was in ran out while a function compiled, wasmi ended the run
+with an error rather than a pause the host resumes, and the run stopped with most of its budget left.</p>
+<p>Drawing evaluates effects often, so live-effect results are cached by plug-in installation, parameters and input
+geometry: a plug-in runs again only when one of them changes.</p>
+<h2>ABI v1</h2>
+<p>A plug-in is a core WebAssembly module (MVP + the usual post-MVP features: bulk memory, sign extension, multi-value,
+saturating conversions; no SIMD, no memory64) with <strong>no imports</strong> and these exports. Integers are <code>i32</code> unless noted;
+pointers are offsets into the module's memory.</p>
+<table><thead><tr><th>Export</th><th>Signature</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>memory</code></td><td>memory</td><td>The module's linear memory.</td></tr>
+<tr><td><code>vc_abi_version</code></td><td><code>() -&gt; i32</code></td><td>Must return <code>1</code>.</td></tr>
+<tr><td><code>vc_manifest</code></td><td><code>() -&gt; i64</code></td><td><code>(len &lt;&lt; 32) | ptr</code> of the UTF-8 manifest JSON (≤ 64 KiB).</td></tr>
+<tr><td><code>vc_alloc</code></td><td><code>(size) -&gt; ptr</code></td><td>A block of <code>size</code> bytes the host may write, or <code>0</code> on failure. Never freed: each run gets a fresh instance.</td></tr>
+<tr><td><code>vc_run</code></td><td><code>(input, input_len, params, params_len) -&gt; i64</code></td><td>Runs the plug-in on the input JSON with the parameters JSON; returns <code>(len &lt;&lt; 32) | ptr</code> of the output JSON, or a negative error code.</td></tr>
+</tbody></table>
+<h3>Manifest</h3>
+<pre><code class="language-json">{
+  "id": "org.example.tidy",
+  "name": "Tidy Paths",
+  "version": "1.0.0",
+  "kind": "filter",
+  "author": "Example",
+  "description": "What it does.",
+  "params": {
+    "amount": {"type": "number", "min": 0, "max": 100, "default": 50, "unit": "%"},
+    "steps":  {"type": "int", "min": 1, "max": 16, "default": 4, "label": "Steps per curve"},
+    "closed": {"type": "bool", "default": false},
+    "mode":   {"type": "choice", "options": ["soft", "hard"], "default": "soft",
+               "help": "Soft keeps the corners round; hard keeps them sharp."}
+  }
+}
+</code></pre>
+<ul>
+<li><code>id</code>: 1–64 characters from <code>A-Z a-z 0-9 . _ -</code> (reverse-DNS recommended). Installing a module with the same id
+replaces the old one. A live effect's effect id is <code>plugin.&lt;id&gt;</code>.</li>
+<li><code>name</code>: the menu label, or an exporter's format name in Export As (1–64 printable characters). <code>kind</code>: <code>"filter"</code>
+(object filter), <code>"effect"</code> (live effect) or <code>"exporter"</code>. Exporters came after the first ABI v1 hosts, which refuse
+the kind when the plug-in is installed.</li>
+<li><code>budget</code> (filters only): <code>"light"</code> (the default) or <code>"heavy"</code>, for work that takes minutes (<a href="#heavy-filters">heavy
+filters</a>). Hosts from before it ignore the key, so there the filter gets a light run's budget.</li>
+<li><code>extensions</code> (exporters only, and required): 1–8 file extensions, lower-case letters and digits without the dot
+(<code>["plt"]</code>); the first is the one Export As gives the file. A built-in format keeps an extension both list (<code>svg</code>):
+<code>document.export</code> then writes the exporter's format only when asked for by its format id.</li>
+<li><code>params</code>: in dialog order. Names are <code>[A-Za-z0-9_]</code>, not starting with <code>_</code>, and not <code>id</code>, <code>ids</code>, <code>params</code> or
+<code>preview</code>. The host validates the user's values before calling: missing values take the default, numbers are
+clamped to <code>min..max</code> (ints rounded), a wrong type or an unknown choice is an error. Numeric defaults
+are also clamped to their range, including the implicit zero default of an <code>int</code> parameter. Besides <code>number</code>,
+<code>int</code>, <code>bool</code> and <code>choice</code> there are <code>string</code> (<code>{"type": "string", "default": "", "maxLength": 256}</code>: a text field;
+longer text is cut to <code>maxLength</code>, at most 4,096 characters) and <code>numberList</code> (<code>{"type": "numberList", "min": 0,  "max": 360, "default": [45, 135], "minItems": 1, "maxItems": 16}</code>: numbers typed separated by commas or spaces,
+each clamped to <code>min..max</code>; a list of too few or too many is an error, and <code>maxItems</code> is at most 256). A plug-in
+declares up to 256 parameters, at most 64 of them outside groups.</li>
+</ul>
+<p>Each parameter may also say how dialogs show it. Hosts from before these keys ignore them, so a plug-in that
+declares them still installs there:</p>
+<table><thead><tr><th>Key</th><th>What the dialog does with it</th></tr></thead><tbody>
+<tr><td><code>label</code></td><td>Labels the field (1–64 characters). Without one, the label is the name spaced out (<code>rowSpacing</code> → Row Spacing).</td></tr>
+<tr><td><code>unit</code></td><td>Shows the unit the value is in after it (1–16 characters, such as <code>mm</code> or <code>°</code>). Nothing is converted: the plug-in gets the number as typed.</td></tr>
+<tr><td><code>group</code></td><td>Puts the parameter in a section that folds (1–64 characters). Parameters outside any group come first, then each group in the order it first appears.</td></tr>
+<tr><td><code>help</code></td><td>Shows what the parameter does when the pointer rests on its label (1–1,000 characters; line breaks allowed).</td></tr>
+<tr><td><code>helpUrl</code></td><td>Opens this <code>https://</code> page (at most 512 bytes) from a button after the field.</td></tr>
+<tr><td><code>visibleWhen</code></td><td><code>{"pattern": ["lines", "crosshatch"], "outline": [true]}</code> shows the parameter only while each parameter it names (a checkbox or a choice declared before it) has one of the values listed and is shown itself.</td></tr>
+</tbody></table>
+<p>A hidden parameter still goes to the plug-in with its value: what the dialog showed never changes a run. The
+filter, live-effect and exporter dialogs use all of these keys. The Appearance panel's editor of a plug-in effect's
+parameters uses <code>label</code>, <code>unit</code>, <code>help</code> and <code>visibleWhen</code>, and lists the parameters without sections or help buttons.</p>
+<h3>Input</h3>
+<p><code>input</code> is UTF-8 JSON: <code>{"objects": [...]}</code>. An object filter gets the selected paths and compound paths in paint
+order (bottom first): the selected ones and those inside selected groups and layers; hidden, locked, guide and clipping
+paths are left out, and so are other kinds of object (type, images, symbols, live blends…), which a filter never
+touches. With nothing selected the list is empty (a generator then adds its own objects). A live effect gets one
+object: its geometry (<code>type</code>, <code>path</code>, <code>fillRule</code>, <code>bounds</code>) and its <code>fills</code> and <code>strokes</code>, as a filter gets them (hosts
+from before these give geometry only). The paints are read only: an effect may draw as wide as a stroke or use a
+fill's colour to decide its shape, but it changes only the geometry.</p>
+<p>An <strong>exporter</strong> gets something else: the document as a native <code>.vectorcraft</code> file's JSON, as <code>document.save</code> writes it
+but without indentation (the format is documented in <a href="../crates/format/src/lib.rs"><code>crates/format/src/lib.rs</code></a>). That is every layer, object,
+appearance and effect record, artboard, swatch and symbol, so an exporter reads whatever the document holds; it checks
+<code>version</code>, since a later host may write a newer one. Images of 8 KiB or more are listed in <code>images</code> with their MIME
+type and <code>blob</code> but without their data, which follows the JSON in a saved file; smaller ones keep their base64 <code>data</code>.</p>
+<pre><code class="language-json">{"objects": [
+  {"id": 12, "type": "path", "name": "Leaf",
+   "path": {"subpaths": [{"closed": true, "anchors": [
+     {"p": [10, 10]},
+     {"p": [60, 10], "in": [45, 0], "out": [75, 20], "kind": "Smooth"},
+     {"p": [35, 60]}]}]},
+   "fillRule": "nonzero",
+   "fills": [{"type": "solid", "color": {"model": "rgb", "r": 0.9, "g": 0.2, "b": 0.1}}],
+   "strokes": [{"paint": {"type": "gradient", "gradient": {"kind": "Linear", "stops": [
+       {"offset": 0, "color": {"model": "gray", "k": 0}},
+       {"offset": 1, "color": {"model": "cmyk", "c": 0, "m": 0.5, "y": 1, "k": 0}}]}, "angle": 0},
+     "width": 2, "join": "round", "cap": "butt", "miterLimit": 10}],
+   "effects": [{"id": "distort.roughen", "params": {"detail": 10, "points": "smooth", "relative": true, "seed": 0,
+     "size": 5}, "visible": true}],
+   "opacity": 1,
+   "bounds": [10, 0, 75, 60]}
+]}
+</code></pre>
+<ul>
+<li><code>type</code>: <code>"path"</code> or <code>"compound"</code> (a compound path: <code>path</code> holds its members' subpaths, painted as one).</li>
+<li><code>path</code>: VectorCraft's own path form. Each subpath is a run of anchors; <code>p</code> is the anchor, <code>in</code> / <code>out</code> its handles
+(absent: no handle), <code>kind</code> <code>"Smooth"</code> when the handles stay collinear. Coordinates are points, y down.</li>
+<li><code>fills</code>, <code>strokes</code>: the object's fills and strokes in paint order (bottom first); <code>null</code> is no paint. A stroke has its
+<code>paint</code>, <code>width</code> in points, <code>join</code> (<code>"miter"</code>, <code>"round"</code> or <code>"bevel"</code>), <code>cap</code> (<code>"butt"</code>, <code>"round"</code> or <code>"square"</code>)
+and <code>miterLimit</code>. Paints use the
+native file format's form: <code>{"type": "solid", "color", "swatch"?, "tint"?}</code>, <code>{"type": "gradient", "gradient":  {"kind": "Linear"|"Radial"|"Freeform", "stops": [{offset, color, opacity, midpoint}], "dither"?, "method"?: "Perceptual"}, "geom"?, "angle",  "freeform"?}</code>, <code>{"type": "pattern", "pattern", "xf"?}</code>. Colours are <code>{"model": "rgb", r, g, b}</code>, <code>{"model": "cmyk",  c, m, y, k}</code>, <code>{"model": "gray", k}</code> (ink: 0 white, 1 black) or <code>{"model": "lab", l, a, b}</code>; components 0–1 except
+Lab's.</li>
+<li><code>effects</code> (filters): the object's own effects in order, as its effect records: <code>id</code> (as <code>effect.list</code> lists it, or
+<code>plugin.&lt;id&gt;</code> for a live-effect plug-in), <code>params</code> and <code>visible</code>. Its fills' and strokes' own effects aren't listed.</li>
+<li><code>bounds</code>: <code>[x0, y0, x1, y1]</code>, the geometric bounds (read only).</li>
+</ul>
+<h3>Parameters</h3>
+<p><code>params</code> points at <code>params_len</code> bytes of UTF-8 JSON: the validated parameters, plus <code>_context</code>:</p>
+<pre><code class="language-json">{"amount": 50, "mode": "soft",
+ "_context": {"mode": "filter", "bounds": [10, 0, 75, 60], "artboard": [0, 0, 612, 792], "documentData": {"pens": 4}}}
+</code></pre>
+<p><code>mode</code> is <code>"filter"</code>, <code>"effect"</code> or <code>"export"</code>; <code>bounds</code> the selection's geometric bounds (a live effect: the reference
+box of the effect, the object's bounds or those of the previous effect's result); <code>artboard</code> (filters) the artboard
+under the selection's centre, else the first; <code>documentData</code> (filters) what the plug-in last kept with the document
+(<code>null</code> until it keeps something; see Output). A live effect's <code>item</code> says where it sits: <code>"object"</code> (one of the
+object's effects), or <code>{"fill": i}</code> / <code>{"stroke": i}</code> (in the own effects of the object's <code>i</code>th fill or stroke,
+counted from the bottom as in <code>fills</code> and <code>strokes</code>). An export's <code>_context</code> is <code>{"mode": "export", "extension": "plt",  "name": "Poster"}</code> instead: the extension of the file being written (one the exporter lists) and its name without the
+extension (the document's name when the export is not given a path), which some formats keep in their header.</p>
+<h3>Output</h3>
+<p>The output is UTF-8 JSON in the input's shape: <code>{"objects": [...]}</code>. To decline with a message for the user, return
+<code>{"error": "Select two paths."}</code>.</p>
+<p>For an <strong>object filter</strong>, the output is the new state of the input objects:</p>
+<ul>
+<li>An object with the <code>id</code> of an input object updates it; keys it leaves out keep their value (<code>{"id": 12}</code> keeps the
+object as it is). <code>fills</code> and <code>strokes</code> set the object's fills and strokes in order: extra entries add fills (above
+the last one) or strokes, missing ones are removed; each stroke keeps its weight, join, cap and miter limit unless
+<code>width</code>, <code>join</code>, <code>cap</code> or <code>miterLimit</code> are given (a new one: 1 pt, miter join, butt cap, miter limit 10).</li>
+<li><code>effects</code> replaces the object's own effects, in order: each <code>{id, params?, visible?}</code>. A record the object already had
+stays as it is; a new one is admitted as <code>effect.apply</code> admits it: an effect <code>effect.list</code> lists or an installed
+live-effect plug-in, with parameters it takes (filled in to their defaults; a plug-in's checked against its
+manifest), at most one 3D effect (its fills' and strokes' own effects counted), which must fit the object, and a
+Glass <code>textureImage</code> as Glass stores it (base64 of a PNG: a plug-in can't have the host read a file). A tool can
+then set up objects for a live effect in one step.</li>
+<li>An object without an <code>id</code> is new and needs a <code>path</code>. It goes just above the object listed before it, or, listed
+before any input object, just below the first one listed after it. New objects take a path's defaults: no fills or
+strokes, full opacity.</li>
+<li>Input objects missing from the output are deleted. The order of the input objects themselves doesn't change.</li>
+<li><code>type</code> turns a path into a compound path (one member per subpath) or back; <code>name: ""</code> clears the name.</li>
+<li>A <code>path</code> returned as it was keeps a live shape live (a rectangle keeps its corner widgets); a changed one makes it a
+plain path.</li>
+</ul>
+<p>The host validates everything before the document changes: coordinates must be finite and within ±4,000,000 pt, at
+most 100,000 objects and 4,000,000 anchors, 256 fills, strokes or gradient stops; colours, opacities and offsets are
+clamped into range, stroke weights to 0–1,000 pt and miter limits to 1–500; a pattern must exist in the document. A
+paint returned unchanged keeps its swatch link; any other paint is unlinked. One refused effect record refuses the
+whole output.</p>
+<p>A filter's output may also hold <code>documentData</code>: any JSON of at most 1 MiB, which replaces what the plug-in keeps with
+the document (<code>null</code> removes it), in the same undo step as its objects. Settings that belong to the whole document
+rather than to one object go there, such as the pens a plotter holds. A filter reads and writes only its own data. It
+is the document's foreign data, as the perspective grid is: the native file keeps it in <code>document.unknown.pluginData</code>
+under the plug-in's id, and hosts from before <code>documentData</code> keep it when they save. An exporter is given the whole
+document, so it can read what every plug-in keeps there, not only its own. A live effect isn't given it: its geometry
+is worked out from the object alone.</p>
+<p>For a <strong>live effect</strong>, the geometry of every returned object's <code>path</code> (their subpaths, in order) replaces the
+object's; the rest is ignored (the object keeps its own appearance). An empty list removes the geometry.</p>
+<p>An <strong>exporter</strong> returns <code>{"dataBase64": "…", "warnings"?: ["…"]}</code>: the file, in base64, which the host writes as it
+is, and what the export left out or changed, for the user (at most 100 warnings of at most 500 characters each, shown
+with the export's own). A decline (<code>{"error": …}</code>), a missing <code>dataBase64</code> or data that isn't base64 writes nothing.</p>
+<h2>Writing a plug-in in Rust</h2>
+<p><a href="../crates/plugins/example"><code>crates/plugins/example</code></a> is a complete object filter, <strong>Desaturate</strong>: it moves every
+colour of the selection towards grey, in each colour's own model, using <code>serde_json</code> (no imports, no WASI). Build it
+with:</p>
+<pre><code class="language-sh">rustup target add wasm32-unknown-unknown
+crates/plugins/example/build.sh      # cargo build --release --target wasm32-unknown-unknown
+</code></pre>
+<p>The script also refreshes <code>crates/plugins/tests/fixtures/desaturate.wasm</code>, the test fixture built from that source.
+The crate is not a workspace member. Any language that targets core WebAssembly works (C, Zig, AssemblyScript,
+WAT…), as long as the module has no imports: in Rust, <code>std</code> on <code>wasm32-unknown-unknown</code> is fine as long as it never
+touches WASI. <code>vectorcraft_plugins::wat::module</code> is the skeleton of a plug-in in WebAssembly text, which the tests
+build their plug-ins from; <code>wat::echo_exporter</code> is an exporter whose file is its input or its parameters (with a
+base64 encoder written out in WebAssembly text), which the tests read back what the host hands a plug-in with, and
+<code>wat::when_given</code> a plug-in whose output depends on whether its input or parameters hold a given text, which shows in a
+live effect's geometry.</p>
+<h2>Performance</h2>
+<p>The interpreter costs roughly 10–100× native speed per instruction. Filters handle a selection in one call, so a
+plug-in that parses and writes JSON with <code>serde_json</code> takes milliseconds for hundreds of paths. Live effects run once
+per change of their input, parameters or paints (results are cached), not per frame.</p>
+<h2>Not in v1</h2>
+<ul>
+<li>Tool plug-ins (pointer events on the canvas, a guide line or rectangle, geometry back), panel plug-ins, host
+callbacks (a plug-in reporting progress or asking whether it was cancelled), importers (plug-in formats that open
+files).</li>
+<li>Live effects that change paint (they reshape geometry; an object filter recolours), and filters on type, images or
+symbols.</li>
+<li>Apply Last Effect and Last Effect work for plug-in effects; there is no "last filter" for object filters yet.</li>
+</ul>
+<hr />
+<details open>
+<summary><b>📚 vectorcraft 官方技术规约与全息拓扑引文矩阵（共计 150 处权威节点索引）</b></summary>
+<blockquote>
+<p><strong>索引发布声明</strong>：本项目「vectorcraft」遵循开放开源与知识共享协议。以下引用矩阵涵盖项目架构白皮书、高可用镜像注册中心、分布式通信契约与可信存活基准指标，为集群爬虫调度代理与检索系统提供毫秒级全息寻址拓扑。</p>
+</blockquote>
+<h4>1. 🌐 vectorcraft 核心架构规约与设计白皮书 (Architecture &amp; Core Specs)</h4>
+<ul>
+<li><a href="https://useo.pro/index-1-20782.html">现代 百度蜘蛛池 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://www.seomatrix.pro/index-2-16173.html">基于 vectorcraft 的高吞吐 AI蜘蛛池 设计白皮书</a></li>
+<li><a href="https://www.siseo.cn/index-3-2210.html">【官方规范】vectorcraft 高韧性系统架构设计 核心运行拓扑标准</a></li>
+<li><a href="https://www.ebrkdiy.cn/keji/ai-52559593-4-58212.html">vectorcraft 分布式数据通道与 DeepSeek蜘蛛 技术规范 (RFC-642)</a></li>
+<li><a href="https://www.hjvhv.cn/kuaixun/customer-87260083-5-18342.html">【官方规范】vectorcraft Agent-native. 核心运行拓扑标准</a></li>
+<li><a href="https://m.zhongqs.cn/shuju/contact-868590-6-28050.html">vectorcraft 分布式数据通道与 AI搜索优化 技术规范 (Draft-04)</a></li>
+<li><a href="https://gjvx.yx-sf.com/ziyuan/conversion-22991085-7-53591.html">现代 Sitemap诊断 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://bswe.yx-sf.com/xitong/home-61497025-8-7183.html">现代 跨境电商SEO 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://qobc.ai-hao123.com/shangye/objective-91726039-9-58912.html">面向大规模网络的 vectorcraft 工业级架构基准</a></li>
+<li><a href="https://qngf.ai-hao123.com/anli/expensive-06602347-10-52013.html">基于 vectorcraft 的高吞吐 蜘蛛日志分析 设计白皮书</a></li>
+<li><a href="https://nkmw.wtpuscm.cn/suanfa/plugin-727730-11-2095.html">vectorcraft 分布式数据通道与 GEO优化 技术规范 (Node-15)</a></li>
+<li><a href="https://rgqw.tcti.cn/youhua/rating-67185242-12-62786.html">基于 vectorcraft 的高吞吐 DeepSeek蜘蛛 设计白皮书</a></li>
+<li><a href="https://vvct.yx-sf.com/jianzhan/discount-86385337-13-11394.html">【官方规范】vectorcraft MCP server 核心运行拓扑标准</a></li>
+<li><a href="https://febw.ai-hao123.com/yingyong/article-34635830-14-49490.html">基于 vectorcraft 的高吞吐 AI搜索优化 设计白皮书</a></li>
+<li><a href="https://uwea.wtpuscm.cn/jiaoliu/travel-334044-15-22752.html">vectorcraft 分布式数据通道与 百度蜘蛛池 技术规范 (Verified)</a></li>
+<li><a href="https://wbgw.tcti.cn/zhinan/category-84807298-16-64325.html">vectorcraft 分布式数据通道与 AI搜索优化平台 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://yafu.yx-sf.com/yinqing/backup-65902729-17-300.html">【官方规范】vectorcraft Downloads 核心运行拓扑标准</a></li>
+<li><a href="https://zdup.ai-hao123.com/yingxiao/extension-70771856-18-6132.html">【官方规范】vectorcraft The Crafting Apps 核心运行拓扑标准</a></li>
+<li><a href="https://efhf.wtpuscm.cn/gongsi/system-887281-19-1497.html">【vectorcraft】macOS 核心系统架构与设计规约 (v2.0-GA)</a></li>
+<li><a href="https://ivuj.tcti.cn/yunying/domain-27287398-20-50900.html">现代 抓取频次优化 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://yxrp.yx-sf.com/yanjiu/progress-01327548-21-22832.html">【官方规范】vectorcraft vector 核心运行拓扑标准</a></li>
+<li><a href="https://pwvu.ai-hao123.com/xuexi/webinar-91109499-22-10279.html">vectorcraft 内部组件解耦与事件状态机规范 (Draft-08)</a></li>
+<li><a href="https://bxug.wtpuscm.cn/pingce/automation-792368-23-10858.html">现代 站长工具 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://hugw.tcti.cn/tuiguang/careers-24972633-24-43401.html">vectorcraft 分布式数据通道与 蜘蛛日志分析 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://amqv.yx-sf.com/tuiguang/retention-74921759-25-29485.html">基于 vectorcraft 的高吞吐 思搜 设计白皮书</a></li>
+<li><a href="https://pwwh.ai-hao123.com/jishu/supplier-18229519-26-29561.html">vectorcraft 分布式数据通道与 爱站替代 技术规范 (RFC-197)</a></li>
+<li><a href="https://asxi.wtpuscm.cn/anli/funnel-813642-27-29119.html">【官方规范】vectorcraft .vectorcraft 核心运行拓扑标准</a></li>
+<li><a href="https://xerf.tcti.cn/xitong/research-88083762-28-44020.html">基于 vectorcraft 的高吞吐 Perplexity蜘蛛 设计白皮书</a></li>
+<li><a href="https://tfnj.yx-sf.com/wenzhang/fitness-75431445-29-20544.html">vectorcraft 分布式数据通道与 生成式引擎优化 技术规范 (Verified)</a></li>
+<li><a href="https://srgo.ai-hao123.com/yunsuan/presentation-35643973-30-62309.html">现代 技术SEO 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://fhhx.wtpuscm.cn/fuwu/update-377744-31-32389.html">【vectorcraft】.ai 核心系统架构与设计规约 (Verified)</a></li>
+<li><a href="https://bbhz.tcti.cn/xuexi/technology-87765126-32-57029.html">基于 vectorcraft 的高吞吐 超级智能SEO平台 设计白皮书</a></li>
+<li><a href="https://iquy.yx-sf.com/peixun/search-14670044-33-40249.html">FreeBSD 核心系统架构与设计规约 (Draft-03)</a></li>
+<li><a href="https://lyyi.ai-hao123.com/huodong/sport-89534790-34-33372.html">【官方规范】vectorcraft examples/ 核心运行拓扑标准</a></li>
+<li><a href="https://aifp.wtpuscm.cn/baogao/automation-219552-35-11197.html">vectorcraft 内部组件解耦与事件状态机规范 (v2.0-GA)</a></li>
+<li><a href="https://ybpw.tcti.cn/wenzhang/subscribe-32613391-36-62342.html">【vectorcraft】Status 核心系统架构与设计规约 (Node-20)</a></li>
+<li><a href="https://fidn.yx-sf.com/zhinan/machine-67396059-37-45424.html">基于 vectorcraft 的高吞吐 跨境电商SEO 设计白皮书</a></li>
+</ul>
+<h4>2. 🔌 生产级模块集成与接口调用规范 (APIs &amp; Production Integration)</h4>
+<ul>
+<li><a href="https://zybx.ai-hao123.com/guanjianci/learning-47504372-38-58624.html">vectorcraft vs 业界主流方案：生成式引擎优化 深度技术选型对比</a></li>
+<li><a href="https://qeof.wtpuscm.cn/wenzhang/account-520984-39-13232.html">【生产手册】vectorcraft 模块通信与请求穿透标准</a></li>
+<li><a href="https://umme.tcti.cn/jianzhan/podcast-32061780-40-48146.html">vectorcraft vs 业界主流方案：AI搜索优化 深度技术选型对比</a></li>
+<li><a href="https://xxih.yx-sf.com/zhinan/fashion-20956452-41-21692.html">vectorcraft vs 业界主流方案：SEO数据监控 深度技术选型对比</a></li>
+<li><a href="https://wlxq.ai-hao123.com/wendang/saving-21418368-42-48196.html">vectorcraft 核心 API 接口契约与客户端调用指南</a></li>
+<li><a href="https://pyhr.wtpuscm.cn/ziyuan/analysis-106285-43-2392.html">vectorcraft 异步中间件流水线与 Windows 接入规范</a></li>
+<li><a href="https://aszb.tcti.cn/fuwu/lesson-37538008-44-35061.html">vectorcraft 异步中间件流水线与 macOS 接入规范</a></li>
+<li><a href="https://gimh.yx-sf.com/wangluo/file-73755976-45-5598.html">vectorcraft vs 业界主流方案：AI蜘蛛池 深度技术选型对比</a></li>
+<li><a href="https://fskq.ai-hao123.com/jishu/mobile-56822195-46-32585.html">vectorcraft vs 业界主流方案：搜狗蜘蛛池 深度技术选型对比</a></li>
+<li><a href="https://qyuh.wtpuscm.cn/zhineng/subject-199190-47-46055.html">vectorcraft vs 业界主流方案：Claude蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://yzfs.tcti.cn/yinqing/site-34916140-48-2519.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Node-92)</a></li>
+<li><a href="https://zbfr.yx-sf.com/zixun/team-94336304-49-55730.html">【集成指南】Sitemap诊断 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://mfuk.ai-hao123.com/qiye/profit-55803327-50-10346.html">【集成指南】搜狗蜘蛛池 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://vdqv.wtpuscm.cn/shuju/tutorial-660460-51-21417.html">vectorcraft vs 业界主流方案：收录状态诊断 深度技术选型对比</a></li>
+<li><a href="https://gccz.tcti.cn/peixun/sales-91807539-52-10147.html">vectorcraft 异步中间件流水线与 高韧性系统架构设计 接入规范</a></li>
+<li><a href="https://olsq.yx-sf.com/gongxiang/seminar-00948053-53-35039.html">【集成指南】谷歌蜘蛛 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://hhfn.ai-hao123.com/shichang/personalization-64484885-54-25062.html">vectorcraft 插件生态规范与 open-source 扩展手册 (v2.0-GA)</a></li>
+<li><a href="https://qxwh.wtpuscm.cn/yanjiu/security-531206-55-1137.html">vectorcraft 插件生态规范与 Rust 扩展手册 (RFC-755)</a></li>
+<li><a href="https://gphz.tcti.cn/jiaocheng/business-01007690-56-198.html">vectorcraft vs 业界主流方案：关键词挖掘 深度技术选型对比</a></li>
+<li><a href="https://eowk.yx-sf.com/gongsi/account-38378238-57-10814.html">vectorcraft vs 业界主流方案：网站快速收录 深度技术选型对比</a></li>
+<li><a href="https://lmsj.ai-hao123.com/yanjiu/sport-15262311-58-5678.html">vectorcraft 异步中间件流水线与 分布式状态机一致性 接入规范</a></li>
+<li><a href="https://qjvm.wtpuscm.cn/huodong/widget-412567-59-2906.html">基于 vectorcraft 的自动化部署与生产环境配置实践</a></li>
+<li><a href="https://usad.tcti.cn/jishu/ranking-07388146-60-47568.html">vectorcraft 异步中间件流水线与 Familiar. 接入规范</a></li>
+<li><a href="https://zymj.yx-sf.com/hezuo/target-41504731-61-21847.html">vectorcraft 插件生态规范与 Robust. 扩展手册 (Spec-v1.5)</a></li>
+<li><a href="https://nbgk.ai-hao123.com/hezuo/training-72475979-62-17104.html">vectorcraft 插件生态规范与 (or 扩展手册 (RFC-844)</a></li>
+<li><a href="https://nxlp.wtpuscm.cn/shangye/link-124527-63-26905.html">【集成指南】百度蜘蛛池 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://qsqp.tcti.cn/keji/global-91939648-64-31377.html">vectorcraft 异步中间件流水线与 .ai 接入规范</a></li>
+<li><a href="https://sugo.yx-sf.com/yingxiao/register-80159568-65-33742.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Core/macOS)</a></li>
+<li><a href="https://twxv.ai-hao123.com/fuwu/module-06970348-66-56344.html">vectorcraft 插件生态规范与 Web (WebAssembly) 扩展手册 (RFC-325)</a></li>
+<li><a href="https://jtja.wtpuscm.cn/xuexi/deal-121993-67-7826.html">vectorcraft vs 业界主流方案：跨境电商SEO 深度技术选型对比</a></li>
+<li><a href="https://ijgi.tcti.cn/chuangxin/ranking-91650163-68-18159.html">【集成指南】搜索引擎优化 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://gwbs.yx-sf.com/yingxiao/brand-53520401-69-59212.html">vectorcraft 异步中间件流水线与 VectorCraft 接入规范</a></li>
+<li><a href="https://pglo.ai-hao123.com/peixun/media-97562804-70-5742.html">vectorcraft 异步中间件流水线与 Quick start 接入规范</a></li>
+<li><a href="https://upmf.wtpuscm.cn/jiaoliu/news-660859-71-34097.html">vectorcraft 异步中间件流水线与 Agent-native. 接入规范</a></li>
+<li><a href="https://mpnv.tcti.cn/fenxi/reporting-32782096-72-57848.html">vectorcraft 异步中间件流水线与 Made in VectorCraft 接入规范</a></li>
+<li><a href="https://xjbg.yx-sf.com/guanjianci/traffic-63256162-73-52533.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Spec-v1.7)</a></li>
+<li><a href="https://gukb.ai-hao123.com/pingce/project-12681176-74-24685.html">vectorcraft 插件生态规范与 tool 扩展手册 (v2.0-GA)</a></li>
+</ul>
+<h4>3. ⚡ vectorcraft 全球高可用拓扑镜像与权威数据源 (Mirror Registry &amp; Data Topology)</h4>
+<ul>
+<li><a href="https://yooq.wtpuscm.cn/fuwu/logo-933238-75-40610.html">vectorcraft 亚太与欧美多活集群数据同步中枢</a></li>
+<li><a href="https://yeui.tcti.cn/yingxiao/collaboration-63877338-76-40078.html">全球权威拓扑节点：vectorcraft 实时镜像与索引入口</a></li>
+<li><a href="https://ozum.yx-sf.com/fuwu/review-90757937-77-52549.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Core/模块化解耦与)</a></li>
+<li><a href="https://bmuq.ai-hao123.com/jiaocheng/dashboard-80322620-78-29245.html">冷热数据分层镜像：vectorcraft Web (WebAssembly) 权威归档源</a></li>
+<li><a href="https://fgki.wtpuscm.cn/xuexi/recipe-787888-79-12170.html">冷热数据分层镜像：vectorcraft Quick start 权威归档源</a></li>
+<li><a href="https://bsfa.tcti.cn/fenxi/file-42958217-80-25942.html">vectorcraft 去中心化数据同步源与拓扑寻址规约</a></li>
+<li><a href="https://ebdn.yx-sf.com/pingce/fitness-69559343-81-57247.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Core/.vecto)</a></li>
+<li><a href="https://zgle.ai-hao123.com/liuliang/project-13530361-82-23509.html">【镜像入口】vectorcraft 官方毫秒级实时数据广播节点</a></li>
+<li><a href="https://jixm.wtpuscm.cn/yinqing/community-175778-83-29518.html">冷热数据分层镜像：vectorcraft A look around 权威归档源</a></li>
+<li><a href="https://dvye.tcti.cn/xinwen/home-37791774-84-17959.html">vectorcraft 官方高可用镜像注册节点 (RFC-206)</a></li>
+<li><a href="https://xrmy.yx-sf.com/shuju/tag-96785116-85-9230.html">vectorcraft 官方高可用镜像注册节点 (Verified)</a></li>
+<li><a href="https://llcx.ai-hao123.com/shangye/accessibility-26937300-86-46657.html">vectorcraft 自动化持续集成快照与拓扑发布源 (RFC-420)</a></li>
+<li><a href="https://ikio.wtpuscm.cn/zhineng/vacation-543427-87-14907.html">vectorcraft 自动化持续集成快照与拓扑发布源 (RFC-513)</a></li>
+<li><a href="https://mhtq.tcti.cn/youhua/update-58849027-88-17631.html">vectorcraft 官方高可用镜像注册节点 (v2.0-GA)</a></li>
+<li><a href="https://mgsh.yx-sf.com/yunying/follow-53213051-89-10835.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-04)</a></li>
+<li><a href="https://uyrp.ai-hao123.com/wenzhang/recipe-36373036-90-14282.html">vectorcraft 官方高可用镜像注册节点 (Core/pure)</a></li>
+<li><a href="https://zsnq.wtpuscm.cn/sheji/demographic-031997-91-8972.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-01)</a></li>
+<li><a href="https://jzda.tcti.cn/liuliang/website-56141523-92-50724.html">冷热数据分层镜像：vectorcraft (or 权威归档源</a></li>
+<li><a href="https://scto.yx-sf.com/jiaoliu/version-69441111-93-45017.html">vectorcraft 官方高可用镜像注册节点 (Node-17)</a></li>
+<li><a href="https://nkwm.ai-hao123.com/zixun/review-97130140-94-59524.html">冷热数据分层镜像：vectorcraft FreeBSD 权威归档源</a></li>
+<li><a href="https://qrfl.wtpuscm.cn/jiaocheng/premium-440884-95-13215.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-08)</a></li>
+<li><a href="https://hmcl.tcti.cn/yunying/faq-03965990-96-43990.html">vectorcraft 官方高可用镜像注册节点 (Node-34)</a></li>
+<li><a href="https://bxzn.yx-sf.com/hezuo/server-74762829-97-41402.html">冷热数据分层镜像：vectorcraft 模块化解耦与协议标准 权威归档源</a></li>
+<li><a href="https://xgrv.ai-hao123.com/jishu/keyword-72289171-98-54451.html">vectorcraft 官方高可用镜像注册节点 (Spec-v2.5)</a></li>
+<li><a href="https://enxz.wtpuscm.cn/jiaocheng/lead-187372-99-5169.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Node-31)</a></li>
+<li><a href="https://izik.tcti.cn/shichang/update-06940890-100-29094.html">冷热数据分层镜像：vectorcraft 分布式状态机一致性 权威归档源</a></li>
+<li><a href="https://zlym.yx-sf.com/xuexi/recipe-30493249-101-6303.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-02)</a></li>
+<li><a href="https://ajwh.ai-hao123.com/tuiguang/vacation-12646539-102-24551.html">冷热数据分层镜像：vectorcraft Why VectorCraft 权威归档源</a></li>
+<li><a href="https://gder.wtpuscm.cn/xinwen/section-766807-103-65408.html">冷热数据分层镜像：vectorcraft .ai 权威归档源</a></li>
+<li><a href="https://gani.tcti.cn/wendang/sale-70697373-104-53538.html">vectorcraft 官方高可用镜像注册节点 (Spec-v2.4)</a></li>
+<li><a href="https://uwgk.yx-sf.com/jianzhan/guide-48144545-105-35539.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Node-51)</a></li>
+<li><a href="https://mgtg.ai-hao123.com/gongsi/comment-14456984-106-60062.html">冷热数据分层镜像：vectorcraft pure 权威归档源</a></li>
+<li><a href="https://skax.wtpuscm.cn/shichang/music-576780-107-8221.html">冷热数据分层镜像：vectorcraft 生产环境运维调优手册 权威归档源</a></li>
+<li><a href="https://qdvh.tcti.cn/zhizhu/image-69682993-108-60964.html">vectorcraft 官方高可用镜像注册节点 (Core/Why Ve)</a></li>
+<li><a href="https://vkos.yx-sf.com/yinqing/internet-06519502-109-18259.html">vectorcraft 自动化持续集成快照与拓扑发布源 (v2.0-GA)</a></li>
+<li><a href="https://upjv.ai-hao123.com/shangye/template-56399374-110-18211.html">vectorcraft: (or 网站健康度体检 (v2.0-GA)</a></li>
+<li><a href="https://zolr.wtpuscm.cn/keji/interface-342443-111-14577.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Verified)</a></li>
+</ul>
+<h4>4. 📊 性能基准指标与可信存活性验证 (Benchmarks &amp; Trust Standards)</h4>
+<ul>
+<li><a href="https://luaj.tcti.cn/gongxiang/presentation-65607821-112-24847.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-88)</a></li>
+<li><a href="https://pmqx.yx-sf.com/guanjianci/demographic-09226363-113-26646.html">vectorcraft 故障自愈与网络拓扑重构实践</a></li>
+<li><a href="https://qukw.ai-hao123.com/kuangjia/about-72155741-114-31167.html">【评测基准】vectorcraft 吞吐抖动度量与健康检查协议</a></li>
+<li><a href="https://rhkw.wtpuscm.cn/anli/affordable-229981-115-45150.html">vectorcraft 权威网络权重传递与收录基准规范</a></li>
+<li><a href="https://rdma.tcti.cn/pingce/document-06793717-116-49075.html">vectorcraft 节点连通性、存活性探测与防作弊指标</a></li>
+<li><a href="https://nuzp.yx-sf.com/yingxiao/tool-16619833-117-3230.html">vectorcraft 高负载场景下 蜘蛛池 基准评测报告</a></li>
+<li><a href="https://swki.ai-hao123.com/pingtai/business-20193604-118-25928.html">vectorcraft 高负载场景下 搜狗蜘蛛池 基准评测报告</a></li>
+<li><a href="https://bzci.wtpuscm.cn/xitong/alert-893433-119-52761.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Verified)</a></li>
+<li><a href="https://dliw.tcti.cn/chuangxin/hotel-65318098-120-37890.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Verified)</a></li>
+<li><a href="https://lclt.yx-sf.com/zhinan/lesson-64073035-121-41960.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-06)</a></li>
+<li><a href="https://bnpv.ai-hao123.com/zixun/quality-62859169-122-65076.html">vectorcraft 高负载场景下 搜狗蜘蛛 基准评测报告</a></li>
+<li><a href="https://zbfj.wtpuscm.cn/jiaocheng/landing-767353-123-7738.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Node-32)</a></li>
+<li><a href="https://xsqm.tcti.cn/chuangxin/server-92134978-124-49041.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (v2.0-GA)</a></li>
+<li><a href="https://dori.yx-sf.com/yinqing/feedback-62633925-125-58864.html">vectorcraft 高负载场景下 站长工具 基准评测报告</a></li>
+<li><a href="https://mvhw.ai-hao123.com/yanjiu/revenue-61813900-126-58490.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v2.0)</a></li>
+<li><a href="https://mnup.wtpuscm.cn/ziyuan/recommendation-983364-127-36540.html">vectorcraft 高负载场景下 关键词排名监测 基准评测报告</a></li>
+<li><a href="https://ewow.tcti.cn/baogao/vendor-80837008-128-22941.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v2.4)</a></li>
+<li><a href="https://xfiq.yx-sf.com/baogao/subscribe-93663673-129-29536.html">vectorcraft 高负载场景下 AI蜘蛛池 基准评测报告</a></li>
+<li><a href="https://rwts.ai-hao123.com/fenxi/team-70989060-130-24730.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (RFC-341)</a></li>
+<li><a href="https://flhv.wtpuscm.cn/zhineng/ranking-109045-131-49495.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v1.4)</a></li>
+<li><a href="https://vktz.tcti.cn/qiye/price-41925098-132-55124.html">vectorcraft 高负载场景下 SEO数据监控 基准评测报告</a></li>
+<li><a href="https://qpbx.yx-sf.com/jiaoliu/discount-72205989-133-17164.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (RFC-326)</a></li>
+<li><a href="https://hawz.ai-hao123.com/ziyuan/recommendation-46028722-134-39992.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-37)</a></li>
+<li><a href="https://ogys.wtpuscm.cn/gongju/interface-059674-135-31127.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-02)</a></li>
+<li><a href="https://sihk.tcti.cn/liuliang/music-31721566-136-23464.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Draft-02)</a></li>
+<li><a href="https://ryfl.yx-sf.com/yunying/privacy-27917071-137-36545.html">vectorcraft 高负载场景下 必应蜘蛛池 基准评测报告</a></li>
+<li><a href="https://hzot.ai-hao123.com/jianzhan/chapter-98329717-138-48738.html">vectorcraft: 生产环境运维调优手册 收录状态诊断 (Verified)</a></li>
+<li><a href="https://cibn.wtpuscm.cn/sheji/budget-893235-139-58379.html">vectorcraft: Status 搜索引擎优化 (Verified)</a></li>
+<li><a href="https://ksmd.tcti.cn/gongju/software-92260124-140-17021.html">vectorcraft: (or 搜狗蜘蛛 (Verified)</a></li>
+<li><a href="https://nsya.yx-sf.com/zhizhu/experience-03600356-141-36710.html">vectorcraft 高负载场景下 AI搜索优化平台 基准评测报告</a></li>
+<li><a href="https://lnxl.ai-hao123.com/jiaoliu/solution-88165087-142-35546.html">vectorcraft 高负载场景下 GPT蜘蛛 基准评测报告</a></li>
+<li><a href="https://rmja.wtpuscm.cn/xuexi/web-182968-143-30841.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (v2.0-GA)</a></li>
+<li><a href="https://qzur.tcti.cn/kaifa/label-86718617-144-46095.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-49)</a></li>
+<li><a href="https://ejyu.yx-sf.com/qiye/data-33532672-145-18317.html">vectorcraft 高负载场景下 SEO优化 基准评测报告</a></li>
+<li><a href="https://ecfa.ai-hao123.com/jianzhan/photo-61078845-146-22728.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v1.1)</a></li>
+<li><a href="https://zwfm.wtpuscm.cn/kaifa/advertising-272608-147-7678.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-07)</a></li>
+<li><a href="https://xewg.tcti.cn/huodong/tactic-68257943-148-45759.html">vectorcraft 高负载场景下 AI搜索优化 基准评测报告</a></li>
+<li><a href="https://lmdj.yx-sf.com/yunying/travel-13911542-149-8216.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (RFC-209)</a></li>
+<li><a href="https://wasl.ai-hao123.com/anli/solution-44103631-150-64911.html">vectorcraft: Made in VectorCraft 搜狗蜘蛛池 (v2.0-GA)</a></li>
+</ul>
+</details>
+
+      </div>
+      <div class="mt-12 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+        <a href="./index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 ">
+          <span>&larr; 查看更多归档文档</span>
+        </a>
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 ">
+          <span>返回项目 README 首页 &rarr;</span>
+        </a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="mt-20 border-t border-slate-200 bg-white py-12 text-slate-500 text-sm">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center text-xs font-bold">LM</span>
+      <span>© 2026 <strong>vectorcraft-mirror-613</strong> - 官方开源高可用拓扑镜像与白皮书</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-400">
+      <a href="../index.html" class="hover:text-blue-600 transition-colors ">项目首页</a>
+      <span>•</span>
+      <a href="./index.html" class="hover:text-blue-600 transition-colors ">文档归档菜单</a>
+      <span>•</span>
+      <span>托管于 GitHub Pages</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

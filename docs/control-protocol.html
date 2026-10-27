@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control protocol - vectorcraft-mirror-613 文档归档</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      :root {
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.68;
+        color: #1e293b;
+      }
+      .markdown-body {
+        color: #1e293b;
+      }
+      .markdown-body h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid #e2e8f0;
+        color: #0f172a;
+        line-height: 1.25;
+      }
+      .markdown-body h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+      }
+      .markdown-body h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.3rem;
+        margin-bottom: 0.6rem;
+        color: #334155;
+      }
+      .markdown-body p {
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+        line-height: 1.7;
+      }
+      .markdown-body a {
+        color: #2563eb;
+        text-decoration: none;
+        border-bottom: 1px dashed #93c5fd;
+        transition: all 0.2s ease;
+      }
+      .markdown-body a:hover {
+        color: #1d4ed8;
+        border-bottom: 1px solid #1d4ed8;
+        background-color: #eff6ff;
+        border-radius: 2px;
+      }
+      .markdown-body ul, .markdown-body ol {
+        padding-left: 1.5rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.6rem;
+      }
+      .markdown-body ul {
+        list-style-type: disc;
+      }
+      .markdown-body ol {
+        list-style-type: decimal;
+      }
+      .markdown-body li {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+      .markdown-body pre {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        padding: 1rem 1.2rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .markdown-body code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875em;
+        padding: 0.15rem 0.35rem;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        border-radius: 0.35rem;
+        border: 1px solid #e2e8f0;
+      }
+      .markdown-body pre code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+        color: inherit;
+      }
+      .markdown-body blockquote {
+        margin: 1rem 0;
+        padding: 0.75rem 1.25rem;
+        background-color: #f8fafc;
+        border-left: 4px solid #3b82f6;
+        border-radius: 0 0.5rem 0.5rem 0;
+        color: #475569;
+      }
+      .markdown-body table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+        display: block;
+        overflow-x: auto;
+      }
+      .markdown-body th, .markdown-body td {
+        border: 1px solid #cbd5e1;
+        padding: 0.6rem 1rem;
+        text-align: left;
+      }
+      .markdown-body th {
+        background-color: #f1f5f9;
+        font-weight: 600;
+      }
+      .markdown-body tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+      .markdown-body hr {
+        height: 1px;
+        border: none;
+        background-color: #e2e8f0;
+        margin: 2rem 0;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="../index.html" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform ">LM</span>
+        <span class="font-bold text-slate-900 tracking-tight text-lg group-hover:text-blue-600 transition-colors ">vectorcraft-mirror-613</span>
+      </a>
+      <span class="hidden md:inline-block text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono ">Pages Docs</span>
+    </div>
+    <div class="flex items-center gap-1 sm:gap-2 text-sm">
+      <a href="../index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-slate-600 hover:text-blue-600 hover:bg-slate-50 font-medium ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>首页 (README)</span>
+      </a>
+      <a href="./index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-blue-600 bg-blue-50 font-semibold ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span>文档归档 (Docs)</span>
+        <span class="inline-block w-2 h-2 rounded-full bg-blue-600"></span>
+      </a>
+      <div class="h-4 w-px bg-slate-200 mx-1"></div>
+      <a href="https://github.com/shijiuwei/vectorcraft-mirror-613" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span class="hidden sm:inline">GitHub</span>
+      </a>
+      <a href="https://github.com/shijiuwei/vectorcraft-mirror-613/wiki" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="hidden sm:inline">Wiki</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <!-- 面包屑与顶部导航 -->
+  <header class="bg-white border-b border-slate-200 py-6 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-2 font-medium">
+        <a href="../index.html" class="hover:text-blue-600 transition-colors ">首页</a>
+        <span>/</span>
+        <a href="./index.html" class="hover:text-blue-600 transition-colors ">文档归档菜单</a>
+        <span>/</span>
+        <span class="text-slate-800 font-semibold">技术文档</span>
+      </nav>
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Control protocol</h1>
+        <a href="./index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors ">
+          <span>&larr; 返回文档归档菜单</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体正文区域 -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
+    <article class="bg-white p-6 sm:p-12 rounded-2xl shadow-sm border border-slate-200">
+      <div class="markdown-body">
+        <h1>Control protocol</h1>
+<blockquote>
+<p><strong>Last updated:</strong> 2026-10-25 · <strong>Change:</strong> brush library panels (<code>window.brushLibrary</code>, <code>window.brushLibrary.other</code>, <code>ui.saveBrushLibrary</code>); previously: Transform Each opens on the values it was last confirmed with; its Copy button confirms with <code>copy: true</code> (#1732); previously: panel docking on craft-ui's layout: <code>ui.docking</code>, the parameters of <code>window.panel.float</code> and <code>window.panel.dock</code>; previously: <code>ui.screenshot</code>'s 64 MiB inline-PNG cap and its path-plus-data downgrade; symbol library panels (<code>window.symbolLibrary</code>, <code>window.symbolLibrary.other</code>, <code>ui.saveSymbolLibrary</code>); synthetic input budgets (#1709); bounded transport waits (#1726).</p>
+</blockquote>
+<p><code>vectorcraft --control &lt;port&gt;</code> listens on <code>127.0.0.1:&lt;port&gt;</code> (loopback only). The port must be a number
+from 1 to 65535 (<code>--control=&lt;port&gt;</code> works too), given once; otherwise the app prints an error and exits
+before it starts. One JSON request per line:
+<code>{"id": 1, "method": "ui.inspect", "params": {}}</code> → <code>{"id": 1, "ok": true, "result": {...}}</code> or <code>{"id":1,"ok":false,"error":"..."}</code>.</p>
+<p>Set <code>VECTORCRAFT_CONFIG_DIR</code> to a dedicated directory for an isolated native test profile. Preferences,
+logs, recovery and user libraries then use that root, without importing the legacy DrawCraft profile.
+An unset override preserves the usual platform paths and legacy migration; an explicitly empty override
+disables those paths. <code>VECTORCRAFT_NO_PREFS</code> continues to disable preference reads and writes.
+Without the override, a <code>portable.txt</code> or <code>VectorCraft.portable</code> file beside the executable (as in the
+Windows portable zip) puts that root in <code>VectorCraftData</code> next to the executable; on macOS the marker
+and the folder sit next to <code>VectorCraft.app</code>, for an AppImage next to the <code>.AppImage</code> file, and a
+Flatpak install has neither. <code>VECTORCRAFT_NO_PREFS</code> never looks for the marker or creates the folder.</p>
+<p><strong>Only requests are read.</strong> Every line must be a JSON object with a string <code>method</code> (<code>id</code> and <code>params</code>
+are optional; blank lines are skipped). Anything else gets one error reply
+(<code>{"ok": false, "error": "… closing the connection"}</code>) and the server <strong>closes the connection</strong>, so
+nothing sent after it on that connection runs. That covers text that isn't JSON, a JSON array or number,
+an object without <code>method</code>, invalid UTF-8, and a line longer than 4 MiB. An HTTP request (for example a
+web page's cross-origin <code>fetch</code> to <code>127.0.0.1:&lt;port&gt;</code>) therefore can't smuggle a command in its body:
+its request line is rejected first. At most 16 connections are served at once; further ones get an error
+line and are closed. Clients that get an error reply should reconnect. The port has no authentication,
+so only enable it while you use it. Idle clients have 5 minutes to start their next line; once the
+first byte arrives, the complete line must arrive within an absolute 30 seconds (trickled bytes do not
+renew it). A reply has 60 seconds to be written. Expiration closes the connection and returns its slot
+(an idle connection is closed without a line, so nothing waits where the next reply would be; a line
+that stalls gets the usual error line first);
+persistent clients can send further requests within these bounds, or reconnect after idle expiration.
+These transport budgets are separate from the existing 60-second command-processing wait.
+Transport: <code>apps/vectorcraft/src/control_server.rs</code>.</p>
+<h2>Synthetic input budgets</h2>
+<p><code>ui.drag</code> accepts at most <strong>256</strong> <code>steps</code>; <code>ui.click</code> and <code>ui.drag</code> accept at most <strong>16</strong> <code>count</code>.
+They must be non-negative JSON integers. Omitted values keep their defaults (8 steps, one click);
+explicit zero still acts as one, as before. Oversized or malformed values return an error before
+any move, press or release is queued.</p>
+<p>All synthetic methods (<code>ui.key</code>, <code>ui.text</code>, <code>ui.move</code>, <code>ui.click</code>, <code>ui.drag</code>, <code>ui.wheel</code>) share a
+<strong>1,024-event</strong> pending-queue limit. The whole request must fit; rejection preserves existing input
+and does not append a partial gesture. Clients can retry once earlier input has drained. At most
+<strong>64 control requests</strong> run per frame; later requests remain on the channel and another frame is
+scheduled. These limits cover synthetic input admission, separately from socket transport and
+command-processing timeouts.</p>
+<p>A request the app hasn't answered after <strong>60 s</strong> gets <code>{"ok": false, "error": "timeout: …"}</code>. If the
+app had not started it (it was busy, or its window wasn't being drawn), the request is withdrawn
+and never runs, and the error says "will not run": retrying is safe. If the app was already
+running it, the error says "still running": it may yet complete, so check the document before
+retrying. On macOS the app keeps itself out of App Nap while the control channel is on, so it keeps
+answering with its window hidden, minimized or covered, or with the screen locked.</p>
+<h2>Confining file access</h2>
+<pre><code class="language-sh">vectorcraft --control 7979 --automation-read-root /work/project --automation-write-root /work/project/out
+</code></pre>
+<p><code>--automation-read-root &lt;dir&gt;</code> and <code>--automation-write-root &lt;dir&gt;</code> (or <code>VECTORCRAFT_AUTOMATION_READ_ROOT</code> /
+<code>VECTORCRAFT_AUTOMATION_WRITE_ROOT</code>; <code>--flag=&lt;dir&gt;</code> works too) confine what the control channel reads and
+writes, with the same flags as <code>vectorcraft-cli mcp</code> and the other Craft apps. Every path a request reads
+(open, place, relink, library and profile loads, plug-ins…) must lie inside a read root, every path it
+writes (save, export, package, captures, library saves…) inside a write root; anything else is an
+ordinary error reply. Paths are made absolute against the app's working directory, links are followed
+(for a file that doesn't exist yet, its folder's), and the comparison is by whole folder names (<code>/work2</code> is
+not inside <code>/work</code>), ignoring case on Windows; <code>..</code> below a folder that doesn't exist, a link that leads
+nowhere and Windows device names are refused. A root left out grants none of its access. The roots must be
+existing folders, or the app doesn't start; without <code>--control</code> they are ignored. See <code>docs/mcp.md</code>
+› Confining file access for the details.</p>
+<p>Each root flag may be given more than once, a path inside any of its folders being allowed (#3546); the
+command line's folders of a kind replace its environment default. Missing or empty values and another
+option used as a value stop the desktop before it starts any services, even without <code>--control</code>. For a folder name starting with <code>-</code>, use <code>--flag=-folder</code>
+or the relative path <code>./-folder</code>.</p>
+<p>What is confined: the requests themselves, the frames that carry input they inject (<code>ui.click</code>, <code>ui.key</code>,
+<code>ui.text</code>…, so a menu item an agent clicks is confined too), the background saves and exports they start,
+and window captures. The person at the keyboard is not: files opened from the command line, Finder or a
+file dialog, and everything done with the mouse and keyboard, work as usual. The preferences that move
+folders the app reads or writes on its own (Additional Fonts Folder, Additional Plug-ins Folder, Data
+Recovery's folder, the Templates folder) can only be pointed inside the roots by automation. The app's own folders
+(preferences, Data Recovery, the library folders, VectorCraft's Fonts folder) are not confined, since no
+agent names a path there. A path is checked, then opened: another program that swaps in a link between
+the two can still win that race.</p>
+<table><thead><tr><th>Method</th><th>Params</th><th></th></tr></thead><tbody>
+<tr><td><code>engine.execute</code></td><td><code>{command, params}</code></td><td>run any engine or UI command (see <code>engine.commands</code>). A key of <code>params</code> that the command's params description doesn't name is an error naming it and the nearest key the command takes, before anything runs (<code>unknown parameter </code>widht<code>; did you mean </code>width<code>?</code>); see <a href="mcp.md#parameter-keys">Parameter keys</a></td></tr>
+<tr><td><code>engine.commands</code></td><td></td><td>every command with label, shortcut, params doc, enablement</td></tr>
+<tr><td><code>document.inspect</code></td><td><code>{depth?, childLimit?, ids?, kind?, limit?, offset?}</code></td><td>layer tree, selection, the key object (<code>key</code>, null without one; a key ruler guide as <code>keyGuide</code>), history, paint defaults; <code>depth</code> / <code>childLimit</code> slice the layer tree as <code>document.node {summary: true}</code> does; <code>ids</code>, <code>kind</code>, <code>limit</code> and <code>offset</code> list just some nodes as <code>nodes</code> (with <code>total</code>) instead of the whole tree, see <a href="mcp.md">mcp.md</a>. Each node reports <code>opacity</code> below 1 and <code>blend</code> when it isn't Normal; objects and compound paths report <code>fill</code>, <code>stroke</code> and <code>strokeWidth</code>, a compound path's members <code>compoundMember: true</code> instead</td></tr>
+<tr><td><code>ui.inspect</code></td><td></td><td>tool, UI state, <code>screenMode</code> (0 normal, 1 full screen with menu bar, 2 full screen, 3 Presentation Mode), <code>taskBar</code> (<code>pinned</code>, and <code>rect</code> <code>[x, y, w, h]</code> while the Contextual Task Bar shows), <code>freeTransformWidget</code> (<code>[x, y, w, h]</code> while the Free Transform widget shows), view, canvas rect, window size, perf, background saves and exports still running, <code>nativeMenuBar</code> (true when the menus are in the macOS menu bar rather than the window; <code>ui.menu.list</code> lists the in-window menus either way), <code>fileDialog</code> (<code>"open"</code>, <code>"place"</code>, <code>"save"</code> or <code>"folder"</code> while a native file dialog is open, <code>null</code> otherwise; see below)</td></tr>
+<tr><td><code>ui.menu.list</code> / <code>ui.menu.invoke</code></td><td><code>{command, params}</code></td><td>the full menu tree / invoke an item</td></tr>
+<tr><td><code>ui.contextMenu.list</code></td><td></td><td>the canvas context menu for the current selection, flattened like <code>ui.menu.list</code> (<code>path</code> holds its submenus). <code>ui.click {x, y, button: "right"}</code> on the canvas opens it, after selecting the object there unless it is already selected. While a menu opened over locked objects is open, it has an <code>Unlock</code> submenu with one item for each locked object under the pointer, topmost first and at most 20, labeled with the object's name, which runs <code>layer.setProps {ids: [id], locked: false}</code>. A locked group gets one item, and the locked objects inside it get none. Hidden objects, objects on hidden, locked or template layers, and in isolation mode objects outside the isolated group get no item</td></tr>
+<tr><td><code>ui.tool.select</code> / <code>ui.tool.list</code></td><td><code>{tool}</code></td><td></td></tr>
+<tr><td><code>ui.pointer</code></td><td>`{events:[{kind: down</td><td>drag</td></tr>
+<tr><td><code>ui.key</code> / <code>ui.text</code></td><td><code>{key, shift?, alt?, cmd?}</code> / <code>{text}</code></td><td>synthetic keyboard input</td></tr>
+<tr><td><code>ui.move</code></td><td><code>{x, y}</code></td><td>screen-point pointer move</td></tr>
+<tr><td><code>ui.click</code> / <code>ui.drag</code></td><td><code>{x, y, button?, count?, shift?, alt?, ctrl?, cmd?}</code> / <code>{x, y, toX, toY, steps?, count?, button?, shift?, alt?, ctrl?, cmd?}</code></td><td>egui pointer input; see synthetic input budgets above</td></tr>
+<tr><td><code>ui.wheel</code></td><td><code>{x, y, dy?, dx?, unit?: "line"|"point", shift?, alt?, cmd?}</code></td><td>a mouse wheel turn over screen point (x, y): <code>dy</code> notches up (+) or down, <code>dx</code> sideways. Over the canvas the wheel scrolls and Cmd- or Alt-wheel (Option on the Mac) zooms about the pointer; with the <code>zoomWithMouseWheel</code> preference the wheel and Alt-wheel zoom about the pointer, Shift-wheel scrolls up and down and Cmd-wheel (Ctrl on Windows and Linux) sideways. Over a focused numeric field (click it first) each notch steps its value as Up/Down do (Shift: ten, Cmd/Ctrl: a tenth) and the panel stays put; over anything else in a panel the wheel scrolls it</td></tr>
+<tr><td><code>ui.set</code></td><td><code>{brightness?, panel?, rulers?, outline?, grid?, smartGuides?, boundingBox?, controlBar?, imageTracePreview?}</code></td><td><code>imageTracePreview</code>: the Image Trace panel's Preview (<code>ui.inspect</code> shows it as <code>ui.image_trace_preview</code>)</td></tr>
+<tr><td><code>ui.dialog.set</code> / <code>.confirm</code> / <code>.cancel</code></td><td><code>{field, value}</code> or <code>{fields: [{field, value}…]}</code></td><td>fill and submit the open dialog. <code>ui.dialog.set</code> takes the fields the dialog has (<code>ui.inspect</code>), <code>__</code> fields, <code>discard</code> on a dialog with a discard button, <code>preview</code> on one with a live preview, the fields that the dialog reads but adds only when a control changes (such as <code>searchFolder</code>, or <code>copy</code> in the Transform dialogs), and the fields it passes to the command it runs: every parameter of the <code>command</code> dialog's command (<code>ui.paramDialog</code>), and the <code>textureImage</code> that Load Texture… sets in the Glass and Texturizer effects; any other field is an error that lists the dialog's fields, and the dialog stays as it was <code>fields</code> sets the list (at most 256 items) in order (a missing <code>value</code> is <code>null</code>) and checks every item first: when one is refused, the call is an error and no field changes</td></tr>
+<tr><td><code>ui.screenshot</code></td><td><code>{path?, data?}</code></td><td>capture the window (PNG), written to <code>path</code>; <code>data: true</code> sends it back as <code>pngBase64</code> too. The inline PNG is capped at 64 MiB: with a <code>path</code> the file is still written and <code>pngBase64</code> is omitted when the image is larger, while a path-less <code>data: true</code> request fails if either the raw RGBA image or the encoded PNG exceeds the cap. Needs a presented frame: with the screen locked or the window minimized/covered it fails after ~8 s with an explanatory error</td></tr>
+<tr><td><code>ui.render</code></td><td><code>{path?, scale?, artboard?, data?, traceViews?}</code></td><td>render an artboard headlessly (PNG with the pixels of <code>app.export {format: "png", background: "white"}</code> at the same scale; <code>artboard</code>: its 0-based index, default the first; <code>traceViews: true</code>: Image Trace objects draw in their View, as on the canvas, instead of their tracing result): written to <code>path</code>, else (or with <code>data: true</code> as well) sent back as <code>pngBase64</code></td></tr>
+<tr><td><code>ui.render</code></td><td><code>{path?, scale?, artboard?, data?}</code></td><td>render an artboard headlessly (PNG with the pixels of <code>app.export {format: "png", background: "white"}</code> at the same scale; <code>artboard</code>: its 0-based index, default the first): written to <code>path</code>, else (or with <code>data: true</code> as well) sent back as <code>pngBase64</code></td></tr>
+<tr><td><code>ui.resize</code> / <code>ui.focus</code></td><td></td><td></td></tr>
+<tr><td><code>app.open</code> / <code>app.save</code> / <code>app.export</code> / <code>app.quit</code></td><td><code>{path}</code> / <code>{path?}</code> / <code>{path?, format?, artboard?, range?, scale?, …}</code></td><td><code>app.open</code> reads every format <code>document.open</code> reads (see <code>document.formats</code>) and returns its result (<code>{index, title, format, warnings, …}</code>; <code>warnings</code> say what didn't come in as it was, such as an EPS shown as its preview image and why its PostScript couldn't be read), or null when a dialog asks first or a library loads. <code>app.export</code> encodes through the engine's <code>document.export</code> (same options; the document keeps its path) and writes <code>path</code> through the host; without <code>path</code> it returns <code>{dataBase64, format, bytes}</code>, as headless mode does. <code>app.quit</code>, <code>file.close</code> and <code>file.closeAll</code> first open a <code>saveChanges</code> dialog for each modified document (they return <code>{"pending": "saveChanges"}</code>): <code>ui.dialog.confirm</code> saves, <code>ui.dialog.set {field: "discard", value: true}</code> then confirm discards, <code>ui.dialog.cancel</code> cancels the whole close or quit</td></tr>
+<tr><td><code>app.export</code> with <code>useArtboards</code></td><td><code>{path, useArtboards: true, range? | artboards?, …}</code></td><td>Export As: PNG, JPEG and WebP write one file per chosen artboard (default all; SVG does so for a <code>range</code>), <code>&lt;path stem&gt;-&lt;artboard&gt;.&lt;ext&gt;</code>, and return <code>{path, files: [path…]}</code>; a PDF keeps them as pages of <code>path</code>. <code>useArtboards: false</code> covers the bounds of the visible art. The menu's Export As… is <code>file.exportAs</code>: the <code>exportAs</code> dialog (<code>format</code>, <code>useArtboards</code>, <code>all</code>, <code>range</code>), then a save dialog and the format's options: <code>pngOptions</code> / <code>jpgOptions</code> / <code>webpOptions</code>, <code>svgOptions</code>, or <code>savePdf</code> for a PDF with Use Artboards</td></tr>
+<tr><td><code>ui.dialog.*</code> on <code>gradientStop</code></td><td><code>{field: "color" | "opacity" | "location", value}</code></td><td>double-clicking a stop on the Gradient tool's annotator opens its popover (fields <code>index</code>, <code>x</code>, <code>y</code>, <code>tab</code>); set <code>color</code> (hex), <code>opacity</code> or <code>location</code> (percentages) and <code>ui.dialog.confirm</code> to apply them to the selected stop. <code>gradient.selectStop {index}</code> picks the stop the annotator, the panels and Delete/←/→ (<code>ui.key</code>) act on</td></tr>
+<tr><td><code>engine.execute</code> <code>ui.savePdfDialog</code></td><td><code>{path?, preset?, range?, …document.exportPdf options}</code></td><td>opens the Save PDF dialog (<code>file.export.pdf</code> with no params opens it too). Its fields are the <code>document.exportPdf</code> options: set <code>compatibility</code> with <code>ui.dialog.set {field: "compatibility", value: "1.5"}</code>, a whole section with <code>{field: "compression", value: {…}}</code>, the artboards with <code>__allArtboards: false</code> and <code>range</code>, the visible section with <code>__section</code> (General, Compression, Marks and Bleeds, Output, Advanced, Security, Summary). <code>ui.dialog.confirm</code> writes <code>path</code> (else asks for one), returns <code>{path, bytes, warnings}</code> and opens the file when <code>viewAfterSaving</code> is set</td></tr>
+<tr><td><code>file.save</code> / <code>file.saveAs</code> / <code>file.saveCopy</code> / <code>file.saveAsTemplate</code> (via <code>engine.execute</code>)</td><td><code>{path?, format?, options?, svg?}</code></td><td>Save writes the document's own file in its own format (a document opened from or saved as SVG/PDF saves as that again; the result's <code>warnings</code> say what the format loses). With <code>path</code> the file is written at once (Save As or a Copy to an SVG path without SVG options first opens SVG Options, below). Without one (never saved, a converted older file, Save As, a Copy, a Template) the app shows a save panel with one file type per save format (<code>vectorcraft</code>, <code>template</code>, <code>pdf</code>, <code>svg</code>, <code>svgz</code>, <code>ai</code>; for a Template, <code>template</code> and <code>ait</code>), then the format's options: SVG opens the <code>svgOptions</code> dialog (below; returns <code>{"pending": "svgOptions", "path"}</code>), PDF the <code>savePdf</code> dialog (its <code>__save</code> field names the save command); <code>ui.dialog.confirm</code> finishes the save. A name typed in the panel without the file type's extension gets it, and a name the panel returns with the extension of a format the panel does not list has it replaced (in a native save, <code>card.png</code> and <code>card.ait</code> are saved as <code>card.vectorcraft</code>, and <code>notes.v2</code>, whose extension names no format, is saved as <code>notes.v2.vectorcraft</code>); when a file of that name exists, which the panel did not ask about, the save (and every export or other write through a save panel) answers <code>cancelled</code> and opens a <code>replaceFile</code> dialog (fields <code>message</code>, <code>detail</code>, <code>path</code>): <code>ui.dialog.confirm</code> writes that file, <code>ui.dialog.cancel</code> writes nothing. On the web a <code>saveOptions</code> dialog (fields <code>path</code>, <code>format</code>) first names the file and picks the format. <code>file.formatOptions {format?}</code> reads the options a save would use. <code>file.revert</code> opens a <code>confirm</code> dialog (<code>{"pending": "confirm"}</code>); <code>ui.dialog.confirm</code> reloads the saved file in the same tab</td></tr>
+<tr><td>SVG Options (<code>engine.execute</code> of <code>file.export.svg</code>, <code>file.saveAs</code>, <code>file.saveCopy</code>)</td><td><code>{}</code> / <code>{path?, svg?: {…}}</code></td><td><code>file.export.svg</code> without params, and Save As or Save a Copy to an <code>.svg</code>/<code>.svgz</code> path without SVG options, open the <code>svgOptions</code> dialog (<code>ui.dialog.set</code> its fields: <code>styling</code>, <code>outlineText</code>, <code>images</code>, <code>objectIds</code>, <code>decimals</code>, <code>minify</code>, <code>responsive</code>, <code>fewerTspans</code>, <code>metadata</code>, <code>preserveEditing</code>, <code>useArtboards</code>, <code>allArtboards</code>, <code>range</code>, <code>showCode</code>, <code>profile</code> (<code>svg11</code>/<code>tiny12</code>), <code>encoding</code> (<code>utf8</code>/<code>utf16</code>/<code>latin1</code>), <code>embedFonts</code>; <code>ui.dialog.confirm</code> exports or saves and remembers the choices). With <code>svg: {…}</code> (the <code>document.formats</code> SVG options) they run directly. <code>app.save {path?, svg?}</code> takes the same options; a document saved as SVG saves as SVG again with the same options</td></tr>
+<tr><td><code>engine.execute</code> <code>file.place</code></td><td><code>{paths?}</code> / <code>{path | name+dataBase64, …file.place params}</code></td><td>with no file, picks files and opens the <code>place</code> dialog; with <code>paths</code>, opens it for them (fields <code>files</code>, <code>link</code>, <code>template</code>, <code>replace</code>; <code>__replace</code> says whether Replace applies, <code>__info</code> describes each file). <code>ui.dialog.confirm</code> places one file centered in the view (or in place of the selected object) and loads the place cursor with several (<code>file.place.queue</code>). In the desktop app the dialog reads its files off the UI thread: <code>__info</code> is empty until they are read, <code>ui.dialog.confirm</code> returns <code>{background: true, status}</code>, <code>ui.inspect</code> lists the files still being read in <code>placing</code>, and the file is placed (or the cursor loaded) once it is read. With a file, it runs <code>file.place</code> centered in the view, at once. Files dropped on the window with no document open open. On the web, files dropped on the canvas are placed at the drop point (linked; Shift embeds) and files dropped off it (the tab bar) open, as in Illustrator; desktop drops carry no pointer position, so documents (native, SVG, PDF, <code>.ai</code>, EPS, DXF, EMF/WMF) open as tabs of their own and pictures and text are placed in the middle of the view. Swatch libraries and color books (<code>.vcswatches</code>, <code>.gpl</code>, <code>.ase</code>, <code>.acb</code>), graphic style libraries (<code>.vcstyles</code>), Libraries panel files (<code>.vclibrary</code>), presets (<code>.vcflattener</code>, <code>.vcpdfpresets</code>, <code>.vcprintpresets</code>, <code>.vcperspective</code>), plug-ins (<code>.wasm</code>) and shortcut sets (<code>.kys</code>, in Import Shortcut Set) open wherever they are dropped, as File › Open opens them. With the cursor loaded (<code>ui.inspect</code> → <code>tool: "place"</code>, <code>toolOptions: {count, current, name, names}</code>), <code>ui.pointer</code> clicks and drags place files (in the desktop app each file is read off the UI thread and placed once it is read, and <code>ui.inspect</code> lists it in <code>placing</code> until then) and <code>ui.key</code> ←/→/↑/↓ and Escape cycle and discard them</td></tr>
+<tr><td><code>app.export</code> raster options</td><td><code>{path?, format: png | jpg | webp, ppi?, background?, antiAlias?, interlaced?, quality?}</code></td><td><code>ppi</code> sets the pixel size (72 = one pixel per point) and is stored in the file; <code>background</code> is <code>transparent</code>, <code>white</code>, <code>black</code> or <code>"#rrggbb"</code>; <code>antiAlias</code> is <code>none</code>, <code>art</code> or <code>type</code> (text snapped to pixels); <code>interlaced</code> writes an Adam7 PNG. The PNG Options dialog (<code>pngOptions</code>; <code>jpgOptions</code> / <code>webpOptions</code> for the other raster formats) has the same fields: fill them with <code>ui.dialog.set</code> and press OK with <code>ui.dialog.confirm</code></td></tr>
+<tr><td><code>app.export</code> JPEG options</td><td><code>{path?, format: jpg, quality?: 0–100, colorModel?: rgb | cmyk | gray, method?: baseline | optimized | progressive, scans?: 3–5, embedIcc?, imageMap?: none | client | server}</code></td><td><code>cmyk</code> writes ink amounts in the working CMYK space (CMYK colours keep their inks; RGB ones are separated with the colour settings); <code>embedIcc</code> (default true) embeds sRGB, the working CMYK profile or a grey profile, generated by the CMS; <code>imageMap</code> also writes <code>&lt;stem&gt;.html</code> (client-side <code>&lt;map&gt;</code>) or <code>&lt;stem&gt;.map</code> (NCSA) beside the image for the objects with a URL and an Image Map shape (<code>attributes.set</code>), returned in <code>linked</code>. The <code>jpgOptions</code> dialog has these fields too (<code>quality</code> is shown 0–10; a CMYK document defaults to <code>cmyk</code>)</td></tr>
+<tr><td><code>app.export</code> PNG-8 and GIF</td><td><code>{path?, format: png8 | gif, colors?: 2–256, reduction?: perceptual | selective | adaptive | web | blackWhite | gray, dither?: none | diffusion | pattern | noise, ditherAmount?: 0–100, transparency?, matte?, interlaced?, …raster options}</code></td><td>a palette of at most <code>colors</code> entries (art with that many colours or fewer keeps them exactly); pixels under half opacity become one transparent entry unless <code>transparency</code> is false, partly transparent edges are blended over <code>matte</code> (<code>none</code> keeps their colour). <code>png8</code> writes an indexed <code>.png</code> (1–8 bits per pixel); Export for Screens rows take both. The <code>png8Options</code> / <code>gifOptions</code> dialogs have these fields</td></tr>
+<tr><td><code>app.export</code> Text and WebP</td><td><code>{path?, format: txt, encoding?: utf8 | utf16, lineEndings?: lf | crlf, selectionOnly?}</code> / <code>{format: webp, lossless?, quality?}</code></td><td>Text writes the stories in stacking order (back to front; a thread once; hidden objects and template layers left out), each line ended by <code>lineEndings</code>; <code>utf16</code> is little-endian with a byte order mark. Export As → Text opens <code>txtOptions</code> (fields <code>path</code>, <code>encoding</code>, <code>lineEndings</code>, <code>selectionOnly</code>; OK writes the file). WebP is always lossless: <code>lossless: false</code> adds a warning</td></tr>
+<tr><td><code>engine.execute</code> <code>document.exportForOffice</code></td><td><code>{}</code> / <code>{path?, ppi?: 72 | 150 | 300, transparent?, artboard?}</code></td><td>File → Save for Office Documents…: without params opens <code>saveForOffice</code> (fields <code>ppi</code>, <code>transparent</code>, <code>artboard</code>; OK picks the file); with params writes the artboard as a PNG (<code>path</code>, else a picked file) → <code>{path}</code>, and the status bar shows the first of the export's <code>warnings</code> as Save As shows a save's notes. Headless it returns <code>{dataBase64, width, height, warnings}</code></td></tr>
+<tr><td>Native file dialogs</td><td>any command with no <code>path</code> that needs one (<code>file.open</code>, <code>file.saveAs</code>, <code>file.place</code>, exports…)</td><td>on macOS (a sheet on the window) and Linux the dialog doesn't hold the window: the call returns <code>"cancelled"</code> at once, <code>ui.inspect</code> reports <code>fileDialog</code>, and when the person at the computer picks a file the command runs again on the document it was asked for. While it is open another dialog is refused: that call returns <code>"cancelled"</code> too, and the status bar (<code>ui.inspect</code> → <code>ui.status</code>) says <code>"A file dialog is open: choose there first"</code>; on macOS <code>app.quit</code>, <code>file.close</code> and <code>file.closeAll</code> return that message and the menu bar does nothing (#592, #867). On Windows the dialog is shown in line: the call returns once it closes. Pass <code>path</code> to skip the dialog</td></tr>
+<tr><td>Background Save / Export</td><td><code>app.save</code>, <code>app.export {path}</code>, <code>file.save</code>, <code>file.saveAs</code>, <code>file.saveCopy</code>, <code>file.exportForScreens {folder, …}</code></td><td>with the <code>backgroundSave</code> / <code>backgroundExport</code> preferences on (the default) the desktop app writes the file from a snapshot on a worker thread: the call returns <code>{path, background: true, status}</code> at once (<code>file.exportForScreens</code>: <code>{background: true, status}</code>, and the files are written into the folder from a snapshot taken at the call), <code>ui.inspect</code> lists the jobs still running in <code>background</code> (labels such as <code>"Saving a.vectorcraft"</code>), and the document counts as saved (as of the snapshot) once its file is written. Quit and Close wait for them. A job that fails reports the error in the status bar only (<code>ui.inspect</code> → <code>ui.status</code>), a path outside <code>--automation-write-root</code> included. With the preferences off (<code>prefs.set</code>), saves return once written. <code>app.save {path?, wait: true}</code> and <code>app.export {path, wait: true}</code> wait for the jobs already running, write the file before they reply whatever the preferences are set to, and return its result or the error. When the save asks first (the question before replacing a file that opened with losses, or on macOS and Linux the file dialog for an untitled document without <code>path</code>), the reply is <code>{pending}</code> or <code>"cancelled"</code> as before, and the save that runs after the answer uses the preferences. A <code>wait</code> that is not <code>true</code>, <code>false</code> or <code>null</code> is refused with "<code>wait</code> must be true or false", and nothing is written</td></tr>
+<tr><td><code>engine.execute</code> <code>file.exportForScreens</code></td><td><code>{}</code> / <code>{…document.exportForScreens params}</code></td><td>without params opens <code>exportForScreens</code> on the settings the document last exported with (<code>document.exportSettings</code>). While the Artboard tool is in use, the artboards it has selected (its <code>selected</code> option, the rows the Artboards panel highlights) are checked instead, and <code>select</code> is <code>range</code>, or <code>all</code> when every artboard is selected. Fields: <code>tab</code> (<code>artboards</code> | <code>assets</code> | <code>layers</code> | <code>selection</code>; OK reads Export Layer or Export Selection on those), <code>layers</code> ([layer id…] checked), <code>selectionMode</code> (<code>one</code> | <code>each</code>), <code>name</code> (the file name pattern of <code>document.exportForScreens</code>), <code>counterStart</code>, <code>folders</code> (<code>none</code> | <code>rows</code> | <code>format</code> | <code>item</code> | <code>itemFormat</code>), <code>exportPreset</code> (the preset applied last), <code>__savePreset</code> (the name typed to save one), <code>select</code> (<code>all</code> | <code>range</code> | <code>full</code>), <code>range</code> ("1-3, 5"), <code>boards</code> (a bool per artboard; checking them sets <code>select</code> and <code>range</code>), <code>includeBleed</code>, <code>folder</code> (desktop; default the Desktop, else home), <code>openLocation</code>, <code>subfolders</code>, <code>prefix</code>, <code>preset</code> (<code>""</code> | <code>mobile</code> | <code>density</code>), <code>formats</code> (rows <code>{format, scale: "2x" | "100w" | "100h" | "72ppi", suffix, quality?, folder?}</code>), <code>settings</code> (<code>{png | png8 | jpg | webp | gif | svg | pdf: {…options}}</code>, the gear's Format Settings; <code>__settings</code> names the format shown). <code>ui.dialog.confirm</code> exports (a bad range or no folder keeps it open); on the web OK reads "Download" and the files download (several as one <code>.zip</code>). With params it runs <code>document.exportForScreens</code>: no <code>folder</code> returns the files (or with <code>zip: true</code> one store-only zip) as <code>dataBase64</code>; with <code>openLocation</code> the first file is shown in the file manager. When <code>warnings</code> is not empty, an export into a folder or a download shows the first in the status bar as Save As shows a save's notes</td></tr>
+<tr><td>Export for Screens' Assets tab, Asset Export panel</td><td><code>ui.dialog.set</code> <code>tab: "assets"</code>, <code>assets: [asset id…]</code>; <code>window.panel {panel: "assetExport"}</code></td><td>on the Assets tab of <code>exportForScreens</code> the <code>assets</code> field lists the checked asset ids (all of them when it opens); <code>ui.dialog.confirm</code> runs <code>document.exportForScreens {assets}</code> (nothing checked keeps it open) and OK reads "Export Asset". The Asset Export panel acts through <code>assets.*</code> and shares the format rows with the dialog (<code>assets.settings.set</code>)</td></tr>
+<tr><td><code>engine.execute</code> <code>file.exportSelection</code></td><td><code>{multiple?}</code></td><td>File › Export Selection…: collects the selected objects as one asset (<code>assets.add</code>; one per object with <code>multiple: true</code>) and opens <code>exportForScreens</code> on its Assets tab with just them checked → <code>{assets}</code>. <code>document.exportSelection</code> still exports the selection in one go, without the dialog</td></tr>
+<tr><td>CSS Properties panel</td><td><code>window.panel {panel: "cssProperties"}</code>; <code>engine.execute</code> <code>css.copy</code> / <code>css.exportFile</code></td><td>the panel shows <code>css.selection</code> of the selection (after Generate CSS, while nothing is selected, <code>css.generate</code>); its menu holds the options the commands take (<code>units</code>, <code>position</code>, <code>dimensions</code>, <code>unnamed</code>, <code>rasterize</code>). <code>css.copy {scope?, …options}</code> copies the CSS to the clipboard → <code>{css, rules}</code>; <code>css.exportFile {path?, scope?, …options}</code> writes <code>css.export</code> to <code>path</code> (else a picked file; the web downloads it) with the pictures of rasterized art next to it → <code>{path, rules, images, warnings}</code>, and the status bar shows the first of <code>warnings</code> as Export As shows an export's notes</td></tr>
+</tbody></table>
+<p>| <code>ui.dialog.*</code> on <code>importPdf</code> | <code>{field: "page" \| "allPages" \| "range" \| "cropTo" \| "password", value}</code> | opening (<code>app.open</code>, <code>file.open</code>) a PDF or <code>.ai</code> with several pages or a password, or placing one (<code>file.place</code> without <code>page</code>), opens the Import PDF dialog (<code>mode</code>: <code>open</code> or <code>place</code>; <code>pageCount</code>). While <code>__locked</code> is true, set <code>password</code> and <code>ui.dialog.confirm</code> to unlock it (a one-page file then opens or is placed). Then set <code>allPages: false</code> and <code>range</code> ("2-3, 5") to open some pages, or <code>page</code> to place one, and <code>cropTo</code> (<code>bounding</code>, <code>art</code>, <code>crop</code>, <code>trim</code>, <code>bleed</code>, <code>media</code>); <code>ui.dialog.confirm</code> opens or places them (placing keeps the other <code>file.place</code> params, such as <code>link</code>, <code>template</code> and <code>at</code>, in <code>__place</code>). <code>document.open {pages, cropTo, password}</code> and <code>file.place {page, crop, password}</code> do the same without the dialog |</p>
+<p>Swatch editors: <code>engine.execute</code> with <code>ui.swatchOptions {name}</code> opens the <code>swatchOptions</code> dialog for a colour swatch
+(fields <code>name</code>, <code>spot</code>, <code>global</code>, <code>mode</code>: <code>gray</code>/<code>rgb</code>/<code>hsb</code>/<code>lab</code>/<code>cmyk</code>/<code>web</code>, <code>color</code>: <code>"#rrggbb"</code> or a colour object,
+<code>preview</code>), which previews on the canvas while open; <code>ui.dialog.confirm</code> applies it with <code>swatch.edit</code> as one undo
+step and <code>ui.dialog.cancel</code> rolls the preview back. For a gradient swatch the dialog has <code>name</code> only (it shows the
+gradient) and OK renames it; pattern swatches open pattern editing instead. Dropping a gradient (or colour) on a
+swatch of its kind in the Swatches panel with Alt held replaces it (<code>swatch.edit {name, paint}</code>), unless that is a
+tint swatch. A swatch dragged from the panel with Alt held also replaces the swatch of its kind it is dropped on,
+which keeps its name and place (<code>swatch.edit {name, paint: {swatch}}</code>); without Alt, or on a tint swatch or a swatch
+of another kind, it moves.</p>
+<p>Confirmations: deleting swatches from the Swatches panel opens a <code>confirm</code> dialog (fields <code>message</code>, <code>detail</code>);
+<code>ui.dialog.confirm</code> runs the command it asks about (here <code>swatch.delete</code>) and <code>ui.dialog.cancel</code> drops it.</p>
+<p>New swatches and colour groups: <code>ui.newSwatch {spot?, global?, group?}</code> opens the <code>newSwatch</code> dialog prefilled from the active
+fill or stroke (fields as in <code>swatchOptions</code> plus <code>group</code>; a gradient or pattern only takes <code>name</code>) and
+<code>ui.newColorGroup {swatches?}</code> opens <code>newColorGroup</code> (fields <code>name</code>, <code>fromArtwork</code>, <code>toGlobal</code>, <code>includeTints</code>,
+<code>swatches</code>); <code>ui.dialog.confirm</code> runs <code>swatch.new</code> / <code>swatch.newGroup</code>.</p>
+<p>The Color Picker is a dialog too: <code>engine.execute {command: "ui.colorPicker", params: {stroke?, color?}}</code> opens it for the fill (or stroke) proxy; <code>ui.dialog.set {field: "hex", value: "00FF00"}</code> (or <code>color</code>, <code>channel</code>, <code>webOnly</code>, <code>swatches</code>) then <code>ui.dialog.confirm</code> applies the colour through <code>paint.setFill</code> / <code>paint.setStroke</code>.</p>
+<p>Sample Color from Screen: <code>ui.sampleScreenColor {stroke?, picker?}</code> shows the system's color sampler (macOS, and browsers with an EyeDropper) and returns <code>null</code> at once. When the person at the computer clicks a color anywhere on the screen, it runs <code>paint.setFill</code> (or <code>paint.setStroke</code>) with that color as one undo step, or with <code>picker: true</code> sets the open Color Picker's <code>color</code>; Escape cancels it and the colors stay as they were. The sampled display sRGB color is converted into the working RGB space. <code>ui.inspect</code> reports <code>screenSampler: true</code> until the sampler answers. Without a sampler (Windows, Linux, other browsers) the call returns an error. To read a color from VectorCraft's own window without a person, call <code>ui.screenshot</code>.</p>
+<p>Graphic styles: <code>ui.graphicStyleOptions {name}</code> opens the <code>graphicStyleOptions</code> dialog (field <code>name</code>) for a style and
+<code>ui.dialog.confirm</code> renames it with <code>graphicStyle.rename</code> (a name another style has returns an error and keeps the
+dialog open); without <code>name</code> it names a new style made from the selection (<code>graphicStyle.new</code>).
+<code>ui.mergeGraphicStyles {names}</code> opens the same dialog to name the style <code>ui.dialog.confirm</code> merges from them
+(<code>graphicStyle.merge</code>). Deleting styles from the panel asks first with a <code>confirm</code> dialog (<code>graphicStyle.delete</code>).</p>
+<p>Symbols: <code>ui.symbolOptions</code> opens the <code>symbolOptions</code> dialog (field <code>name</code>) that the Symbols panel's New Symbol asks
+first; <code>ui.dialog.confirm</code> makes the symbol from the selection with that name (<code>symbol.new</code>). F8 runs
+<code>ui.symbolOptions</code> without params.</p>
+<p>Gradient panel: double-clicking a stop on the panel's slider opens the same <code>gradientStop</code> popover, with a <code>screen</code>
+field (<code>[x, y]</code>, screen points) in place of <code>x</code>/<code>y</code>. The panel's stop eyedropper selects the Eyedropper tool with the
+tool option <code>stop</code> (the tool to return to; <code>tool.setOption {key: "stop", value: "gradient"}</code>): its next click on art
+samples the colour there into the selected stop (<code>paint.sampleColor {color, stop}</code>) and switches back. Dragging a
+swatch, a Fill/Stroke proxy or the panel's gradient thumbnail onto art runs <code>paint.setFill</code> / <code>paint.setStroke</code> (the
+active proxy) with the paint's params and the object's <code>ids</code>; a colour dropped on the panel's ramp adds or recolours
+a stop. Alt-clicking a color swatch in the Swatches panel recolors the selected stop as a drop on it does
+(<code>paint.editGradient {stops}</code>), or the selected point of a freeform gradient (<code>paint.freeform.setPoint</code>); with no stop
+or point selected, it paints the inactive Fill or Stroke.</p>
+<p>Freeform gradients: double-clicking a point with the Gradient tool opens the same <code>gradientStop</code> popover on the selected
+point (<code>paint.freeform.selectPoint</code>); its fields are <code>color</code> (hex), <code>opacity</code> and <code>spread</code> (percentages), applied by
+<code>ui.dialog.confirm</code> through <code>paint.freeform.setPoint</code>. <code>ui.key</code> Escape ends the line Lines mode is drawing.</p>
+<p>Tool options: double-clicking a tool button runs <code>tool.options {tool}</code>. For <code>gradient</code> it opens the Gradient panel;
+for <code>eyedropper</code> it opens Eyedropper Options, an <code>eyedropperOptions</code> dialog (fields <code>sampleSize</code> 1/3/5, <code>pickUp</code> and
+<code>apply</code>, the attribute trees of <code>eyedropper.setOptions</code>) whose <code>ui.dialog.confirm</code> runs <code>eyedropper.setOptions</code> (what
+<code>appearance.copyFrom</code> copies). For <code>hand</code> it fits the artboard in the window (<code>view.fitArtboard</code>) and for <code>zoom</code> it
+shows 100% (<code>view.actualSize</code>). For <code>rotate</code>, <code>scale</code>, <code>reflect</code> and <code>shear</code> it opens the same dialog as Object ›
+Transform (dialog kind = the tool id), or fails with <code>nothing selected</code>. For <code>selection</code>, <code>directSelection</code> and
+<code>groupSelection</code> it opens the Move dialog (kind <code>move</code>), with the same failure; Move opens on the offset of the last
+drag or Move (<code>dx</code>, <code>dy</code>) and with the <code>copy</code>, <code>objects</code> and <code>preview</code> it was last confirmed with (its <code>patterns</code> is
+the <code>transformPatternTiles</code> preference, which its OK sets). <code>ui.key</code> Enter with one of those seven
+tools opens its dialog too (nothing happens without a selection), with the transform tools' <code>origin</code> at their reference
+point. For <code>lineSegment</code>, <code>arc</code>, <code>rectangularGrid</code> and <code>polarGrid</code> it opens the tool's Tool Options: the dialog its
+click opens (kind = the tool id), without <code>x</code> and <code>y</code> and with <code>__toolOptions: true</code>, whose <code>ui.dialog.confirm</code> runs
+<code>tool.setOption {tool, values}</code> and draws nothing; the next drag with the tool and its click dialog use the values
+(the line's <code>fillLine</code>, the grids' Default Size <code>width</code>, <code>height</code> and <code>reference</code> too). For <code>typeOnPath</code> and
+<code>verticalTypeOnPath</code> it opens Type on a Path Options for the selected type on a path (a <code>command</code> dialog running
+<code>type.pathOptions</code>), or fails when no type on a path is selected. Gradient tool handles snap to
+anchors, edges and smart guides; Shift constrains them to 45° steps from the <code>constrainAngle</code> preference.</p>
+<p>Effect dialogs: <code>engine.execute {command: "effect.dialog", params: {effect, index?, item?}}</code> opens the <code>effect</code> dialog
+(fields: the effect's parameters, <code>preview</code>). With <code>index</code> it edits that applied effect of <code>item</code> (null: the object's
+effects) prefilled with its values, and <code>ui.dialog.confirm</code> runs <code>effect.setParams</code>; otherwise confirm runs
+<code>effect.apply</code>. Choosing an effect that the list already has returns <code>{"pending": "effectExists"}</code> and opens the
+<code>effectExists</code> question: <code>ui.dialog.confirm</code> opens the applied effect's dialog, <code>ui.dialog.set {field: "discard",  value: true}</code> then confirm opens a fresh one that adds another, <code>ui.dialog.cancel</code> drops it.
+The Transform effect's dialog (<code>effect.dialog {effect: "distort.transform"}</code>) has Transform Each's controls: sliders
+for <code>scaleH</code>, <code>scaleV</code> (%) and <code>moveH</code>, <code>moveV</code> (pt), an angle dial for <code>rotate</code>, then <code>copies</code>, <code>reflectX</code>,
+<code>reflectY</code>, <code>reference</code> (0–8, the 9-point grid) and <code>random</code> (each object varies its own way, the same on every redraw).</p>
+<p>Plug-in dialogs: <code>engine.execute {command: "plugin.dialog", params: {id}}</code> (Object › Plug-ins) runs an object filter
+plug-in at once when it takes no parameters, else opens the <code>plugin</code> dialog: one field per declared parameter (named
+after it), <code>__plugin</code> (the plug-in id) and <code>preview</code>. It previews <code>plugin.run</code> on the canvas while open;
+<code>ui.dialog.confirm</code> keeps the result as one undo step and <code>ui.dialog.cancel</code> rolls it back. Live-effect plug-ins open
+the <code>effect</code> dialog (<code>effect.dialog {effect: "plugin.&lt;id&gt;"}</code>). An exporter plug-in with parameters opens the
+<code>pluginExport</code> dialog once Export As has picked the file: one field per parameter, <code>__plugin</code>, and <code>__export</code> (the
+export's own parameters); <code>ui.dialog.confirm</code> writes the file. <code>ui.installPlugin {path?}</code> installs a <code>.wasm</code> (without
+a path it asks for one); see <a href="plugins.md">plugins.md</a>.</p>
+<p>Overprint Black: the Edit → Edit Colors → Overprint Black… menu item opens a <code>command</code> parameter dialog for
+<code>edit.colors.overprintBlack</code> (fields <code>remove</code>, <code>percentage</code>, <code>fill</code>, <code>stroke</code>, <code>includeCmyBlacks</code>,
+<code>includeSpotBlacks</code>); <code>ui.dialog.set</code> then <code>ui.dialog.confirm</code> runs it on the selection.</p>
+<p>Color Guide: <code>color.harmony {color, rule, steps?, variation?, amount?}</code> returns the harmony group (base first) and
+its variation grid; the panel draws the same grid. <code>ui.colorGuideOptions</code> opens the <code>colorGuideOptions</code> dialog
+(fields <code>steps</code> 1–20, <code>amount</code> 0–100) and <code>ui.dialog.confirm</code> sets the panel's options, which <code>ui.inspect</code> reports
+as <code>ui.color_guide</code> (<code>variation</code>, <code>steps</code>, <code>amount</code>). Save Colors as Swatches runs <code>swatch.new {colors: [...]}</code>
+(one swatch per colour, one undo step).</p>
+<p>Color Guide Limit to Library: <code>ui.colorGuideLimit {library}</code> (a swatch library id or name, <code>"document"</code> for the
+document's swatches, <code>""</code> for none) limits the panel's colours; <code>ui.inspect</code> reports it as <code>ui.color_guide_limit</code>, and
+<code>color.harmony {..., limitTo}</code> answers the limited guide (every colour snaps to the library's nearest colour, ΔE 2000).
+Edit or Apply Colors runs <code>ui.recolorDialog {colors, library?}</code> with the harmony colours: on the selected art it
+recolours as usual; with nothing selected the colours themselves are the rows and <code>ui.dialog.confirm</code> saves them as a
+new colour group (<code>swatch.newGroup</code>, named by the <code>groupName</code> field).</p>
+<p>Color panel options: <code>ui.colorPanel {mode?, options?}</code> picks the panel's mode as its panel menu does (<code>grayscale</code>,
+<code>rgb</code>, <code>hsb</code>, <code>cmyk</code> or <code>websafe</code>; the active color converts to the mode's model as one undo step) and shows
+(<code>options: true</code>) or hides (<code>false</code>) the options. It answers <code>{mode, options, shown}</code>: <code>mode</code> is null until a mode is
+picked, and <code>shown</code> is the mode the panel shows the color in, or <code>tint</code> for a tint of a global or spot swatch.
+Another mode, <code>lab</code> included, answers an error. The desktop app keeps both settings with its preferences, and
+<code>ui.inspect</code> reports them as <code>ui.color_mode</code> and <code>ui.color_hide_options</code>.</p>
+<p>Color Themes panel (<code>window.panel {panel: "colorThemes"}</code>): its Create tab makes a theme on a harmony wheel and its
+My Themes tab lists the saved themes; every action runs a command (<code>colorTheme.save</code>, <code>colorTheme.delete</code>,
+<code>colorTheme.addToSwatches</code>, <code>swatch.newGroup</code> for the theme being made), and <code>colorTheme.list</code> reads the library.</p>
+<p>Edit Colors dialogs: <code>ui.colorBalanceDialog</code> opens Adjust Colors (<code>colorBalance</code>: fields <code>mode</code> <code>gray</code>/<code>rgb</code>/<code>cmyk</code>/
+<code>global</code>, the channels <code>r</code> <code>g</code> <code>b</code> / <code>c</code> <code>m</code> <code>y</code> <code>k</code> / <code>gray</code> / <code>tint</code> (global mode) from −100 to 100, <code>convert</code>, <code>fill</code>, <code>stroke</code>,
+<code>preview</code>) and <code>ui.saturateDialog</code> opens Saturate (<code>saturate</code>: <code>intensity</code> −100..100, <code>preview</code>). Both preview on the
+canvas while open; <code>ui.dialog.confirm</code> keeps the result as one undo step (<code>edit.colors.adjustBalance</code> /
+<code>edit.colors.saturate</code>) and <code>ui.dialog.cancel</code> rolls it back. Global mode answers with an error until tints of global
+and spot colours exist; the dialog then stays open.</p>
+<p>Recolor Artwork: <code>ui.recolorDialog {colors?, library?, group?}</code> opens the <code>recolor</code> dialog on the selected art
+(<code>colors</code>: a count for an n-colour job, or colours to assign as the new colours; <code>library</code>: Limit to Library, a library
+or <code>"document"</code>, <code>""</code> for the first library; <code>group</code>: a colour group, Edit or Apply Color Group). Fields: <code>rows</code> (<code>[{from: [keys], to: key, exclude?}]</code>
+as <code>recolor.reduce</code> returns them), <code>colors</code> (null for Auto), <code>method</code>, <code>preserveWhite</code>, <code>preserveBlack</code>,
+<code>preserveGrays</code>, <code>limitTo</code>, <code>groupName</code>, <code>tab</code> (<code>assign</code> or <code>edit</code>), <code>rule</code> (harmony id), <code>linked</code>, <code>preview</code>. Setting
+<code>colors</code>, a preserve flag or <code>limitTo</code> reduces the rows again (also on <code>ui.dialog.confirm</code>). The dialog previews
+<code>recolor.apply</code> on the canvas; confirm keeps it as one undo step (with a group, the group is rewritten in the same
+step; with no art selected only the group changes). In the Swatches panel, double-clicking a colour group's folder,
+or the options button while a group is selected, opens it.</p>
+<p>Library panel: <code>engine.execute {command: "window.swatchLibrary", params: {library}}</code> opens the read-only library
+panel on a swatch library (<code>ui.inspect</code> shows it as <code>library_panel: {kind, id}</code>; <code>library: null</code> closes it).
+Clicking a swatch there runs <code>swatch.library.add {library, names: [name], apply}</code> (the active proxy, or the other
+one with Alt), so one undo step adds and applies it; Shift/Cmd-clicks select swatches and colour groups for
+Add to Swatches.
+<code>window.swatchLibrary.other {path?}</code> loads a library file (or another document's swatches) and opens it there;
+opening a <code>.vcswatches</code>, <code>.gpl</code> or <code>.ase</code> file with <code>app.open</code> does the same. A file with the same extension and
+bytes as a User Defined library opens as that library. <code>ui.saveSwatchLibrary {names?}</code> opens the
+<code>saveSwatchLibrary</code> dialog (fields <code>name</code>, <code>format</code>: <code>vcswatches</code>/<code>gpl</code>/<code>ase</code>/<code>css</code>, <code>user</code>: save to the user library
+folder, <code>selectedOnly</code> with <code>names</code>); <code>ui.dialog.confirm</code> runs <code>swatch.library.save</code> (to a file it asks for a path
+and suggests <code>name</code> with the format's extension as the file name; the web downloads the file under that name).</p>
+<p>Graphic style libraries open in the same panel: <code>window.graphicStyleLibrary {library}</code> (<code>library_panel: {kind:  "graphicStyles", id}</code>; <code>library: null</code> closes it). Clicking a style there runs <code>graphicStyle.addFromLibrary {library,  name, apply: true, add}</code> (<code>add</code> with Alt), adding and applying it in one undo step; Shift/Cmd-clicks select styles
+for Add to Graphic Styles. <code>window.graphicStyleLibrary.other {path?}</code> loads a <code>.vcstyles</code> file (or another
+document's graphic styles) and opens it there; opening a <code>.vcstyles</code> file with <code>app.open</code> does the same. The User
+Defined libraries are <code>window.userGraphicStyleLibrary1</code>…<code>10</code> in Window → Graphic Style Libraries.
+<code>ui.saveGraphicStyleLibrary {names?}</code> opens the <code>saveGraphicStyleLibrary</code> dialog (fields <code>name</code>, <code>user</code>: save to the
+user library folder, <code>selectedOnly</code> with <code>names</code>); <code>ui.dialog.confirm</code> runs <code>graphicStyle.saveLibrary</code> (to a file it
+asks for a path and suggests <code>name</code> with <code>.vcstyles</code> as the file name; the web downloads the file under that name).</p>
+<p>Symbol libraries open in the same panels: <code>window.symbolLibrary {library}</code> (<code>library_panels</code> kind <code>symbols</code>; <code>library:  null</code> closes them). Clicking a symbol there runs <code>symbol.addFromLibrary {library, name}</code>, adding it to the document's
+Symbols in one undo step; Shift/Cmd-clicks select symbols for Add to Symbols, and a symbol dragged onto the canvas runs
+it with <code>place: true</code> and the drop point as <code>x</code>, <code>y</code>. <code>window.symbolLibrary.other {path?}</code> loads the symbols of any
+document VectorCraft opens (a saved symbol library is a <code>.vectorcraft</code> document) and opens them there. The User
+Defined libraries are <code>window.userSymbolLibrary1</code>…<code>10</code> in Window → Symbol Libraries. <code>ui.saveSymbolLibrary {names?}</code>
+(Save Symbols…, the Symbols panel's Save Symbol Library…) opens the <code>saveSymbolLibrary</code> dialog (fields <code>name</code>, <code>user</code>:
+save to the user library folder, <code>selectedOnly</code> with <code>names</code>); <code>ui.dialog.confirm</code> runs <code>symbol.saveLibrary</code> (to a
+file it asks for a path and suggests <code>name</code> with <code>.vectorcraft</code>).</p>
+<p>Brush libraries open in the same panels: <code>window.brushLibrary {library}</code> (<code>library_panels</code> kind <code>brushes</code>; <code>library:  null</code> closes them). Clicking a brush there runs <code>brush.addFromLibrary {library, name}</code>, adding it to the document's
+Brushes in one undo step, with <code>apply: true</code> when paths are selected (they take the brush in the same step; the step is
+Apply Brush when the document has the brush already and the click only applies it);
+Shift/Cmd-clicks select brushes for Add to Brushes. A brush dragged onto a path runs it with <code>apply: true</code> and that
+path as <code>ids</code>, and one dragged onto the Brushes panel runs it without. <code>window.brushLibrary.other {path?}</code> loads the
+brushes of any document VectorCraft opens (a saved brush library is a <code>.vectorcraft</code> document) and opens them there.
+The User Defined libraries are <code>window.userBrushLibrary1</code>…<code>10</code> in Window → Brush Libraries. <code>ui.saveBrushLibrary  {names?}</code> (Save Brushes…, the Brushes panel's Save Brush Library…) opens the <code>saveBrushLibrary</code> dialog (fields
+<code>name</code>, <code>user</code>: save to the user library folder, <code>selectedOnly</code> with <code>names</code>); <code>ui.dialog.confirm</code> runs
+<code>brush.saveLibrary</code> (to a file it asks for a path and suggests <code>name</code> with <code>.vectorcraft</code>).</p>
+<p>Tile Edge Color: Object → Pattern → Tile Edge Color… (<code>ui.tileEdgeColor</code>) opens the <code>tileEdgeColor</code> dialog (field
+<code>color</code>: <code>#rrggbb</code> or a preset name such as "Light Blue"); <code>ui.dialog.confirm</code> sets the preference
+<code>patternTileEdgeColor</code> (<code>prefs.set</code>), the colour pattern editing mode draws the tile edge and the swatch bounds in.</p>
+<p>Window title bar: on Windows and Linux the window has no OS decorations and the app bar is the title bar. Its
+caption buttons (Minimize, Maximize/Restore, Close) sit at the bar's right end, 46 pt each; they are window chrome,
+not commands, so drive them with <code>ui.click</code> if needed. Close runs <code>app.quit</code> (the same <code>saveChanges</code> questions for
+modified documents), and empty bar space and the 5 pt window edges move and resize the window. Preferences › User
+Interface › System Title Bar (<code>systemTitleBar</code>, read when the app starts) gives the window its OS decorations back
+instead: the OS title then shows the active document (<code>*name — VectorCraft</code> with unsaved changes) and the app bar
+drops its brand mark. On macOS the window buttons are centred on the app bar; the web build is unchanged.</p>
+<p>Fill/Stroke chips and panel shortcuts: the Control bar's and Properties' Fill and Stroke chips bring their proxy
+forward (<code>paint.toggleActive {fill}</code>) and open a popover with the Swatches panel (Shift-click: the Color panel's mixer);
+a swatch clicked there runs <code>paint.setFill</code> / <code>paint.setStroke</code>. The Properties panel has them with nothing selected
+too (they set up the next object), with the Control bar's Stroke link (the Stroke panel as a popover) and weight
+spinner. Panel keys (Brushes F5, Color F6, Layers F7, Color Guide Shift+F3, Graphic Styles Shift+F5, Appearance
+Shift+F6, Align Shift+F7, Transform Shift+F8, Info Cmd+F8, Gradient Cmd+F9, Pathfinder Cmd+Shift+F9, Stroke Cmd+F10,
+Transparency Cmd+Shift+F10, Attributes Cmd+F11, Symbols Cmd+Shift+F11, Character Cmd+T, Paragraph Cmd+Alt+T, Tabs
+Cmd+Shift+T, OpenType Cmd+Alt+Shift+T; Cmd is Ctrl on Windows and Linux) run <code>window.panel {panel}</code>, can be changed in
+Edit › Keyboard Shortcuts (entry <code>panel:&lt;id&gt;</code>, every panel) and pressed with <code>ui.key</code>; <code>ui.menu.list</code> shows them on
+the Window menu's items.
+<code>window.panel</code> takes a panel id in any case or the panel's display label (<code>"Layers"</code>, <code>"Color Guide"</code>).</p>
+<p>Collapsing the dock: <code>window.collapseDock {collapsed?}</code> (the » / « on the dock's column bar; omitted toggles the
+outer column) collapses every expanded dock column to icons (<code>true</code>) or expands the outer column, Properties |
+Layers | Libraries (<code>false</code>). A panel in a collapsed column opens as a flyout from its icon, as <code>window.panel</code> does
+(<code>ui.open_panel</code> in <code>ui.inspect</code>, <code>flyout</code> in <code>ui.docking</code>); the state is <code>ui.dock_collapsed</code>.</p>
+<p>Floating tool groups: dragging or clicking the tear-off bar down a tool group's flyout (or releasing the long press
+that opened it over the bar) floats the group as a strip of tool buttons, moved by the same bar and put back in the
+toolbar by the × at its top; <code>window.floatTools {tool, floating?}</code> does the same for the group of the current
+layout holding <code>tool</code> (omitted toggles; a tool alone in its slot is an error). While a group floats, the presses
+that open its flyout raise the strip instead. The strips (<code>ui.floating_flyouts</code> in <code>ui.inspect</code>: the group's tools
+and the strip's top-left corner) are saved with the preferences and in user workspaces; the built-in workspaces
+float none.</p>
+<p>Edit Toolbar: the ••• button at the bottom of the toolbar (or <code>window.editToolbar {open?}</code>) opens the All Tools
+drawer beside the toolbar; Escape or a click outside closes it. While it is open, <code>ui.drag</code> a tool from it onto the
+toolbar to add it (onto a button's top or bottom edge: its own slot before or after; onto its middle: into its
+group), from the toolbar into it to remove it, or within the toolbar to move it. <code>toolbar.addTool {tool, slot?,  place?}</code>, <code>toolbar.removeTool {tool, group?}</code> and <code>toolbar.reset</code> do the same for the current Basic or Advanced
+toolbar and return its slots; the edits (<code>ui.toolbar_edits</code>) are saved with the preferences. The drawer lists
+the tools one per row (icon, name, shortcut), each flyout group framed together under its heading; its ☰ menu
+has Reset and the Basic and Advanced toolbars. Its Show section (<code>toolbar.show {control?, on?}</code>, <code>control</code> one
+of <code>fillStroke</code>, <code>coloring</code>, <code>drawMode</code>, <code>screenMode</code>) shows or hides the controls under the toolbar's tools,
+saved with the preferences (<code>ui.toolbar_show</code>). The toolbar names its groups only with Preferences › User
+Interface › Show Tool Group Labels, off as it ships (#1736).</p>
+<p>The Contextual Task Bar: its handle (the grip at its left end) drags it anywhere on the canvas, which always holds
+it whole, also when the window shrinks. Unpinned, the bar keeps that offset as it follows the selection, until
+another document becomes active. Its More Options (…) menu has Hide Bar (<code>window.taskBar</code>); Pin Bar Position
+(<code>window.taskBar.pin {pinned?}</code>, omitted toggles, checked while pinned), which holds the bar where it is across
+selection changes (the handle still moves it) and, turned off, lets it follow the selection again from there; Reset
+Bar Position (<code>window.taskBar.reset</code>), which unpins it and puts it back under the selection; and Show Properties
+Panel. As in Illustrator, neither the position nor the pin is saved: each launch starts with the bar under the
+selection.</p>
+<p>The Free Transform widget: while the Free Transform tool (E) is active, a small box at the canvas's top left holds
+Constrain over the tool's three modes, Free Transform, Perspective Distort and Free Distort. The buttons set the tool's
+options, as <code>tool.setOption {key: "mode", value: "free"|"perspective"|"distort"}</code> and <code>{key: "constrain", value}</code> do:
+Constrain acts as Shift held (proportional scaling, moves and rotations by 45°) and does nothing in the distort modes,
+where it is greyed. The modifier keys still work while dragging (Cmd on a corner distorts it freely, Cmd+Alt+Shift in
+perspective, Cmd on a side shears).</p>
+<p>Ruler guides are layer objects: <code>guide.add</code> puts a guide on the current layer (or <code>layer</code>), where it shows, hides,
+locks and is deleted with its layer and is listed in the Layers panel (a click on its row selects it, a drag onto
+another layer's rows moves it there); <code>guide.setLayer {index?, indexes?, layer}</code> moves guides to another layer, and
+<code>guide.list</code> gives each guide's <code>layer</code>, <code>shown</code> and <code>editable</code>. Guides on a hidden or locked layer leave the selection
+and can't be picked, moved or deleted, and no guide goes onto a locked layer; Duplicate copies a layer's guides, Merge
+Selected and Flatten Artwork keep them on the merged layer (Flatten discards a hidden layer's). Guides in files saved
+before guides had layers go on the top visible, unlocked layer when the document opens.</p>
+<p>Floating panels: the window's panels and the canvas are one craft-ui docking layout (see Shared panel docking
+below). Dragging a tab, a group's drag bar or an icon out of the dock and dropping it on the canvas or on no target
+floats it; dropping it on a group's tabs, on a group's upper or lower edge or beside a column docks it there. On
+the desktop each floating window is an OS window of its own; on the web and on Wayland it floats inside the app
+window. <code>ui.toolbar_pos</code> in <code>ui.inspect</code> is the Tools panel's corner (null: docked); <code>window.panel.float</code> and
+<code>window.panel.dock</code> with <code>panel: "tools"</code> float it at <code>x</code>, <code>y</code> or dock it on the window's left edge.</p>
+<p>Flatten Transparency: <code>ui.flattenTransparencyDialog</code> opens the <code>flattenTransparency</code> dialog for the selection
+(fields <code>preset</code>: a preset name, setting it loads that preset's options; the option keys of
+<code>object.flattenTransparency</code>: <code>balance</code> 0–100, <code>lineArtPpi</code> and <code>gradientPpi</code> 1–2400, <code>textToOutlines</code>,
+<code>strokesToOutlines</code>, <code>clipComplexRegions</code>, <code>antiAlias</code>, <code>preserveAlpha</code>, <code>preserveOverprints</code>; <code>preview</code>, off at first).
+With <code>preview</code> on it flattens on the canvas while open; <code>ui.dialog.confirm</code> keeps the result as one undo step and
+<code>ui.dialog.cancel</code> rolls it back. Out-of-range values answer with an error and the dialog stays open.</p>
+<p>Flattener presets: <code>ui.flattenerPresetsDialog {selected?}</code> opens Edit → Transparency Flattener Presets (dialog
+<code>flattenerPresets</code>). Fields: <code>selected</code> (a preset name), then the selected preset's <code>name</code> and option keys. On a saved
+preset, <code>ui.dialog.set</code> of an option saves it and a new <code>name</code> renames it (both through <code>flattener.presets.save</code>);
+built-in presets don't change. New, Delete, Import… and Export… are <code>flattener.presets.save {preset}</code>,
+<code>flattener.presets.delete</code>, <code>flattener.presets.import</code> and <code>flattener.presets.export</code>; <code>ui.dialog.confirm</code> closes.
+Opening a <code>.vcflattener</code> file with <code>app.open</code> imports its presets. In the Flatten Transparency dialog, Save Preset…
+keeps the dialog's options as a saved preset.</p>
+<p>PDF presets: <code>ui.pdfPresetsDialog {selected?}</code> opens Edit → PDF Presets (dialog <code>pdfPresets</code>, field <code>selected</code>: a
+preset name). Built-in presets are read-only. New… and Edit… open the preset editor, which <code>ui.pdfPresetDialog {name?  (a saved preset to edit) | preset? (the preset a new one starts from)}</code> opens too: dialog <code>pdfPreset</code>, the Save PDF
+dialog's option fields plus <code>name</code> and <code>description</code>; <code>ui.dialog.confirm</code> runs <code>pdf.preset.save</code> and returns to PDF
+Presets (a new preset can't take a name in use). Delete, Import… and Export… are <code>pdf.preset.delete</code>,
+<code>pdf.preset.import</code> and <code>pdf.preset.export</code>; <code>ui.dialog.confirm</code> closes. Opening a <code>.vcpdfpresets</code> file with <code>app.open</code>
+imports its presets. In the Save PDF dialog, Save Preset… shows a name field (<code>__savePresetAs</code>): while it shows,
+<code>ui.dialog.confirm</code> saves the dialog's settings as that preset and selects it instead of writing the PDF.</p>
+<p>Flattener Preview: <code>window.panel {panel: "flattenerPreview"}</code> shows the panel; <code>ui.flattenerPreview {highlight?,  overprints?, preset?, options?, showOptions?}</code> sets it (a preset loads its options, <code>options</code> adjust them), shows it
+and refreshes its snapshot of the document, answering as <code>flattener.preview</code> does. <code>ui.inspect</code> reports the settings
+as <code>ui.flattener_preview</code>. The panel keeps its snapshot until Refresh (it notes when the document or the settings
+changed since); its preview greys the art and paints the highlighted objects or areas red.</p>
+<p>Expand: Object → Expand… (<code>ui.expandDialog</code>, or <code>object.expand</code> without params from the menus, palette and shortcuts)
+opens the <code>expand</code> dialog for the selection. Fields: <code>object</code>, <code>fill</code>, <code>stroke</code> (all on; <code>__object</code>, <code>__fill</code>,
+<code>__stroke</code> say which the selection has something for, as <code>object.expand.info</code> does, and the others are disabled),
+<code>gradient</code> (<code>objects</code> or <code>mesh</code>) and <code>steps</code> (1–1000, default 255), which are enabled when <code>fill</code> is on and
+<code>__gradient</code> says the selection has a gradient fill (<code>object.expand.info</code>'s <code>gradient</code>). <code>ui.dialog.confirm</code> runs <code>object.expand</code> with them as
+one undo step.</p>
+<p>Attributes panel: <code>window.panel {panel: "attributes"}</code> (Cmd+F11) shows it; its controls run <code>attributes.set</code>,
+<code>path.reverse {reversed}</code> and <code>path.setFillRule {rule}</code>, and its Browser button runs the UI command
+<code>attributes.openUrl {url?}</code>, which opens the URL (default: the selection's) in the web browser and answers <code>{url}</code>.
+It opens <code>http:</code>, <code>https:</code> and <code>mailto:</code> URLs only, and answers a control request with an error: it hands the URL to
+another app.</p>
+<p>SVG Interactivity panel: <code>window.panel {panel: "svgInteractivity"}</code> shows it; its controls run
+<code>svgInteractivity.setEvent</code>, <code>svgInteractivity.removeEvent</code> and <code>svgInteractivity.clearEvents</code>, and its Link JavaScript
+Files… button runs the UI command <code>ui.javascriptFilesDialog</code>, which opens the <code>javascriptFiles</code> dialog (fields <code>file</code>
+and <code>selected</code>). The dialog's Add and Remove buttons run <code>svgInteractivity.addFile {file}</code> and
+<code>svgInteractivity.removeFile {file}</code> at once, and <code>ui.dialog.confirm</code> closes it.</p>
+<p>Spot Colors: the Swatches panel menu's Spot Colors… (<code>ui.spotColors</code>) opens the <code>spotColors</code> dialog (field <code>useLab</code>:
+true shows and separates spot colours defined in Lab from their Lab values, false from their working-CMYK
+equivalents); <code>ui.dialog.confirm</code> runs <code>swatch.spotOptions {useLab}</code> as one undo step.</p>
+<p>Scale options: <code>ui.menuDialog {command}</code> opens the dialog a command's menu item opens (<code>object.scale</code> → <code>scale</code>,
+<code>object.transformEach</code> → <code>transformEach</code>, also Move, Rotate, Reflect, Shear and the Path dialogs). The Scale dialog
+(<code>scale</code>) and Object → Transform → Transform Each… (dialog <code>transformEach</code>: <code>scaleH</code>,
+<code>scaleV</code> %, <code>moveH</code>, <code>moveV</code> pt, <code>rotate</code> °, <code>reflectX</code>, <code>reflectY</code>, <code>random</code>, <code>reference</code> 0–8, <code>copy</code>, <code>preview</code>)
+have the fields <code>corners</code> (Scale Corners) and <code>strokes</code> (Scale Strokes &amp; Effects). They start from the preferences
+<code>scaleCorners</code> and <code>scaleStrokes</code>, and <code>ui.dialog.confirm</code> keeps them as the preferences (<code>prefs.set</code>) before running
+<code>object.scale</code> / <code>object.transformEach</code> with them. The Transform panel's checkboxes and flyout item and the Properties
+panel's checkbox set the same preferences through <code>prefs.set</code>. Transform Each opens on the values it was last
+confirmed with (scale, move, rotate, reflect, random, reference, <code>objects</code> and <code>preview</code>; never <code>copy</code>), kept with the
+UI state (#1732). Its Copy button, left of Cancel, sets <code>copy: true</code> and confirms; <code>ui.dialog.set {field: "copy",  value: true}</code> then <code>ui.dialog.confirm</code> does the same.</p>
+<p>Use Preview Bounds: the Align panel flyout's Use Preview Bounds item shows and toggles the <code>usePreviewBounds</code>
+preference (<code>prefs.set</code>); while it is on, the bounding box and the Transform panel, Properties and Control bar
+fields measure visual bounds.</p>
+<p>Align To: the Align panel's Align To choice is saved with the preferences, and <code>ui.inspect</code> reports it as
+<code>ui.align_to</code> (<code>"selection"</code> or <code>"artboard"</code>; Align to Key Object stores no choice). The align buttons of the Align
+panel, the Control bar and the Properties panel run <code>object.align</code> with <code>to: "artboard"</code> when one object is selected,
+else with <code>"key"</code> while the selection has a key object, else with that choice. The Object → Align items send the same
+<code>to</code> while every selected object is selected whole. With direct-selected anchor points or segments they send no <code>to</code>,
+and the points align to their own bounds. <code>object.align</code> from <code>engine.execute</code> or <code>ui.menu.invoke</code> without <code>to</code> keeps
+the engine's default: the key object while there is one, else the selection.</p>
+<p>Width Point Edit: double-clicking a width point with the Width tool, or <code>ui.widthPointEdit {id, index}</code>, opens the
+<code>widthPoint</code> dialog (fields <code>id</code>, <code>index</code>, <code>t</code>, <code>side1</code> and <code>side2</code>: the left and right widths in points, <code>linked</code>,
+<code>adjustAdjoining</code>). <code>ui.dialog.confirm</code> runs <code>stroke.widthPoint.set</code> with them; <code>ui.dialog.set {field: "discard",  value: true}</code> then confirm (the Delete button) removes the point with <code>stroke.widthPoint.remove</code>.</p>
+<p>Corners: double-clicking a Live Corners widget with the Selection or Direct Selection tool, or <code>ui.corners {id?,  corners?}</code>, opens the <code>corners</code> dialog for a path's corners (the Direct-Selected ones, else every corner; fields <code>id</code>,
+<code>corners</code>: anchor indices of the path with its corners uncut, a rectangle's 0–3 clockwise from the top-left, <code>kind</code>:
+round, invertedRound or chamfer, <code>radius</code> in points; <code>kind</code> or <code>radius</code> is absent while the corners differ). <code>ui.dialog.confirm</code> runs <code>object.setLiveShape</code> with them.</p>
+<p>Perspective plane options: double-clicking a plane widget of the perspective grid, or <code>ui.perspectivePlane {plane}</code>,
+opens the <code>perspectivePlane</code> dialog (fields <code>plane</code>: left, right or ground; <code>location</code>: points along the plane's
+normal; <code>objects</code>: none, move or copy). <code>ui.dialog.confirm</code> runs <code>perspective.plane.move</code> with them.</p>
+<p>Units: dialog distance fields (Move's <code>dx</code>/<code>dy</code>, shape sizes, Offset Path's <code>offset</code>, Split Into Grid's gutters and totals,
+Artboard Options' sizes, effects' distances, <code>transformEach</code>'s <code>moveH</code>/<code>moveV</code>, New Document's <code>width</code>/<code>height</code>, the
+length preferences in <code>preferences</code>) show in the General unit (the active document's units, or <code>unitsGeneral</code> without a
+document). Through <code>ui.dialog.set</code> a number is in points and a string may carry its unit (<code>"10 mm"</code>; a bare number in a
+string is points). The <code>preferences</code> dialog's <code>unitsGeneral</code> starts as the active document's units, and OK sets them.
+<code>newDocument</code> has <code>units</code> (a unit label; print presets start in <code>unitsGeneral</code>, screen presets in Pixels).</p>
+<p>Document Setup: File → Document Setup… (<code>file.documentSetup</code>, Cmd+Alt+P) opens the <code>documentSetup</code> dialog. Its fields
+are what <code>document.setup</code> reports (<code>units</code>, <code>bleed</code> [top, bottom, left, right] in pt, <code>outlineImages</code>,
+<code>highlightSubstitutedGlyphs</code>, <code>gridSize</code>, <code>gridColors</code>, <code>simulatePaper</code>, <code>flattenerPreset</code>,
+<code>discardWhiteOverprint</code>, <code>language</code>, <code>quotes</code>, <code>typographersQuotes</code>, <code>superscript</code>, <code>subscript</code>, <code>smallCapsSize</code>,
+<code>exportText</code>, <code>backgroundContents</code>) plus <code>tab</code> (<code>General</code>, <code>Transparency</code> or <code>Type</code>) and <code>bleedLinked</code>.
+<code>ui.dialog.confirm</code> runs <code>document.setup</code> with them as one undo step; a bad value answers with an error and the dialog
+stays open.</p>
+<p>New Document: File → New… (<code>file.newDialog</code>, Cmd+N) opens the <code>newDocument</code> dialog. Its fields are <code>file.new</code>'s params
+(<code>preset</code>, <code>name</code>, <code>width</code> and <code>height</code> in pt, <code>units</code>, <code>artboards</code>, <code>artboardLayout</code>, <code>bleed</code>, <code>backgroundContents</code>,
+<code>colorMode</code>, <code>rasterEffectsPpi</code>, <code>previewMode</code>) plus <code>category</code> (the tab: Recent, Saved, Mobile, Web, Print, Film &amp;
+Video, Art &amp; Illustration, Branding, Social), <code>advanced</code> (Advanced Options open), <code>bleedLinked</code> and <code>presetName</code>
+(Save Preset's name). Setting <code>preset</code> to a name from <code>file.newPresets</code> fills the other fields from that preset;
+changing a field afterwards makes the settings custom (<code>preset</code> becomes ""). More Settings is the <code>newDocumentMore</code>
+dialog over the same fields (its Profile is <code>category</code>). <code>ui.dialog.confirm</code> runs <code>file.new</code> with the fields (with
+<code>previewMode: "pixel"</code> the app turns Pixel Preview on); on an error the dialog stays open.</p>
+<p>Swatch Conflict: through the app, when the pasted objects' global or spot swatches conflict with the document's
+(see <code>clipboard.conflicts</code>) and the params have no <code>swatchConflict</code>, every Paste command opens the <code>swatchConflict</code>
+dialog instead and answers <code>{dialog: "swatchConflict"}</code>. Fields: <code>conflicts</code> (<code>[{name, document, clipboard,  spot}]</code>), <code>index</code> (the conflict asked about), <code>choice</code> (<code>merge</code> or <code>add</code>), <code>applyToAll</code> and <code>choices</code> (the answers so
+far). <code>ui.dialog.confirm</code> records the answer and asks about the next conflict (with <code>applyToAll</code>, answers the rest
+the same); the last one runs the paste with <code>swatchConflict</code>. <code>ui.dialog.cancel</code> pastes nothing.</p>
+<p>Paste placement: through the app, <code>edit.paste</code> and <code>edit.pasteWithoutFormatting</code> without <code>center</code>, <code>dx</code> or <code>dy</code>
+paste at the centre of the view. The Paste menu items are enabled while the system clipboard holds something to
+paste (SVG, PDF, text or a bitmap on Windows; text or a bitmap on macOS; text on Linux, whose paste keys still take a
+bitmap; SVG on the web, whose paste keys also take pictures and files), even with nothing copied in the app (looked
+at up to four times a second; <code>ui.menu.list</code> shows it). The Layers panel menu (≡ on
+the dock's tab strip while Layers shows) lists the layer commands (New Layer…, Duplicate and Delete Selection,
+Options for Selection…, clipping mask, isolation, Locate Object, Merge Selected, Flatten Artwork, Collect in New
+Layer, Release to Layers, Reverse Order, Template, Hide/Outline/Lock Others or Show/Preview/Unlock All Layers), Paste
+Remembers Layers (<code>layer.pasteRemembersLayers</code>, checked when on) and Panel Options…. Layer Options is the
+<code>layerOptions</code> dialog (<code>ui.layerOptions {ids?}</code>, <code>ui.newLayer {sublayer?}</code>), Panel Options the <code>layersPanelOptions</code>
+dialog (<code>ui.layersPanelOptions</code>), and <code>ui.layersExpand {ids?, open?}</code> opens or closes rows; see the Layers panel
+section of <code>docs/mcp.md</code> for the row commands (<code>layer.setCurrent</code>, <code>layer.highlight</code>, <code>layer.move</code>…).</p>
+<p>File Info: File → File Info… (<code>file.info</code> from the menu or Cmd+Alt+Shift+I; <code>ui.fileInfoDialog</code> for agents) opens the
+<code>fileInfo</code> dialog. Its fields are what <code>file.info</code> reports (<code>title</code>, <code>author</code>, <code>authorTitle</code>, <code>description</code>,
+<code>keywords</code> (a list: the chips), <code>rating</code>, <code>copyrightStatus</code>, <code>copyrightNotice</code>, <code>copyrightUrl</code>; <code>created</code> and
+<code>modified</code> are shown read-only) plus <code>__keyword</code>, keywords typed but not added yet (comma-separated; OK adds them).
+<code>ui.dialog.confirm</code> runs <code>file.info</code> with them as one undo step; a bad value answers with an error and the dialog
+stays open.</p>
+<p>Document Raster Effects Settings: Effect → Document Raster Effects Settings… (<code>ui.rasterEffectsSettingsDialog</code> for
+agents) opens the <code>rasterEffectsSettings</code> dialog. Its fields are what <code>document.rasterEffectsSettings</code> reports
+(<code>resolution</code>, <code>colorModel</code>, <code>background</code>, <code>antiAlias</code>, <code>clippingMask</code>, <code>addAround</code> in pt, <code>preserveSpotColors</code>);
+<code>ui.dialog.confirm</code> runs it with them as one undo step; a bad value keeps the dialog open. Object → Rasterize… opens a
+<code>command</code> dialog for <code>object.rasterize</code> whose fields (<code>ppi</code>, <code>colorModel</code>, <code>background</code>, <code>antiAlias</code>, <code>clippingMask</code>,
+<code>addAround</code>) start from these settings.</p>
+<p>Missing linked files: <code>app.open</code> of a document whose linked images' files can't be found (<code>document.open</code>'s
+<code>missingLinks</code>) opens the <code>missingLinks</code> dialog for the first (fields <code>missing</code>: <code>[{name, path, ids}]</code>, <code>modified</code>,
+<code>applyToAll</code>, <code>path</code>). <code>ui.dialog.set {field: "path", value}</code> then <code>ui.dialog.confirm</code> replaces it with that file
+(<code>links.relink</code>; without <code>path</code> a file is picked), and with <code>applyToAll</code> the others are looked for by name in the same
+folder; <code>ui.dialog.set {field: "discard", value: true}</code> then confirm ignores it (the images keep their preview), with
+<code>applyToAll</code> the rest too. The next missing file is asked about after each answer; <code>ui.dialog.cancel</code> stops asking.
+Then, with the preference <code>updateLinks: "askWhenModified"</code>, modified linked files are offered for update in a
+<code>confirm</code> dialog whose <code>ui.dialog.confirm</code> runs <code>links.update</code>. The same happens when the app's window comes back to
+the front and a linked file of the active document changed meanwhile (asked once per change of a file); with
+<code>"automatically"</code> the files are read again at once, with <code>"manually"</code> the Links panel shows them as modified.</p>
+<p>Find Linked Files: in the <code>missingLinks</code> dialog, <code>ui.dialog.set {field: "searchFolder", value}</code> then <code>ui.dialog.confirm</code>
+is Find in Folder…: the dialog becomes <code>findLinks</code>, which looks in that folder and its subfolders for every file the
+dialog still asks about (<code>links.findFiles</code>). Fields: <code>document</code> (the document's uid), <code>missing</code> (<code>[{name, path, ids}]</code>),
+<code>modified</code>, <code>back</code>, <code>state</code> (empty, <code>searching</code>, <code>done</code>, <code>stopped</code> or <code>failed</code>), <code>search</code> (the search's <code>id</code>), <code>folder</code>,
+<code>found</code> (<code>links.findFiles</code>'s <code>links</code>, with the files found), <code>searched</code>, <code>skipped</code>, <code>unreadable</code>, <code>stopped</code>, <code>error</code>,
+<code>picks</code> (the file chosen for each row of <code>missing</code>, or null; with each search result, a row not chosen in the dialog
+gets its only same file, else its only file found), <code>touched</code> (the rows whose file was chosen in the dialog; search
+results leave their pick as it is), <code>copy</code> (Copy into the document's folder, shown for a saved document) and
+<code>searchFolder</code>. <code>ui.dialog.set {field: "searchFolder", value}</code> then <code>ui.dialog.confirm</code> searches that folder and keeps
+the dialog open. The fields change as frames draw the dialog; <code>links.findFiles {}</code> reports the search directly.
+<code>ui.dialog.confirm</code> without <code>searchFolder</code> is Relink: each row with a file runs <code>links.relink {ids, path, copy}</code>, one
+undo step each (<code>copy</code> for images only: a placed document is relinked where its file is), and it returns <code>{relinked,  failed}</code>; the status line names the first file that failed. With <code>back</code> (opened from <code>missingLinks</code>), the rows left
+without a file and those that failed go back to that dialog, then the modified files are offered for update.
+<code>ui.dialog.cancel</code> closes it and stops its search. <code>ui.findLinksInFolder {folder?, ids?}</code> (Find in Folder… in the Links
+panel menu) asks for a folder (or takes <code>folder</code>), then opens the dialog for the files of <code>ids</code>, else of the selected
+linked images and placed documents, else the missing ones; with nothing to look for, it fails with "No linked files to
+look for" and asks for no folder. On the web, <code>ui.findLinksInFolder</code> is disabled, <code>links.findFiles</code> can't start a search
+and the dialog doesn't open.</p>
+<p>Missing fonts: once the missing linked file questions are answered, or at once when there are none, <code>app.open</code> of a
+document whose type uses fonts that aren't available (<code>text.missingFonts</code>) opens the <code>missingFonts</code> dialog, one document
+at a time, and so does <code>links.editOriginal</code> of a placed document. When another dialog takes its place (Import PDF for a
+file opened next, for example), the dialog opens again once that one closes. Fields: <code>document</code> (the document's uid),
+<code>fonts</code> (<code>[{family, style, status, resolved}]</code>), <code>fontsNextToDocument</code> (the <code>Fonts</code> folder next to the document, or
+empty), <code>state</code> (empty, <code>searching</code>, <code>done</code>, <code>stopped</code> or <code>failed</code>), <code>search</code> (the search's <code>id</code>), <code>folder</code>, <code>found</code>
+(<code>text.findFontFiles</code>'s <code>fonts</code>, with the files found), <code>searched</code>, <code>skipped</code>, <code>unreadable</code>, <code>stopped</code>, <code>error</code> and
+<code>chosen</code> (the files to add; a font's first file is chosen when the search finds it). Its buttons are Find Fonts and
+Close, with Search Fonts Folder, Find in Folder… and, once files are found, Add Fonts in the dialog.
+<code>ui.dialog.set {field: "discard", value: true}</code> then <code>ui.dialog.confirm</code> is Find Fonts: the dialog closes and Type ›
+Find Font opens (dialog <code>findFont</code>) with the first missing font selected. <code>ui.dialog.set {field: "searchFolder",  value}</code> then <code>ui.dialog.confirm</code> searches that folder (<code>text.findFontFiles</code>), keeps the dialog open and clears
+<code>searchFolder</code>, also when the search doesn't start. The fields change as frames draw the dialog; <code>text.findFontFiles  {}</code> reports the search directly. <code>ui.dialog.confirm</code> without <code>discard</code> or <code>searchFolder</code> is Add Fonts: it copies the
+files in <code>chosen</code> (<code>text.addFontFiles</code>) and closes the dialog. <code>ui.dialog.cancel</code> (Close) closes it and stops its
+search. After Find Fonts or Close, the dialog doesn't open again for that open.
+<code>ui.missingFontsDialog {folder?}</code> opens the dialog for the active document, searching <code>folder</code> when given.
+<code>ui.findFontsInFolder {folder?}</code> (Find in Folder… in Type › Find Font…, shown when the document misses fonts) asks for a
+folder, then opens the dialog searching it. The web shows a status line instead of the dialog, and both commands are
+disabled there.</p>
+<p>Text Import Options: placing a <code>.txt</code> file through the app (<code>file.place</code> with a file and no <code>text</code> options, the Place
+dialog, a drop) opens the <code>textImport</code> dialog (fields <code>platform</code>: <code>windows</code>/<code>mac</code>, <code>characterSet</code>: <code>unicode</code>/<code>ansi</code>,
+<code>removeLineReturns</code>, <code>removeParagraphReturns</code>, <code>replaceSpaces</code>, <code>spaces</code>). <code>ui.dialog.confirm</code> places the file as area
+type with those options (<code>file.place {text: {…}}</code>).</p>
+<p>System clipboard formats: through the desktop app, <code>edit.copy</code> and <code>edit.cut</code> publish what <code>clipboard.flavours</code>
+lists to the system clipboard (once they are written, the status bar shows the first of the PNG's and PDF's
+<code>warnings</code>, such as an image that couldn't be decoded), and every Paste command first loads what another app copied (<code>clipboard.importSvg</code>,
+<code>importPdf</code>, <code>importEps</code>, <code>importText</code> or <code>importImage</code>, centred in the view; the desktop app reads PDF and EPS from
+the Windows clipboard and, with SVG, from the macOS pasteboard, and an <code>.eps</code> file, or a <code>.ai</code> or <code>.ait</code> file that holds a PDF or PostScript, copied in a file manager anywhere; a copied <code>.ai</code> or <code>.ait</code> file that holds a PDF loads with <code>importPdf {editingData: true}</code>, which reads its editing data); an import error answers the Paste with that error
+and pastes nothing. Cmd+V also pastes a bitmap or PDF with no text beside it (on the key's release, as egui sends no
+Paste event for it). Screenshots paste on every platform: Windows reads <code>PNG</code>, else <code>CF_DIBV5</code>/<code>CF_DIB</code>, macOS the
+pasteboard's PNG or TIFF, Linux <code>image/png</code>, and the web the picture the browser's paste event carries (#457).</p>
+<p>File menu details: <code>file.openRecent1</code>…<code>file.openRecent30</code> open the recent files the <code>recentFilesCount</code> preference
+lists (0 hides them all; <code>file.recentFiles</code> returns the listed paths), <code>file.reveal</code> shows the document's file in the
+system file manager (desktop only; answers <code>{path}</code>), and <code>file.newFromTemplate</code> without params opens a file picker
+in the Templates folder (preference <code>templatesFolder</code>). Older native files open as "<name> [Converted]" (preference
+<code>appendConverted</code>), so their Save asks for a new <code>.vectorcraft</code> name. Native files reopen at the view they were saved
+with.</p>
+<p>DXF Options: Export As… with the DXF format (<code>file.exportAs {format: "dxf"}</code>, then the save dialog), or
+<code>ui.dxfOptionsDialog {path?, …document.exportDxf options}</code> for agents, opens the <code>dxfOptions</code> dialog. Its fields are
+<code>document.export</code> params: <code>version</code>, <code>unit</code> (a unit name such as <code>Millimeters</code>), <code>scale</code>, <code>scaleLineweights</code>, <code>colors</code>
+(<code>8</code>, <code>16</code>, <code>256</code>, <code>true</code>), <code>rasterFormat</code> (<code>png</code>, <code>jpeg</code>), <code>preserve</code> (<code>appearance</code>, <code>editability</code>), <code>selectedOnly</code>,
+<code>alterPaths</code>, <code>outlineText</code>, plus <code>path</code> and the artboard choice. <code>ui.dialog.confirm</code> checks them (a bad value, or
+Export Selected Art Only with nothing selected, keeps the dialog open), remembers them for the next DXF Options and
+writes the file (asking for a path when there is none). Export As also lists DWG, greyed out: setting its <code>format</code> to
+<code>dwg</code> shows, and on confirm answers, the hint to export DXF instead.</p>
+<p>DXF Import Options: opening a DXF drawing through the app (<code>app.open</code>, <code>file.open</code>, a drop) or placing one
+(<code>file.place</code> with a <code>.dxf</code> file and no <code>dxf</code> options, which answers <code>{"dialog": "dxfImport"}</code>) opens the <code>dxfImport</code>
+dialog (<code>mode</code>: <code>open</code> or <code>place</code>; <code>layouts</code>, <code>units</code> and <code>version</code> describe the drawing). Its fields are the
+<code>document.open</code> <code>dxf</code> options: <code>layout</code> (one of <code>layouts</code>), <code>fit</code>, <code>unit</code> (a unit name such as <code>Millimeters</code>) and
+<code>scale</code> (1 unit = <code>scale</code> drawing units; ignored with <code>fit</code>), <code>scaleLineweights</code>, <code>center</code>, <code>mergeLayers</code>.
+<code>ui.dialog.confirm</code> opens or places the drawing (placing keeps the other <code>file.place</code> params in <code>__place</code>) and
+remembers <code>fit</code>, <code>scaleLineweights</code>, <code>center</code> and <code>mergeLayers</code> for the next drawing; an error (an unknown layout,
+art too large at that scale) keeps the dialog open.</p>
+<p>Placement Options: the Links panel's flyout (or <code>ui.placementOptionsDialog {ids?}</code> for agents) opens the
+<code>placementOptions</code> dialog for the selected images (fields <code>ids</code>, <code>preserve</code>: <code>transforms</code>/<code>bounds</code>/<code>fileDimensions</code>/
+<code>fit</code>/<code>fill</code>, <code>align</code>: <code>topLeft</code> … <code>bottomRight</code>, <code>clip</code>). <code>ui.dialog.confirm</code> runs <code>links.placementOptions</code> with them as
+one undo step. The Links panel (<code>window.panel {panel: "links"}</code>) shows <code>links.list</code> and the first selected image's
+<code>links.info</code>; <code>links.editOriginal</code> and <code>links.reveal</code> (Edit › Edit Original, Show in Folder) hand the linked file to
+the system and return <code>{path}</code>. Edit Original opens only a regular file whose extension is a format <code>document.open</code>
+reads, and answers a control request with an error unless the file is a placed document (which opens in a tab).</p>
+<p>Package: File → Package… (<code>ui.packageDialog</code>) opens the <code>package</code> dialog for a saved document (a document never saved
+gets a <code>confirm</code> dialog whose OK runs <code>file.saveAs</code>). Fields: <code>folder</code> (the location), <code>name</code> (the package folder),
+<code>copyLinks</code>, <code>linksFolder</code>, <code>relink</code>, <code>copyFonts</code>, <code>report</code>. <code>ui.dialog.confirm</code> saves unsaved changes, runs
+<code>file.package</code> and then opens a <code>confirm</code> dialog whose OK runs <code>file.showPackage {folder}</code>; the web downloads the zip
+instead. Document Info's flyout picks a category and Save… runs <code>docInfo.save {path?, selectionOnly?}</code>.</p>
+<p>Slices: through the app, <code>object.slice.options</code> and <code>object.slice.divide</code> with no params open their dialogs on the
+selected slices. <code>sliceOptions</code> (fields <code>kind</code>: <code>image</code>/<code>noImage</code>/<code>htmlText</code>, <code>name</code>, <code>url</code>, <code>target</code>, <code>message</code>,
+<code>alt</code>, <code>text</code>, <code>background</code>: <code>""</code>/<code>matte</code>/<code>#rrggbb</code>, <code>hAlign</code>, <code>vAlign</code>; <code>__html</code> says whether HTML Text applies)
+runs <code>object.slice.options</code> on <code>ui.dialog.confirm</code>; <code>divideSlices</code> (fields <code>divideRows</code>, <code>rows</code>, <code>rowMode</code>:
+<code>count</code>/<code>size</code>, <code>rowHeight</code>, and <code>divideColumns</code>, <code>columns</code>, <code>columnMode</code>, <code>columnWidth</code>) runs <code>object.slice.divide</code>.
+Read slice options with <code>slice.list</code>.</p>
+<p>The Slice tools: <code>ui.pointer</code> drags with the <code>slice</code> tool make a user slice (Shift square, Alt from the centre; one
+undo step). With <code>sliceSelection</code> a click selects a slice (Shift toggles), a drag moves the selected slices, a drag on
+a selected user slice's handle resizes it, a double click opens <code>sliceOptions</code> and <code>ui.key</code> Delete deletes the
+selected slices. Hidden or locked slices (<code>view.slices.hide</code>, <code>view.slices.lock</code>) can't be picked.</p>
+<p>EPS Options: Export As… with the EPS format (<code>file.exportAs {format: "eps"}</code>, then the save dialog), or
+<code>ui.epsOptionsDialog {path?, …document.exportEps options}</code> for agents, opens the <code>epsOptions</code> dialog. Its fields are
+<code>document.export</code> params: <code>previewFormat</code> (<code>none</code>, <code>tiffBw</code>, <code>tiffColor</code>), <code>transparentPreview</code>, <code>overprints</code>
+(<code>preserve</code>, <code>discard</code>), <code>flattenerPreset</code> (a built-in or saved preset's name), <code>includeLinkedFiles</code>, <code>thumbnails</code>,
+<code>cmykPostScript</code>, <code>compatibleGradients</code>, <code>level</code> (<code>2</code>, <code>3</code>), plus <code>path</code> and the artboard choice (<code>useArtboards</code>,
+<code>range</code>). <code>ui.dialog.confirm</code> checks them (a bad value or an unknown preset keeps the dialog open), remembers them for
+the next EPS Options and writes the file(s), asking for a path when there is none. With Use Artboards and two or more
+artboards, it writes a central file of the whole document under the chosen name and one <code>{stem}_{artboard}.eps</code> per
+artboard. When no art shows, it writes only the artboard files.</p>
+<p>Data Recovery: at launch, copies left behind by a crash open the <code>recovery</code> dialog (never copies another running
+instance keeps, so instances started side by side for screenshots don't get it). Fields: <code>copies</code> (<code>[{file, title,  saved}]</code>, from <code>file.recovery.list</code>) and <code>discard</code>. <code>ui.dialog.confirm</code> restores them all (<code>file.recovery.restore</code>
+each, opening "<name> [Recovered]" documents), <code>discard: true</code> then confirm deletes them, <code>ui.dialog.cancel</code> keeps them
+for the next launch. While copies are written in the background <code>ui.inspect</code> lists them under <code>background</code>
+("Saving recovery data for <name>").</p>
+<p>Native save options: File → Save As to a native or <code>.ai</code> file opens the <code>saveOptions</code> dialog after the save panel
+(heading "VectorCraft Options" or "PDF-compatible .ai Options"). Fields: <code>separateArtboards</code>, <code>all</code> (true: every
+artboard; false: <code>range</code>, such as "1-3, 5"), <code>includeLinked</code>, <code>embedProfiles</code>, <code>pdfCompatible</code>, <code>compress</code>, and for
+native files <code>version</code> and <code>preview</code>. A bad range keeps the dialog open; <code>ui.dialog.confirm</code> writes the file and the
+artboards' files. A <code>.ai</code> file's <code>aiVersion</code> comes first: <code>"pdf"</code> (the default) or <code>"7"</code> (legacy, heading "Legacy .ai
+Options"), which takes only <code>transparentImages</code> (<code>"flatten"</code> or <code>"omit"</code>), <code>hiddenObjects</code> (<code>"layer"</code>, <code>"omit"</code> or
+<code>"visible"</code>, the Hidden Objects menu), <code>outlineText</code> (the Text menu: false Editable, true Outlines) and, with several artboards, the artboard
+picker: <code>boards</code>, one bool per artboard (default: those last saved, else all), saved as <code>range</code>, one file per checked
+artboard. OK is disabled with none checked.</p>
+<p>EMF and WMF: Export As… lists both formats (<code>file.exportAs {format: "emf"}</code> or <code>"wmf"</code>); they have no options
+dialog, so <code>ui.dialog.confirm</code> asks for the path and writes the file (one per artboard with Use Artboards). Open and
+Place read <code>.emf</code> and <code>.wmf</code>; a paste of <code>image/emf</code> from a system clipboard service runs <code>clipboard.importEmf</code>.</p>
+<p>TIFF, BMP and Targa Options: Export As… with the TIFF, BMP or Targa format (<code>file.exportAs {format: "tiff"}</code>, then
+the save dialog) opens <code>tiffOptions</code>, <code>bmpOptions</code> or <code>tgaOptions</code>: the raster rows of PNG Options (<code>ppi</code>,
+<code>background</code>, <code>antiAlias</code>), then TIFF's <code>colorModel</code> (<code>rgb</code>, <code>cmyk</code>, <code>gray</code>; a CMYK document starts on <code>cmyk</code>),
+<code>byteOrder</code> (<code>little</code>, <code>big</code>), <code>lzw</code> and <code>embedIcc</code>; BMP's <code>colorModel</code> (<code>rgb</code>, <code>gray</code>), <code>fileFormat</code> (<code>windows</code>,
+<code>os2</code>), <code>depth</code> (1, 4, 8, 16, 24, 32), <code>reduction</code> and <code>dither</code> (4 and 8 bits), <code>rle</code> and <code>flipRows</code>; Targa's <code>depth</code>
+(16, 24, 32). The BMP dialog keeps its choices writable together (OS/2 falls back to 24 bits and turns RLE and flipped
+rows off; RLE turns flipped rows off). <code>ui.dialog.set</code> the fields and <code>ui.dialog.confirm</code> writes the file(s) with
+<code>document.export</code>.</p>
+<p>Save for Web: File → Export → Save for Web (Legacy)… (<code>file.saveForWeb</code>, Ctrl/Cmd+Alt+Shift+S) opens the <code>saveForWeb</code>
+dialog on the remembered settings (<code>webExport.settings</code>). Its fields are the <code>document.exportForWeb</code> settings
+(<code>format</code>, <code>colors</code>, <code>reduction</code>, <code>dither</code>, <code>quality</code>, <code>colorTable</code>, <code>width</code>, <code>percent</code>, <code>output</code>…; set <code>preset</code> to load
+a preset) plus <code>__view</code> (<code>original</code>, <code>optimized</code>, <code>2up</code>, <code>4up</code>), <code>__zoom</code> (<code>fit</code> or a percentage), <code>__kbps</code> and
+<code>__color</code> (the colour table's selected colour). <code>ui.dialog.confirm</code> remembers the settings and saves (a save panel for
+the image, or the page with HTML output; the web downloads the files); with <code>discard: true</code> it is Done: it remembers
+the settings and closes. <code>file.saveForWeb</code> with settings saves without the dialog, and <code>file.saveForWeb.browser</code>
+writes the HTML page to a temporary folder and opens it in the default browser (desktop). Both return the export's
+<code>warnings</code>, and the status bar shows the first one as Save As shows a save's notes.</p>
+<p>PSD Options: Export As… with the PSD format (<code>file.exportAs {format: "psd"}</code>, then the save dialog) opens <code>psdOptions</code>:
+the raster rows of PNG Options (<code>ppi</code>, <code>background</code>, <code>antiAlias</code>), then <code>colorModel</code> (<code>rgb</code>, <code>cmyk</code>, <code>gray</code>; a CMYK
+document starts on <code>cmyk</code>), <code>layers</code> (true: Write Layers; false: Flat Image, whose background list starts at White),
+<code>maxEditability</code> and <code>hiddenLayers</code> (with layers) and <code>embedIcc</code>. <code>ui.dialog.set</code> the fields and <code>ui.dialog.confirm</code>
+writes the file(s) with <code>document.export</code>.</p>
+<p>Print: File → Print… (<code>file.print</code> with no params, Ctrl/Cmd+P) opens the <code>print</code> dialog on the document's print
+settings. Its fields are the <code>print.setup</code> settings (<code>copies</code>, <code>artboards</code>, <code>range</code>, <code>media</code>, <code>orientation</code>,
+<code>placement</code>, <code>scaling</code>, <code>marks</code>, <code>bleed</code>, <code>output</code>, <code>graphics</code>, <code>color</code>, <code>margin</code>…; a section is an object, as
+<code>{field: "marks", value: {"trim": true}}</code>) plus <code>printer</code> (a name from <code>print.printers</code>, <code>""</code> the system's default) and
+<code>toFile</code> (save the job as a PDF), and the UI-only <code>__section</code> (General, Marks and Bleed, Output, Graphics, Color
+Management, Advanced, Summary) and <code>__sheet</code> (the page the preview shows, 0-based). <code>ui.dialog.confirm</code> (Print) keeps
+the settings with the document (<code>print.setup</code>, one undo step) and prints them: to the printer through the system's
+print queue (the web: the browser's print dialog), else, with <code>toFile</code> or no printing available, a save panel for the
+PDF. With <code>discard: true</code> it is Done: it only keeps the settings. Settings that can't print (a missing artboard, a
+range of no tiles) answer with an error and keep the dialog open. <code>file.print {settings?, printer?, toFile?, path?}</code>
+prints without the dialog; <code>print.printers</code> lists the printers and <code>print.printerSetup {printer?}</code> opens their system
+settings (Setup…). Desktop submission returns <code>{background: true, printed: false, printer, status}</code>
+while the spooler runs on a worker. <code>ui.inspect</code> lists it under <code>background</code>; completion or refusal
+appears in <code>ui.status</code>. Quit waits for submissions. PDF/PostScript export and the browser's print
+dialog retain their existing command results.</p>
+<p>Agents still get <code>{printers: [{name, default}], service, setup}</code> from <code>print.printers</code>;
+discovery failure yields an empty list. Print replies preserve <code>pages</code>, <code>bytes</code>, <code>format</code> and
+<code>warnings</code> alongside the pending fields above. Validation/start failures use the existing control
+reply <code>{ok: false, error: "…"}</code>; later spooler failures appear in <code>ui.inspect</code> → <code>ui.status</code>, with
+no second reply or structured backend error object. Headless MCP keeps its engine-only <code>file.print</code>
+result (<code>path</code> or <code>dataBase64</code>, plus the same print metadata); no spooler fields are added there.</p>
+<p>Print presets: in the <code>print</code> dialog, <code>preset</code> names the print preset whose settings were loaded last; setting it
+(<code>ui.dialog.set {field: "preset", value: "Posters"}</code>) loads that preset's settings, and the list reads <code>[Custom]</code> once
+they differ. Save Preset… shows a name field (<code>__savePresetAs</code>): while it shows, <code>ui.dialog.confirm</code> saves the dialog's
+settings as that preset (<code>print.presets.save</code>) and selects it instead of printing. <code>ui.printPresetsDialog {selected?}</code>
+opens Edit → Print Presets (dialog <code>printPresets</code>, field <code>selected</code>); <code>[Default]</code> is protected. New… and Edit… open the
+preset editor, which <code>ui.printPresetDialog {name? (a saved preset to edit) | preset? (the preset a new one starts  from)}</code> opens too: dialog <code>printPreset</code>, the Print dialog's settings fields plus <code>name</code>; <code>ui.dialog.confirm</code> runs
+<code>print.presets.save</code> and returns to Print Presets (a new preset can't take a name in use). Delete, Import… and
+Export… are <code>print.presets.delete</code>, <code>print.presets.import</code> and <code>print.presets.export</code>; <code>ui.dialog.confirm</code> closes.
+Opening a <code>.vcprintpresets</code> file with <code>app.open</code> imports its presets.</p>
+<p>Modifiers on synthetic input: <code>ui.key</code>, <code>ui.click</code>, <code>ui.drag</code> and <code>ui.wheel</code> take <code>shift</code>, <code>alt</code>, <code>ctrl</code> and <code>cmd</code> (Command on
+macOS, Ctrl elsewhere), and the app holds them for the frames the input spans, as if the keys were down: a key's
+press, its <code>text</code> and its release; a click's press and release; a drag from the press through every move to the
+release. Every handler sees them (Shift+arrow nudges by the big increment, Alt+arrow nudges a copy, Shift-clicking a
+Layers selection square adds to the selection); the keyboard's own modifiers apply again afterwards.</p>
+<p>Cutting tools: Mirror &amp; Cut (<code>mirrorCut</code>), Line Cut (<code>lineCut</code>) and Rectangle Cut (<code>rectCut</code>) cut the selected paths
+and compound paths. <code>ui.tool.select</code> one, then drag with <code>ui.pointer</code>: the cut previews live and the release keeps it
+as one undo step (<code>ui.key</code> Escape cancels). They run <code>path.mirrorCut</code>, <code>path.lineCut</code> and <code>path.rectCut</code>, which an
+agent can call directly. Mirror &amp; Cut's tool options (<code>tool.setOption</code>, shown in the Control bar) are <code>axis</code>
+(<code>free</code> | <code>vertical</code> | <code>horizontal</code>; a constrained axis follows the pointer and a click places it) and <code>keep</code>
+(<code>left</code> | <code>right</code> | <code>top</code> | <code>bottom</code>); Alt on release keeps the other side.</p>
+<p>Puppet Warp (<code>puppetWarp</code>): with art selected, the tool shows pins at once (automatic ones at the centre and the end
+of each limb until pins are placed). <code>ui.pointer</code> clicks on the art add pins (each new pin is selected; Shift-click
+adds a pin to the selection or takes it out), dragging a pin moves every selected pin and warps the art, and
+Alt-dragging near (not on) a selected pin turns the art around it. A click off the mesh adds nothing: the cursor shows
+not-allowed there and the canvas says so. <code>ui.key</code> Delete or Backspace removes the selected pins. Adding, deleting and
+each drag are one undo step each, running <code>object.puppetWarp {rest: true, …}</code>; the pins live in the document, so
+Undo/Redo take them back with the art, they stay across tool switches while the selection is unchanged, and another
+selection starts afresh. <code>object.puppetWarp.pins</code> reads them. Its tool options (<code>tool.setOption</code>, shown in the
+Control bar) are <code>expand</code> (Expand Mesh, points, 0 allowed), <code>showMesh</code> (on by default) and <code>selectAllPins</code> (<code>true</code>
+selects every pin, <code>false</code> none); <code>ui.inspect</code> → <code>toolOptions</code> lists the <code>pins</code> the tool last showed and the
+<code>selected</code> ones.</p>
+<p>Colour adjustment effects (Effect → Color Adjustments) open the <code>effect</code> dialog like the other effects
+(<code>effect.dialog {effect: "adjust.hueSaturation"}</code>): its fields are the effect's parameters (sliders for the amounts,
+<code>channel</code> for Curves and Levels, <code>points</code> for Curves, <code>color</code> for Shift to Color) and they preview live; set them with
+<code>ui.dialog.set</code> and <code>ui.dialog.confirm</code> to apply (Curves also has a graph: drag its points). Object → Vector
+Halftone… (<code>engine.execute {command: "ui.menuDialog", params: {command: "object.vectorHalftone"}}</code>) opens the
+<code>vectorHalftone</code> dialog (fields <code>shape</code>, <code>frequency</code>, <code>angle</code>, <code>mode</code>, <code>color</code>, <code>invert</code>, <code>clip</code>, <code>keepOriginal</code>,
+<code>preview</code>): it previews live and <code>ui.dialog.confirm</code> keeps the halftone as one undo step.</p>
+<p>Tool options last: <code>tool.setOption {key, value}</code> or <code>{values: {…}}</code> (and <code>tool</code> to set another tool's) sets them, and
+the options a tool keeps (Liquify brush and tool options, Mirror &amp; Cut, Puppet Warp, Symbolism, drawing tools) stay
+when you switch tools or documents and are saved with the preferences. The Liquify tools share their Global Brush
+Dimensions (<code>width</code>, <code>height</code>, <code>angle</code>, <code>intensity</code>).</p>
+<p>Perspective grid: View → Perspective Grid → Define Grid… (<code>ui.perspectiveGridDialog</code>) opens the <code>perspectiveGrid</code>
+dialog prefilled from the grid. Its fields are those of <code>perspective.grid.define</code> (<code>kind</code>, <code>units</code>, <code>scale</code>,
+<code>gridline</code>, <code>angle</code>, <code>distance</code>, <code>horizonHeight</code>, <code>thirdVp</code>, <code>leftColor</code>, <code>rightColor</code>, <code>groundColor</code>, <code>opacity</code>;
+lengths in <code>units</code>, so setting <code>units</code> converts them). <code>ui.dialog.confirm</code> runs <code>perspective.grid.define</code>; a refused
+value keeps the dialog open.</p>
+<p>Object → Envelope Distort's dialogs open through their menu items or <code>ui.menuDialog {command}</code>. Make with Warp…
+(<code>object.envelope.makeWithWarp</code>) opens <code>envelopeWarp</code> (fields <code>style</code>, <code>horizontal</code>, <code>bend</code>, <code>h</code>, <code>v</code>, <code>preview</code>, and
+<code>reset</code>); while an envelope is selected the menu shows Reset with Warp… instead, and the same item, shortcut or
+<code>object.envelope.resetWithWarp</code> opens it with <code>reset: true</code> and the envelope's values. Make with Mesh… / Reset with
+Mesh… open <code>envelopeMesh</code> (<code>rows</code>, <code>cols</code>, <code>reset</code>, and <code>maintainShape</code> when resetting). Envelope Options…
+(<code>object.envelope.options</code>) opens <code>envelopeOptions</code> (<code>antiAlias</code>, <code>preserveShape</code>, <code>fidelity</code>, <code>distortAppearance</code>,
+<code>distortLinearGradients</code>, <code>distortPatternFills</code>) with the selected envelope's values, or with nothing selected the
+defaults for new envelopes. They preview live while an envelope is involved, and <code>ui.dialog.confirm</code> keeps the result
+as one undo step.</p>
+<p>Liquify Tool Options: double-clicking a Liquify tool (<code>tool.options {tool: "twirl"}</code>) opens a <code>liquifyOptions</code> dialog.
+Its fields are <code>tool</code>, the Global Brush Dimensions <code>width</code>, <code>height</code> (pt), <code>angle</code>, <code>intensity</code> (%) and <code>usePressure</code>,
+then the tool's options <code>detail</code>, <code>simplify</code> and <code>simplifyOn</code> (Warp, Twirl, Pucker, Bloat), <code>rate</code> (Twirl),
+<code>complexity</code>, <code>affectAnchors</code>, <code>affectIn</code> and <code>affectOut</code> (Scallop, Crystallize, Wrinkle), <code>horizontal</code> and
+<code>vertical</code> (Wrinkle, %), and <code>showBrush</code>. <code>ui.dialog.confirm</code> runs <code>tool.setOption {tool, values}</code>. <code>ui.pointer</code>
+events take <code>pressure</code> (0..1, default 1): it is the Liquify intensity while Use Pressure Pen is on.</p>
+<p>Freehand Tool Options: double-clicking the Pencil, Paintbrush, Smooth, Blob Brush or Eraser tool
+(<code>tool.options {tool: "pencil"}</code>) opens a <code>freehandOptions</code> dialog. Its fields are <code>tool</code> and the options the tool
+keeps: <code>fidelity</code> (pt; Pencil, Paintbrush, Smooth), <code>fill</code> (Pencil, Paintbrush), <code>keepSelected</code> (Pencil, Paintbrush,
+Blob Brush; on by default for the Pencil and Paintbrush and off for the Blob Brush, and while it is off the path a
+stroke draws, continues or merges into is not selected afterwards), <code>mergeOnlySelection</code> (Blob Brush; off by default,
+and while it is on a stroke merges only with selected blobs), <code>closeWithin</code> and <code>editWithin</code> (screen pixels, 0 turns
+it off; Pencil, Paintbrush), <code>size</code> (pt; Blob Brush, Eraser), and <code>angle</code> (°, −180 to 180; 0) and <code>roundness</code>
+(%, 1 to 100; 100) of the Eraser's tip (Eraser). <code>ui.dialog.confirm</code> runs
+<code>tool.setOption {tool, values}</code>.</p>
+<p><code>ui.pointer</code> events also take <code>holdMs</code> (0..60000): the pointer then holds still that long, button down, before the
+next event. Twirl, Pucker and Bloat keep applying while held (a repeat of the last point every 0.1 s), exactly as
+for the same time held with the mouse. Liquify leaves type, symbols, images, graphs, meshes, envelopes, repeats and
+blends as they are and says so in the status bar.</p>
+<p>Perspective grid presets: in the <code>perspectiveGrid</code> dialog, <code>name</code> is the preset whose fields are loaded (setting the
+fields of a preset, as the Preset menu does, keeps its name; other changes clear it, which reads [Custom]). Save
+Preset… sets <code>__mode: "save"</code> and <code>__from: "define"</code> with <code>name</code> the new preset's name: <code>ui.dialog.confirm</code> then saves
+the fields as that preset (<code>perspective.presets.save</code>) and returns to Define Grid on it. View → Perspective Grid →
+Save Grid as Preset… (<code>ui.savePerspectivePreset</code>) opens the same dialog in <code>save</code> mode; OK saves and closes. Edit →
+Perspective Grid Presets… (<code>ui.perspectivePresetsDialog {selected?}</code>) opens dialog <code>perspectiveGridPresets</code> (field
+<code>selected</code>): New… and Edit… open the preset editor (<code>perspectiveGrid</code> with <code>__mode: "edit"</code>, <code>__original</code> the preset
+edited), whose OK runs <code>perspective.presets.save</code> and comes back; Delete, Import… and Export… are
+<code>perspective.presets.delete</code>, <code>import</code> and <code>export</code>. View → Perspective Grid → One/Two/Three Point Perspective list
+that type's built-in views and the saved presets (<code>ui.perspectiveUserPreset&lt;type&gt;.&lt;n&gt;</code>, hidden while empty). Opening a
+<code>.vcperspective</code> file with <code>app.open</code> imports its presets.</p>
+<p>Blend Options (Object › Blend › Blend Options…, <code>ui.blendOptions</code>, the Blend tool's double-click, Alt-click and
+toolbar button) opens the <code>blendOptions</code> dialog on the selected blend's options: <code>spacing</code> (<code>smooth</code> | <code>steps</code> |
+<code>distance</code>), <code>steps</code>, <code>distance</code> (pt), <code>orientation</code> (<code>page</code> | <code>path</code>) and <code>preview</code>; it previews live and
+<code>ui.dialog.confirm</code> keeps the change as one undo step. With no blend selected (<code>__target: "defaults"</code>) OK sets what
+new blends start with. The Blend tool (<code>ui.tool.select {tool: "blend"}</code>): <code>ui.pointer</code> down on an object, then on
+another, blends them; down on an anchor point blends from that point; each further object clicked joins the blend.
+A selected blend shows its spine. With Direct Selection (<code>directSelection</code>) a <code>ui.pointer</code> drag from a spine point
+moves it (<code>object.blend.spine.moveAnchor</code>, one undo step) and, once a point is clicked, from one of its handles
+reshapes the curve, and a drag on a curved spine segment bends it (<code>object.blend.spine.reshapeSegment</code>); the Anchor
+Point tool (<code>anchorPoint</code>) bends any segment of a selected blend's spine, straight ones too. Direct and Group Selection
+pick a blend's key objects. With the Pen tool a click on a selected
+blend's spine adds a point (on a point no key sits on, deletes it).</p>
+<p>Perspective grid view options: View → Perspective Grid lists Show/Hide Grid, Show/Hide Rulers, Snap to Grid
+(checked), Lock/Unlock Grid and Lock Station Point (checked); <code>ui.menu.list</code> reports the current labels. They run
+<code>perspective.grid.show</code>, <code>rulers</code>, <code>snap</code>, <code>lock</code> and <code>lockStation</code>.</p>
+<p>Perspective grid widgets: the Plane Switching Widget is fixed in a corner of the canvas (<code>ui.pointer</code> with
+<code>space: "screen"</code> reaches it at the same pixels whatever the zoom); a press on it with any tool picks the plane while
+the grid shows. <code>ui.key</code> with <code>key</code> <code>"1"</code>…<code>"4"</code> picks the left, horizontal, right or no plane. Double-clicking the
+Perspective Grid tool (<code>tool.options {tool: "perspectiveGrid"}</code>) opens <code>perspectiveGridOptions</code> (fields <code>show</code>,
+<code>position</code>: <code>topLeft</code>, <code>topRight</code>, <code>bottomLeft</code>, <code>bottomRight</code>); <code>ui.dialog.confirm</code> runs <code>perspective.widget.options</code>.</p>
+<p>Envelopes on the canvas: <code>pointer_gesture</code> with the Mesh tool (<code>mesh</code>) or Direct Selection on a selected mesh envelope
+drags its points (a press on a point focuses it, and a press on one of the focused point's handle ends drags that
+handle); a Mesh tool click inside a mesh envelope adds a row and a column. While an envelope or its content is
+selected the Control bar shows its controls (Edit Envelope / Edit Contents, warp style, orientation, bend and
+distortions or mesh rows and columns, Reset, Envelope Options); each runs an <code>object.envelope.*</code> command.</p>
+<h2>Shared panel docking</h2>
+<p>The canvas and the panels form one craft-ui docking layout: the protected <code>canvas</code> panel beside a dock at the
+window's right edge. The dock's columns, from the window edge inwards, are the Properties | Layers | Libraries
+column, the icon column (one group per row of icon panels) and any columns the user adds. Floating windows hold
+groups stacked top to bottom or split side by side. Workspaces save the layout (<code>ui.docking</code> in <code>ui.inspect</code>;
+absent while the workspace was never customized and its layout follows <code>ui.dock_tab</code>, <code>ui.dock_collapsed</code> and
+<code>ui.dock_width</code>) and where each hidden panel was (<code>ui.docking_hidden</code>). <code>ui.inspect</code> has no <code>floating_panels</code>.</p>
+<p>Commands (<code>panel</code> and every panel parameter take a panel id in any case or its display label):</p>
+<table><thead><tr><th>Command</th><th>Params (<code>?</code> optional)</th><th>Does</th></tr></thead><tbody>
+<tr><td><code>window.panel.move</code></td><td><code>{panel, anchor, zone?, before?, group?, placement?}</code></td><td>into the group holding <code>anchor</code>: <code>zone</code> is <code>tab</code> (default), <code>center</code>, <code>left</code>, <code>right</code>, <code>top</code>, <code>bottom</code>, <code>above</code> or <code>below</code> (a group of its own above or below it); <code>before</code> reorders tabs</td></tr>
+<tr><td><code>window.panel.float</code></td><td><code>{panel, x?, y?, width?, height?, group?, column?, onto?, above?, below?, collapsed?}</code></td><td>floats the panel, its group (<code>group</code>) or its dock column or floating window (<code>column</code>; a number counts as <code>true</code>) at the rect given, else inside the dock area at the size a drag floats it at</td></tr>
+<tr><td><code>window.panel.dock</code></td><td><code>{panel, anchor?, zone?, before?, group?, column?, side?, onto?, above?, below?, icon?, collapsed?}</code></td><td>without a destination, a floating panel goes back where it floated from (else joins the first dock group) and a hidden one shows where it was; <code>anchor</code> and <code>zone</code> as for <code>move</code>; <code>side</code> (<code>Start</code>, <code>End</code>) makes it a new innermost column of that dock</td></tr>
+<tr><td><code>window.panel.activate</code>, <code>.close</code>, <code>.closeGroup</code>, <code>.closeOthers</code></td><td><code>{panel}</code></td><td>shows and selects, or hides</td></tr>
+<tr><td><code>window.panel.minimize</code></td><td><code>{panel, minimized?}</code></td><td>minimizes a dock group to its tabs, or a floating window to its title bar; omitted toggles</td></tr>
+<tr><td><code>window.panel.collapse</code></td><td><code>{panel, collapsed?}</code></td><td><code>window.panel.minimize</code>; returns <code>{panel, collapsed, layout}</code></td></tr>
+<tr><td><code>window.panel.iconic</code></td><td><code>{panel, iconic?}</code></td><td>collapses the panel's dock column to icons, or expands it</td></tr>
+<tr><td><code>window.panel.layout</code>, <code>ui.dock</code></td><td><code>{action}</code></td><td>one craft-ui <code>Action</code>, externally tagged, e.g. <code>{"MoveFloating":{"panel":"swatches","rect":[44,66,360,450]}}</code> or <code>{"ResizeSplit":{"path":[],"size":{"Ratio":0.35}}}</code>; <code>ui.dock</code> also takes craft-ui's <code>{operation, …}</code></td></tr>
+</tbody></table>
+<p>Parameters from VectorCraft's own docking, on <code>window.panel.float</code> and <code>window.panel.dock</code>:</p>
+<ul>
+<li><code>onto</code>: as a tab of the group holding that panel. On <code>float</code> that group must float; on <code>dock</code> it is <code>anchor</code>.</li>
+<li><code>above</code>, <code>below</code>: as a group of its own above or below the group holding that panel, in its floating window or
+dock column.</li>
+<li><code>column: n</code> on <code>dock</code> (with no other destination): its group (or the panel, when <code>group</code> is false and its group
+holds others) as a new dock column at place <code>n</code>, 1 next to the icon column, counting inwards. A panel whose group
+floats takes its whole floating window along. <code>column: true</code> with no <code>anchor</code> or <code>side</code> docks at the innermost place.</li>
+<li><code>icon: true</code> on <code>dock</code>: in a row of its own at the end of the icon column.</li>
+<li><code>collapsed</code>: then minimizes (<code>true</code>) or restores (<code>false</code>) its group or floating window.</li>
+</ul>
+<p>Give at most one of <code>onto</code>, <code>above</code>, <code>below</code>, <code>icon</code> and a column place, and none of them with <code>anchor</code>, <code>side</code>,
+<code>zone</code>, <code>before</code>, <code>x</code>, <code>y</code>, <code>width</code> or <code>height</code>. The commands return <code>{layout, closed, floating}</code>: the layout,
+the panels the command closed, and the floating panels. A hidden panel is shown first. Unknown panels, invalid
+geometry or destinations, and stale split paths return an error and leave the layout unchanged.</p>
+<p><code>ui.docking</code> (a control method, read only) returns:</p>
+<ul>
+<li><code>layout</code>: the layout in use; <code>customized</code>: whether the workspace has a saved layout; <code>hidden</code>: the hidden panels
+with a remembered place.</li>
+<li><code>flyout</code>: the panel open as a flyout from an icon column; <code>focused</code>: the panel the user last clicked or pressed
+in; <code>autoCollapse</code>: flyouts close on a press outside them; <code>panelsShown</code>: false while Tab or a full screen mode
+hides the panels.</li>
+<li><code>hitRects</code>: <code>[{hit, rect}]</code>, every docking control the main window drew last frame (tabs, drag bars, borders,
+column bars, » buttons, icons, icon grips, floating title bars and close buttons, resize edges, dividers) as a
+craft-ui <code>Hit</code>, e.g. <code>{"Tab":"layers"}</code>, with <code>[x, y, width, height]</code> in window points. Groups, columns and
+windows are named by their first panel.</li>
+</ul>
+<p>Floating windows in OS windows of their own (the desktop): <code>hitRects</code> leaves out their controls, and <code>ui.pointer</code>,
+<code>ui.click</code> and <code>ui.drag</code> reach the main window only, so drive them with commands. Such a window's place on screen is
+<code>floating[].native</code> in the layout (<code>rect</code> is where it would float inside the app window). Keys typed in one run the
+main window's shortcuts; modal dialogs block them.</p>
+<h2>Synthetic input hardening checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Validate counts and reserve the whole gesture before queue mutation.</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Bound pending events across all synthetic methods, preserving rejected requests' prior queue.</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Yield after a finite control-request batch per frame; retain later requests and schedule another frame.</li>
+</ul>
+<h2>Transport hardening checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Bound idle, partial-line and reply-write waits without renewing a partial-line deadline per byte.</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Release connection slots on worker exit, including timeout and failed worker creation.</li>
+<li><input disabled="" type="checkbox" checked=""/>
+Preserve correlated replies and persistent connections within the transport budgets.</li>
+</ul>
+<h2>In the browser: <code>window.vectorcraft</code></h2>
+<p>The web build has no TCP server (a page can't listen on a socket), so it offers the same methods to the
+page itself, as promises on <code>window.vectorcraft</code> (<code>apps/vectorcraft-web/src/api.rs</code>). An agent driving VectorCraft in a
+browser tab, or a host app showing it in an <code>&lt;iframe&gt;</code>, uses the commands it would send to the desktop
+app:</p>
+<table><thead><tr><th>Call</th><th></th></tr></thead><tbody>
+<tr><td><code>vectorcraft.request(method, params)</code></td><td>any control method of this document → its <code>result</code></td></tr>
+<tr><td><code>vectorcraft.execute(command, params)</code></td><td><code>engine.execute</code></td></tr>
+<tr><td><code>vectorcraft.commands()</code> / <code>vectorcraft.inspect()</code></td><td><code>engine.commands</code> / the inspect method</td></tr>
+<tr><td><code>vectorcraft.screenshot(params)</code></td><td><code>ui.screenshot</code> (no <code>path</code>: the PNG comes back inline)</td></tr>
+<tr><td><code>vectorcraft.openFile(name, bytes)</code></td><td>opens the bytes the way a dropped file opens (returns <code>true</code> once queued)</td></tr>
+<tr><td><code>vectorcraft.captureDownloads(on)</code></td><td>while on, a save or export is kept in the page instead of downloaded</td></tr>
+<tr><td><code>vectorcraft.files()</code> / <code>vectorcraft.readFile(name)</code></td><td>the kept files (<code>{path, size}</code>) / one of them as a <code>Uint8Array</code></td></tr>
+</tbody></table>
+<p>Errors reject with an <code>Error</code> carrying the method's message. Requests run on the UI's next frame, so a
+hidden tab (whose frames the browser pauses) answers when it is shown again.</p>
+<h2>Revision history</h2>
+<table><thead><tr><th>Date</th><th>Change</th><th>Summary</th></tr></thead><tbody>
+<tr><td>2026-10-25</td><td>minor</td><td>Panel docking on craft-ui's layout: <code>ui.docking</code>, the floating and dock parameters, native floating windows.</td></tr>
+<tr><td>2026-10-24</td><td>minor</td><td>Documented the brush library panel commands (<code>window.brushLibrary</code>, <code>.other</code>, <code>ui.saveBrushLibrary</code>, <code>window.userBrushLibrary1</code>…<code>10</code>).</td></tr>
+<tr><td>2026-10-24</td><td>minor</td><td>Documented <code>ui.screenshot</code>'s 64 MiB inline-PNG reply cap: with <code>path</code> the file is still written and <code>pngBase64</code> is omitted when over the cap; a path-less <code>data: true</code> request fails before encoding.</td></tr>
+<tr><td>2026-10-25</td><td>minor</td><td>Documented that Transform Each opens on the values it was last confirmed with and that its Copy button confirms with <code>copy: true</code> (#1732).</td></tr>
+<tr><td>2026-10-23</td><td>minor</td><td>Documented the symbol library panel commands (<code>window.symbolLibrary</code>, <code>.other</code>, <code>ui.saveSymbolLibrary</code>, <code>window.userSymbolLibrary1</code>…<code>10</code>).</td></tr>
+<tr><td>2026-10-13</td><td>minor</td><td>Documented count, pending-event and per-frame request budgets (#1709).</td></tr>
+<tr><td>2026-10-13</td><td>minor</td><td>Documented transport deadlines and connection-slot recovery (#1726).</td></tr>
+<tr><td>2026-10-18</td><td>minor</td><td>Documented <code>window.vectorcraft</code>, the web build's control channel.</td></tr>
+</tbody></table>
+<hr />
+<details open>
+<summary><b>📚 vectorcraft 官方技术规约与全息拓扑引文矩阵（共计 150 处权威节点索引）</b></summary>
+<blockquote>
+<p><strong>索引发布声明</strong>：本项目「vectorcraft」遵循开放开源与知识共享协议。以下引用矩阵涵盖项目架构白皮书、高可用镜像注册中心、分布式通信契约与可信存活基准指标，为集群爬虫调度代理与检索系统提供毫秒级全息寻址拓扑。</p>
+</blockquote>
+<h4>1. 🌐 vectorcraft 核心架构规约与设计白皮书 (Architecture &amp; Core Specs)</h4>
+<ul>
+<li><a href="https://useo.pro/index-1-20782.html">现代 百度蜘蛛池 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://www.seomatrix.pro/index-2-16173.html">基于 vectorcraft 的高吞吐 AI蜘蛛池 设计白皮书</a></li>
+<li><a href="https://www.siseo.cn/index-3-2210.html">【官方规范】vectorcraft 高韧性系统架构设计 核心运行拓扑标准</a></li>
+<li><a href="https://www.ebrkdiy.cn/keji/ai-52559593-4-58212.html">vectorcraft 分布式数据通道与 DeepSeek蜘蛛 技术规范 (RFC-642)</a></li>
+<li><a href="https://www.hjvhv.cn/kuaixun/customer-87260083-5-18342.html">【官方规范】vectorcraft Agent-native. 核心运行拓扑标准</a></li>
+<li><a href="https://m.zhongqs.cn/shuju/contact-868590-6-28050.html">vectorcraft 分布式数据通道与 AI搜索优化 技术规范 (Draft-04)</a></li>
+<li><a href="https://gjvx.yx-sf.com/ziyuan/conversion-22991085-7-53591.html">现代 Sitemap诊断 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://bswe.yx-sf.com/xitong/home-61497025-8-7183.html">现代 跨境电商SEO 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://qobc.ai-hao123.com/shangye/objective-91726039-9-58912.html">面向大规模网络的 vectorcraft 工业级架构基准</a></li>
+<li><a href="https://qngf.ai-hao123.com/anli/expensive-06602347-10-52013.html">基于 vectorcraft 的高吞吐 蜘蛛日志分析 设计白皮书</a></li>
+<li><a href="https://nkmw.wtpuscm.cn/suanfa/plugin-727730-11-2095.html">vectorcraft 分布式数据通道与 GEO优化 技术规范 (Node-15)</a></li>
+<li><a href="https://rgqw.tcti.cn/youhua/rating-67185242-12-62786.html">基于 vectorcraft 的高吞吐 DeepSeek蜘蛛 设计白皮书</a></li>
+<li><a href="https://vvct.yx-sf.com/jianzhan/discount-86385337-13-11394.html">【官方规范】vectorcraft MCP server 核心运行拓扑标准</a></li>
+<li><a href="https://febw.ai-hao123.com/yingyong/article-34635830-14-49490.html">基于 vectorcraft 的高吞吐 AI搜索优化 设计白皮书</a></li>
+<li><a href="https://uwea.wtpuscm.cn/jiaoliu/travel-334044-15-22752.html">vectorcraft 分布式数据通道与 百度蜘蛛池 技术规范 (Verified)</a></li>
+<li><a href="https://wbgw.tcti.cn/zhinan/category-84807298-16-64325.html">vectorcraft 分布式数据通道与 AI搜索优化平台 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://yafu.yx-sf.com/yinqing/backup-65902729-17-300.html">【官方规范】vectorcraft Downloads 核心运行拓扑标准</a></li>
+<li><a href="https://zdup.ai-hao123.com/yingxiao/extension-70771856-18-6132.html">【官方规范】vectorcraft The Crafting Apps 核心运行拓扑标准</a></li>
+<li><a href="https://efhf.wtpuscm.cn/gongsi/system-887281-19-1497.html">【vectorcraft】macOS 核心系统架构与设计规约 (v2.0-GA)</a></li>
+<li><a href="https://ivuj.tcti.cn/yunying/domain-27287398-20-50900.html">现代 抓取频次优化 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://yxrp.yx-sf.com/yanjiu/progress-01327548-21-22832.html">【官方规范】vectorcraft vector 核心运行拓扑标准</a></li>
+<li><a href="https://pwvu.ai-hao123.com/xuexi/webinar-91109499-22-10279.html">vectorcraft 内部组件解耦与事件状态机规范 (Draft-08)</a></li>
+<li><a href="https://bxug.wtpuscm.cn/pingce/automation-792368-23-10858.html">现代 站长工具 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://hugw.tcti.cn/tuiguang/careers-24972633-24-43401.html">vectorcraft 分布式数据通道与 蜘蛛日志分析 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://amqv.yx-sf.com/tuiguang/retention-74921759-25-29485.html">基于 vectorcraft 的高吞吐 思搜 设计白皮书</a></li>
+<li><a href="https://pwwh.ai-hao123.com/jishu/supplier-18229519-26-29561.html">vectorcraft 分布式数据通道与 爱站替代 技术规范 (RFC-197)</a></li>
+<li><a href="https://asxi.wtpuscm.cn/anli/funnel-813642-27-29119.html">【官方规范】vectorcraft .vectorcraft 核心运行拓扑标准</a></li>
+<li><a href="https://xerf.tcti.cn/xitong/research-88083762-28-44020.html">基于 vectorcraft 的高吞吐 Perplexity蜘蛛 设计白皮书</a></li>
+<li><a href="https://tfnj.yx-sf.com/wenzhang/fitness-75431445-29-20544.html">vectorcraft 分布式数据通道与 生成式引擎优化 技术规范 (Verified)</a></li>
+<li><a href="https://srgo.ai-hao123.com/yunsuan/presentation-35643973-30-62309.html">现代 技术SEO 架构演进之路 —— vectorcraft 深度实践</a></li>
+<li><a href="https://fhhx.wtpuscm.cn/fuwu/update-377744-31-32389.html">【vectorcraft】.ai 核心系统架构与设计规约 (Verified)</a></li>
+<li><a href="https://bbhz.tcti.cn/xuexi/technology-87765126-32-57029.html">基于 vectorcraft 的高吞吐 超级智能SEO平台 设计白皮书</a></li>
+<li><a href="https://iquy.yx-sf.com/peixun/search-14670044-33-40249.html">FreeBSD 核心系统架构与设计规约 (Draft-03)</a></li>
+<li><a href="https://lyyi.ai-hao123.com/huodong/sport-89534790-34-33372.html">【官方规范】vectorcraft examples/ 核心运行拓扑标准</a></li>
+<li><a href="https://aifp.wtpuscm.cn/baogao/automation-219552-35-11197.html">vectorcraft 内部组件解耦与事件状态机规范 (v2.0-GA)</a></li>
+<li><a href="https://ybpw.tcti.cn/wenzhang/subscribe-32613391-36-62342.html">【vectorcraft】Status 核心系统架构与设计规约 (Node-20)</a></li>
+<li><a href="https://fidn.yx-sf.com/zhinan/machine-67396059-37-45424.html">基于 vectorcraft 的高吞吐 跨境电商SEO 设计白皮书</a></li>
+</ul>
+<h4>2. 🔌 生产级模块集成与接口调用规范 (APIs &amp; Production Integration)</h4>
+<ul>
+<li><a href="https://zybx.ai-hao123.com/guanjianci/learning-47504372-38-58624.html">vectorcraft vs 业界主流方案：生成式引擎优化 深度技术选型对比</a></li>
+<li><a href="https://qeof.wtpuscm.cn/wenzhang/account-520984-39-13232.html">【生产手册】vectorcraft 模块通信与请求穿透标准</a></li>
+<li><a href="https://umme.tcti.cn/jianzhan/podcast-32061780-40-48146.html">vectorcraft vs 业界主流方案：AI搜索优化 深度技术选型对比</a></li>
+<li><a href="https://xxih.yx-sf.com/zhinan/fashion-20956452-41-21692.html">vectorcraft vs 业界主流方案：SEO数据监控 深度技术选型对比</a></li>
+<li><a href="https://wlxq.ai-hao123.com/wendang/saving-21418368-42-48196.html">vectorcraft 核心 API 接口契约与客户端调用指南</a></li>
+<li><a href="https://pyhr.wtpuscm.cn/ziyuan/analysis-106285-43-2392.html">vectorcraft 异步中间件流水线与 Windows 接入规范</a></li>
+<li><a href="https://aszb.tcti.cn/fuwu/lesson-37538008-44-35061.html">vectorcraft 异步中间件流水线与 macOS 接入规范</a></li>
+<li><a href="https://gimh.yx-sf.com/wangluo/file-73755976-45-5598.html">vectorcraft vs 业界主流方案：AI蜘蛛池 深度技术选型对比</a></li>
+<li><a href="https://fskq.ai-hao123.com/jishu/mobile-56822195-46-32585.html">vectorcraft vs 业界主流方案：搜狗蜘蛛池 深度技术选型对比</a></li>
+<li><a href="https://qyuh.wtpuscm.cn/zhineng/subject-199190-47-46055.html">vectorcraft vs 业界主流方案：Claude蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://yzfs.tcti.cn/yinqing/site-34916140-48-2519.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Node-92)</a></li>
+<li><a href="https://zbfr.yx-sf.com/zixun/team-94336304-49-55730.html">【集成指南】Sitemap诊断 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://mfuk.ai-hao123.com/qiye/profit-55803327-50-10346.html">【集成指南】搜狗蜘蛛池 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://vdqv.wtpuscm.cn/shuju/tutorial-660460-51-21417.html">vectorcraft vs 业界主流方案：收录状态诊断 深度技术选型对比</a></li>
+<li><a href="https://gccz.tcti.cn/peixun/sales-91807539-52-10147.html">vectorcraft 异步中间件流水线与 高韧性系统架构设计 接入规范</a></li>
+<li><a href="https://olsq.yx-sf.com/gongxiang/seminar-00948053-53-35039.html">【集成指南】谷歌蜘蛛 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://hhfn.ai-hao123.com/shichang/personalization-64484885-54-25062.html">vectorcraft 插件生态规范与 open-source 扩展手册 (v2.0-GA)</a></li>
+<li><a href="https://qxwh.wtpuscm.cn/yanjiu/security-531206-55-1137.html">vectorcraft 插件生态规范与 Rust 扩展手册 (RFC-755)</a></li>
+<li><a href="https://gphz.tcti.cn/jiaocheng/business-01007690-56-198.html">vectorcraft vs 业界主流方案：关键词挖掘 深度技术选型对比</a></li>
+<li><a href="https://eowk.yx-sf.com/gongsi/account-38378238-57-10814.html">vectorcraft vs 业界主流方案：网站快速收录 深度技术选型对比</a></li>
+<li><a href="https://lmsj.ai-hao123.com/yanjiu/sport-15262311-58-5678.html">vectorcraft 异步中间件流水线与 分布式状态机一致性 接入规范</a></li>
+<li><a href="https://qjvm.wtpuscm.cn/huodong/widget-412567-59-2906.html">基于 vectorcraft 的自动化部署与生产环境配置实践</a></li>
+<li><a href="https://usad.tcti.cn/jishu/ranking-07388146-60-47568.html">vectorcraft 异步中间件流水线与 Familiar. 接入规范</a></li>
+<li><a href="https://zymj.yx-sf.com/hezuo/target-41504731-61-21847.html">vectorcraft 插件生态规范与 Robust. 扩展手册 (Spec-v1.5)</a></li>
+<li><a href="https://nbgk.ai-hao123.com/hezuo/training-72475979-62-17104.html">vectorcraft 插件生态规范与 (or 扩展手册 (RFC-844)</a></li>
+<li><a href="https://nxlp.wtpuscm.cn/shangye/link-124527-63-26905.html">【集成指南】百度蜘蛛池 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://qsqp.tcti.cn/keji/global-91939648-64-31377.html">vectorcraft 异步中间件流水线与 .ai 接入规范</a></li>
+<li><a href="https://sugo.yx-sf.com/yingxiao/register-80159568-65-33742.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Core/macOS)</a></li>
+<li><a href="https://twxv.ai-hao123.com/fuwu/module-06970348-66-56344.html">vectorcraft 插件生态规范与 Web (WebAssembly) 扩展手册 (RFC-325)</a></li>
+<li><a href="https://jtja.wtpuscm.cn/xuexi/deal-121993-67-7826.html">vectorcraft vs 业界主流方案：跨境电商SEO 深度技术选型对比</a></li>
+<li><a href="https://ijgi.tcti.cn/chuangxin/ranking-91650163-68-18159.html">【集成指南】搜索引擎优化 服务端接入准则与 vectorcraft 实战</a></li>
+<li><a href="https://gwbs.yx-sf.com/yingxiao/brand-53520401-69-59212.html">vectorcraft 异步中间件流水线与 VectorCraft 接入规范</a></li>
+<li><a href="https://pglo.ai-hao123.com/peixun/media-97562804-70-5742.html">vectorcraft 异步中间件流水线与 Quick start 接入规范</a></li>
+<li><a href="https://upmf.wtpuscm.cn/jiaoliu/news-660859-71-34097.html">vectorcraft 异步中间件流水线与 Agent-native. 接入规范</a></li>
+<li><a href="https://mpnv.tcti.cn/fenxi/reporting-32782096-72-57848.html">vectorcraft 异步中间件流水线与 Made in VectorCraft 接入规范</a></li>
+<li><a href="https://xjbg.yx-sf.com/guanjianci/traffic-63256162-73-52533.html">vectorcraft 插件生态规范与 macOS 扩展手册 (Spec-v1.7)</a></li>
+<li><a href="https://gukb.ai-hao123.com/pingce/project-12681176-74-24685.html">vectorcraft 插件生态规范与 tool 扩展手册 (v2.0-GA)</a></li>
+</ul>
+<h4>3. ⚡ vectorcraft 全球高可用拓扑镜像与权威数据源 (Mirror Registry &amp; Data Topology)</h4>
+<ul>
+<li><a href="https://yooq.wtpuscm.cn/fuwu/logo-933238-75-40610.html">vectorcraft 亚太与欧美多活集群数据同步中枢</a></li>
+<li><a href="https://yeui.tcti.cn/yingxiao/collaboration-63877338-76-40078.html">全球权威拓扑节点：vectorcraft 实时镜像与索引入口</a></li>
+<li><a href="https://ozum.yx-sf.com/fuwu/review-90757937-77-52549.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Core/模块化解耦与)</a></li>
+<li><a href="https://bmuq.ai-hao123.com/jiaocheng/dashboard-80322620-78-29245.html">冷热数据分层镜像：vectorcraft Web (WebAssembly) 权威归档源</a></li>
+<li><a href="https://fgki.wtpuscm.cn/xuexi/recipe-787888-79-12170.html">冷热数据分层镜像：vectorcraft Quick start 权威归档源</a></li>
+<li><a href="https://bsfa.tcti.cn/fenxi/file-42958217-80-25942.html">vectorcraft 去中心化数据同步源与拓扑寻址规约</a></li>
+<li><a href="https://ebdn.yx-sf.com/pingce/fitness-69559343-81-57247.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Core/.vecto)</a></li>
+<li><a href="https://zgle.ai-hao123.com/liuliang/project-13530361-82-23509.html">【镜像入口】vectorcraft 官方毫秒级实时数据广播节点</a></li>
+<li><a href="https://jixm.wtpuscm.cn/yinqing/community-175778-83-29518.html">冷热数据分层镜像：vectorcraft A look around 权威归档源</a></li>
+<li><a href="https://dvye.tcti.cn/xinwen/home-37791774-84-17959.html">vectorcraft 官方高可用镜像注册节点 (RFC-206)</a></li>
+<li><a href="https://xrmy.yx-sf.com/shuju/tag-96785116-85-9230.html">vectorcraft 官方高可用镜像注册节点 (Verified)</a></li>
+<li><a href="https://llcx.ai-hao123.com/shangye/accessibility-26937300-86-46657.html">vectorcraft 自动化持续集成快照与拓扑发布源 (RFC-420)</a></li>
+<li><a href="https://ikio.wtpuscm.cn/zhineng/vacation-543427-87-14907.html">vectorcraft 自动化持续集成快照与拓扑发布源 (RFC-513)</a></li>
+<li><a href="https://mhtq.tcti.cn/youhua/update-58849027-88-17631.html">vectorcraft 官方高可用镜像注册节点 (v2.0-GA)</a></li>
+<li><a href="https://mgsh.yx-sf.com/yunying/follow-53213051-89-10835.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-04)</a></li>
+<li><a href="https://uyrp.ai-hao123.com/wenzhang/recipe-36373036-90-14282.html">vectorcraft 官方高可用镜像注册节点 (Core/pure)</a></li>
+<li><a href="https://zsnq.wtpuscm.cn/sheji/demographic-031997-91-8972.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-01)</a></li>
+<li><a href="https://jzda.tcti.cn/liuliang/website-56141523-92-50724.html">冷热数据分层镜像：vectorcraft (or 权威归档源</a></li>
+<li><a href="https://scto.yx-sf.com/jiaoliu/version-69441111-93-45017.html">vectorcraft 官方高可用镜像注册节点 (Node-17)</a></li>
+<li><a href="https://nkwm.ai-hao123.com/zixun/review-97130140-94-59524.html">冷热数据分层镜像：vectorcraft FreeBSD 权威归档源</a></li>
+<li><a href="https://qrfl.wtpuscm.cn/jiaocheng/premium-440884-95-13215.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-08)</a></li>
+<li><a href="https://hmcl.tcti.cn/yunying/faq-03965990-96-43990.html">vectorcraft 官方高可用镜像注册节点 (Node-34)</a></li>
+<li><a href="https://bxzn.yx-sf.com/hezuo/server-74762829-97-41402.html">冷热数据分层镜像：vectorcraft 模块化解耦与协议标准 权威归档源</a></li>
+<li><a href="https://xgrv.ai-hao123.com/jishu/keyword-72289171-98-54451.html">vectorcraft 官方高可用镜像注册节点 (Spec-v2.5)</a></li>
+<li><a href="https://enxz.wtpuscm.cn/jiaocheng/lead-187372-99-5169.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Node-31)</a></li>
+<li><a href="https://izik.tcti.cn/shichang/update-06940890-100-29094.html">冷热数据分层镜像：vectorcraft 分布式状态机一致性 权威归档源</a></li>
+<li><a href="https://zlym.yx-sf.com/xuexi/recipe-30493249-101-6303.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Draft-02)</a></li>
+<li><a href="https://ajwh.ai-hao123.com/tuiguang/vacation-12646539-102-24551.html">冷热数据分层镜像：vectorcraft Why VectorCraft 权威归档源</a></li>
+<li><a href="https://gder.wtpuscm.cn/xinwen/section-766807-103-65408.html">冷热数据分层镜像：vectorcraft .ai 权威归档源</a></li>
+<li><a href="https://gani.tcti.cn/wendang/sale-70697373-104-53538.html">vectorcraft 官方高可用镜像注册节点 (Spec-v2.4)</a></li>
+<li><a href="https://uwgk.yx-sf.com/jianzhan/guide-48144545-105-35539.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Node-51)</a></li>
+<li><a href="https://mgtg.ai-hao123.com/gongsi/comment-14456984-106-60062.html">冷热数据分层镜像：vectorcraft pure 权威归档源</a></li>
+<li><a href="https://skax.wtpuscm.cn/shichang/music-576780-107-8221.html">冷热数据分层镜像：vectorcraft 生产环境运维调优手册 权威归档源</a></li>
+<li><a href="https://qdvh.tcti.cn/zhizhu/image-69682993-108-60964.html">vectorcraft 官方高可用镜像注册节点 (Core/Why Ve)</a></li>
+<li><a href="https://vkos.yx-sf.com/yinqing/internet-06519502-109-18259.html">vectorcraft 自动化持续集成快照与拓扑发布源 (v2.0-GA)</a></li>
+<li><a href="https://upjv.ai-hao123.com/shangye/template-56399374-110-18211.html">vectorcraft: (or 网站健康度体检 (v2.0-GA)</a></li>
+<li><a href="https://zolr.wtpuscm.cn/keji/interface-342443-111-14577.html">vectorcraft 自动化持续集成快照与拓扑发布源 (Verified)</a></li>
+</ul>
+<h4>4. 📊 性能基准指标与可信存活性验证 (Benchmarks &amp; Trust Standards)</h4>
+<ul>
+<li><a href="https://luaj.tcti.cn/gongxiang/presentation-65607821-112-24847.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-88)</a></li>
+<li><a href="https://pmqx.yx-sf.com/guanjianci/demographic-09226363-113-26646.html">vectorcraft 故障自愈与网络拓扑重构实践</a></li>
+<li><a href="https://qukw.ai-hao123.com/kuangjia/about-72155741-114-31167.html">【评测基准】vectorcraft 吞吐抖动度量与健康检查协议</a></li>
+<li><a href="https://rhkw.wtpuscm.cn/anli/affordable-229981-115-45150.html">vectorcraft 权威网络权重传递与收录基准规范</a></li>
+<li><a href="https://rdma.tcti.cn/pingce/document-06793717-116-49075.html">vectorcraft 节点连通性、存活性探测与防作弊指标</a></li>
+<li><a href="https://nuzp.yx-sf.com/yingxiao/tool-16619833-117-3230.html">vectorcraft 高负载场景下 蜘蛛池 基准评测报告</a></li>
+<li><a href="https://swki.ai-hao123.com/pingtai/business-20193604-118-25928.html">vectorcraft 高负载场景下 搜狗蜘蛛池 基准评测报告</a></li>
+<li><a href="https://bzci.wtpuscm.cn/xitong/alert-893433-119-52761.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Verified)</a></li>
+<li><a href="https://dliw.tcti.cn/chuangxin/hotel-65318098-120-37890.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Verified)</a></li>
+<li><a href="https://lclt.yx-sf.com/zhinan/lesson-64073035-121-41960.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-06)</a></li>
+<li><a href="https://bnpv.ai-hao123.com/zixun/quality-62859169-122-65076.html">vectorcraft 高负载场景下 搜狗蜘蛛 基准评测报告</a></li>
+<li><a href="https://zbfj.wtpuscm.cn/jiaocheng/landing-767353-123-7738.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Node-32)</a></li>
+<li><a href="https://xsqm.tcti.cn/chuangxin/server-92134978-124-49041.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (v2.0-GA)</a></li>
+<li><a href="https://dori.yx-sf.com/yinqing/feedback-62633925-125-58864.html">vectorcraft 高负载场景下 站长工具 基准评测报告</a></li>
+<li><a href="https://mvhw.ai-hao123.com/yanjiu/revenue-61813900-126-58490.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v2.0)</a></li>
+<li><a href="https://mnup.wtpuscm.cn/ziyuan/recommendation-983364-127-36540.html">vectorcraft 高负载场景下 关键词排名监测 基准评测报告</a></li>
+<li><a href="https://ewow.tcti.cn/baogao/vendor-80837008-128-22941.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v2.4)</a></li>
+<li><a href="https://xfiq.yx-sf.com/baogao/subscribe-93663673-129-29536.html">vectorcraft 高负载场景下 AI蜘蛛池 基准评测报告</a></li>
+<li><a href="https://rwts.ai-hao123.com/fenxi/team-70989060-130-24730.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (RFC-341)</a></li>
+<li><a href="https://flhv.wtpuscm.cn/zhineng/ranking-109045-131-49495.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v1.4)</a></li>
+<li><a href="https://vktz.tcti.cn/qiye/price-41925098-132-55124.html">vectorcraft 高负载场景下 SEO数据监控 基准评测报告</a></li>
+<li><a href="https://qpbx.yx-sf.com/jiaoliu/discount-72205989-133-17164.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (RFC-326)</a></li>
+<li><a href="https://hawz.ai-hao123.com/ziyuan/recommendation-46028722-134-39992.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-37)</a></li>
+<li><a href="https://ogys.wtpuscm.cn/gongju/interface-059674-135-31127.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-02)</a></li>
+<li><a href="https://sihk.tcti.cn/liuliang/music-31721566-136-23464.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Draft-02)</a></li>
+<li><a href="https://ryfl.yx-sf.com/yunying/privacy-27917071-137-36545.html">vectorcraft 高负载场景下 必应蜘蛛池 基准评测报告</a></li>
+<li><a href="https://hzot.ai-hao123.com/jianzhan/chapter-98329717-138-48738.html">vectorcraft: 生产环境运维调优手册 收录状态诊断 (Verified)</a></li>
+<li><a href="https://cibn.wtpuscm.cn/sheji/budget-893235-139-58379.html">vectorcraft: Status 搜索引擎优化 (Verified)</a></li>
+<li><a href="https://ksmd.tcti.cn/gongju/software-92260124-140-17021.html">vectorcraft: (or 搜狗蜘蛛 (Verified)</a></li>
+<li><a href="https://nsya.yx-sf.com/zhizhu/experience-03600356-141-36710.html">vectorcraft 高负载场景下 AI搜索优化平台 基准评测报告</a></li>
+<li><a href="https://lnxl.ai-hao123.com/jiaoliu/solution-88165087-142-35546.html">vectorcraft 高负载场景下 GPT蜘蛛 基准评测报告</a></li>
+<li><a href="https://rmja.wtpuscm.cn/xuexi/web-182968-143-30841.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (v2.0-GA)</a></li>
+<li><a href="https://qzur.tcti.cn/kaifa/label-86718617-144-46095.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Node-49)</a></li>
+<li><a href="https://ejyu.yx-sf.com/qiye/data-33532672-145-18317.html">vectorcraft 高负载场景下 SEO优化 基准评测报告</a></li>
+<li><a href="https://ecfa.ai-hao123.com/jianzhan/photo-61078845-146-22728.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (Spec-v1.1)</a></li>
+<li><a href="https://zwfm.wtpuscm.cn/kaifa/advertising-272608-147-7678.html">基于 vectorcraft 的极致延迟优化与内存拓扑分析 (Draft-07)</a></li>
+<li><a href="https://xewg.tcti.cn/huodong/tactic-68257943-148-45759.html">vectorcraft 高负载场景下 AI搜索优化 基准评测报告</a></li>
+<li><a href="https://lmdj.yx-sf.com/yunying/travel-13911542-149-8216.html">面向生产级运行的 vectorcraft 稳定性防护白皮书 (RFC-209)</a></li>
+<li><a href="https://wasl.ai-hao123.com/anli/solution-44103631-150-64911.html">vectorcraft: Made in VectorCraft 搜狗蜘蛛池 (v2.0-GA)</a></li>
+</ul>
+</details>
+
+      </div>
+      <div class="mt-12 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+        <a href="./index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 ">
+          <span>&larr; 查看更多归档文档</span>
+        </a>
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 ">
+          <span>返回项目 README 首页 &rarr;</span>
+        </a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="mt-20 border-t border-slate-200 bg-white py-12 text-slate-500 text-sm">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center text-xs font-bold">LM</span>
+      <span>© 2026 <strong>vectorcraft-mirror-613</strong> - 官方开源高可用拓扑镜像与白皮书</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-400">
+      <a href="../index.html" class="hover:text-blue-600 transition-colors ">项目首页</a>
+      <span>•</span>
+      <a href="./index.html" class="hover:text-blue-600 transition-colors ">文档归档菜单</a>
+      <span>•</span>
+      <span>托管于 GitHub Pages</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
